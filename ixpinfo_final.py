@@ -35,6 +35,7 @@ for i in tqdm(ixpfx["data"]):
                             #dictionary2["net_set"].append(dictionary3)
                             x = l["ipaddr4"]
                             
+                            
                     #dictionary2["net_set"].append(dictionary3)
                 dictionary2["net_set"] = dictionary3
                 dictionary2["fac_set"] = []
