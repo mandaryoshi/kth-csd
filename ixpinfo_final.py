@@ -14,9 +14,10 @@ dictionary = {}
 
 for i in tqdm(ixpfx["data"]):
     if i["ixpfx_set"]:
+        dictionary2 = {}
+        dictionary2["ipv4_prefix"] = []
         for j in i["ixpfx_set"]:
-            dictionary2 = {}
-            dictionary2["ipv4_prefix"] = []
+            
             if j["protocol"] == "IPv4":
 
                 dictionary2["ipv4_prefix"].append(j["prefix"])
