@@ -19,23 +19,24 @@ for i in tqdm(ixpfx["data"]):
 
                 dictionary2 = {}
                 dictionary2["ipv4_prefix"] = j["prefix"]
-                dictionary2["net_set"] = []
 
                 x = 0
+                dictionary3 = {}
                 for k in i["net_set"]:
+
                     #Dictionary containing the info from the all ASN connected to the IXP // Contains an array of asn_id & IPv4 addr
                     #dictionary3["asn"] = k["asn"]
+
                     for l in netixlan["data"]: 
-
-                        dictionary3 = {}
-                        if l["asn"] == k["asn"] and l["ix_id"] == i["ix_id"] and x != l["id"]:
+                        
+                        if l["ix_id"] == i["ix_id"] and x != l["ipaddr4"]:
                             #print("asn detected")
-                            dictionary3[k["asn"]] = l["ipaddr4"]
-                            dictionary2["net_set"].append(dictionary3)
-                            x = l["id"]
-                            break
+                            dictionary3[l["ipaddr4"]] = l["asn"]
+                            #dictionary2["net_set"].append(dictionary3)
+                            x = l["ipaddr4"]
+                            
                     #dictionary2["net_set"].append(dictionary3)
-
+                dictionary2["net_set"] = dictionary3
                 dictionary2["fac_set"] = []
 
                 for y in ixpfac["data"]:
