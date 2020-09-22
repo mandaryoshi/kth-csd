@@ -8,7 +8,7 @@ with open('ixp_test.json') as f:
   ixp_info = json.load(f)
 
 def ixpdetection(ip_array):
-  for value,ixp in ixp_info:
+  for value,ixp in ixp_info.items():
     print(ixp["ipv4_prefix"])
     for prefix in ixp["ipv4_prefix"]:
       for ip in ip_array:
