@@ -13,9 +13,9 @@ import time
 id = 0
 
 
-file_object = open('traceroute_test.json', 'w')
+file_object = open('traceroute_20200914_1100', 'w')
 
-with open('../traceroute-2020-09-14T1100','r') as readfile:
+with open('../traceroutes/14092020/traceroute-2020-09-14T1100','r') as readfile:
 
     for line in tqdm(readfile):
         json_line = json.loads(line)
@@ -47,6 +47,7 @@ with open('../traceroute-2020-09-14T1100','r') as readfile:
                                 'from' : hop_ip, 
                                 'rtt' : round(rtt_avgfinal)})
                 file_object.write(json.dumps(traceroute_dict))
+                file_object.write('\n')
         #print(traceroute_dict)
         #time.sleep(1)
 
