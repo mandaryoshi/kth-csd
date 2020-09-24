@@ -1,6 +1,7 @@
 from netaddr import IPNetwork, IPAddress
 import json 
 import time
+from tqdm import tqdm
 
 #test = ["208.115.136.24","206.126.236.200","206.223.118.35"]
 
@@ -19,8 +20,6 @@ def ixpdetection(ip_array):
 with open('traceroute_20200914_1100','r') as readfile:
     id = 1
     for line in readfile:
-        
-        
         json_line = json.loads(line)
         ip_array = []
         #print(json_line)
