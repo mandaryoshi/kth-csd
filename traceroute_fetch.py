@@ -38,5 +38,3 @@ with open('example_traceroute','r') as readfile:
 
 file_object.close()
 
-#with open('traceroute_test.json', 'w') as fp:
-#        json.dump(traceroute_dict,fp)
