@@ -2,21 +2,11 @@ from netaddr import IPNetwork, IPAddress
 import json 
 import time
 from tqdm import tqdm
-
-
-with open('Documents/ixp_test.json') as f:
-  ixp_info = json.load(f)
-
-def ixpdetection(ip_array):
-  for value,ixp in ixp_info.items():
-    for prefix in ixp["ipv4_prefix"]:
-      for ip in ip_array:
-        if IPAddress(ip) in IPNetwork(prefix):
-          ixp_ip = IPAddress(ip)
-          return ixp_ip
-          #time.sleep(1)
+from scripta import IxpDetector
 
 file_object = open('Documents/example_hop_results', 'w')
+
+ix_detector = IxpDetector()
 
 with open('Documents/example_traceroute_results','r') as readfile:
     id = 1
@@ -27,8 +17,12 @@ with open('Documents/example_traceroute_results','r') as readfile:
         iphop_dict = {}
         iphop_dict[id] = []
         for i in json_line[str(id)]:
-          ip_array.append(i["from"])  
-        ixp_ip2 = ixpdetection(ip_array)
+          ip_array.append(i["from"])
+
+        ixp_ip2, ixp_id = ix_detector.ixpdetection(ip_array)
+        #print(ixp_ip2, ixp_id)
+        time.sleep(1)
+    
 #If an IXP ip is detected, save it along with its previous and next hop IP addresses.        
         if ixp_ip2 :
             ixp_index = ip_array.index(str(ixp_ip2))
