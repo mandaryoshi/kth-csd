@@ -2,22 +2,25 @@ from netaddr import IPNetwork, IPAddress
 import json 
 import time
 from tqdm import tqdm
+test = ["208.115.136.24","206.126.236.200","206.223.118.35"]
+class Ixp_detector:
+  def __init__(self):
+    with open('ixp_test.json') as f:
+      self.ixp_info = json.load(f)
 
-#test = ["208.115.136.24","206.126.236.200","206.223.118.35"]
+  def ixpdetection(self, ip_array):
+    for value,ixp in self.ixp_info.items():
+      for prefix in ixp["ipv4_prefix"]:
+        for ip in ip_array:
+          if IPAddress(ip) in IPNetwork(prefix):
+            print(value)
+            time.sleep(1)
 
-with open('ixp_test.json') as f:
-  ixp_info = json.load(f)
 
-def ixpdetection(ip_array):
-  for value,ixp in ixp_info.items():
-    #print(ixp["ipv4_prefix"])
-    for prefix in ixp["ipv4_prefix"]:
-      for ip in ip_array:
-        if IPAddress(ip) in IPNetwork(prefix):
-          print(value)
-          time.sleep(1)
+Ixp_detector().ixpdetection(test)
 
-with open('traceroute_20200914_1100','r') as readfile:
+
+"""with open('traceroute_20200914_1100','r') as readfile:
     id = 1
     for line in readfile:
         json_line = json.loads(line)
@@ -28,6 +31,6 @@ with open('traceroute_20200914_1100','r') as readfile:
         for i in json_line[str(id)]:
           ip_array.append(i["from"])
         ixpdetection(ip_array)
-        id = id + 1
+        id = id + 1"""
 
 #ixpdetection(test)
