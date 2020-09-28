@@ -16,7 +16,7 @@ class IxpDetector:
         for ip in ip_array:
           if IPAddress(ip) in IPNetwork(prefix):
             return (ip, idval)
-    return None        
+    return (None, None)        
 
 
 #Ixp_detector().ixpdetection(test)
