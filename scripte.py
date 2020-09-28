@@ -4,11 +4,11 @@ import time
 from tqdm import tqdm
 from scripta import IxpDetector
 
-file_object = open('Documents/example_hop_results', 'w')
+file_object = open('example_hop_results', 'w')
 
 ix_detector = IxpDetector()
 
-with open('Documents/example_traceroute_results','r') as readfile:
+with open('example_traceroute_results','r') as readfile:
     id = 1
    
     for line in readfile:
@@ -26,19 +26,9 @@ with open('Documents/example_traceroute_results','r') as readfile:
 #If an IXP ip is detected, save it along with its previous and next hop IP addresses.        
         if ixp_ip2 :
             ixp_index = ip_array.index(str(ixp_ip2))
-            if ixp_index-1 >= 0:
-              #print("Prev Hop:", ip_array[ixp_index-1])
-              previous_hop = ip_array[ixp_index-1]
-            elif ixp_index-1 < 0:
-              previous_hop = None
-            #print("IXP Hop:", ip_array[ixp_index])
+            previous_hop = ip_array[ixp_index-1] if (ixp_index-1 >= 0) else None
             current_hop = ip_array[ixp_index]
-            if ixp_index+1 <= len(ip_array)-1 :
-              #print("Next Hop:", ip_array[ixp_index+1])
-              next_hop = ip_array[ixp_index+1]
-            elif ixp_index+1 >= len(ip_array) :
-              #print("Next Hop:", 0)
-              next_hop = None
+            next_hop = ip_array[ixp_index+1] if (ixp_index+1 <= (len(ip_array)-1)) else None
             
             iphop_dict[id].append({
                'previous_hop' : previous_hop,
