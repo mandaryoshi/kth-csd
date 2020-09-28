@@ -2,22 +2,25 @@ from netaddr import IPNetwork, IPAddress
 import json 
 import time
 from tqdm import tqdm
-test = ["208.115.136.24","206.126.236.200","206.223.118.35"]
-class Ixp_detector:
+
+#test = ["208.115.136.24","206.126.236.200","206.223.118.35"]
+
+class IxpDetector:
   def __init__(self):
     with open('ixp_test.json') as f:
       self.ixp_info = json.load(f)
 
   def ixpdetection(self, ip_array):
-    for value,ixp in self.ixp_info.items():
+    for idval,ixp in self.ixp_info.items():
       for prefix in ixp["ipv4_prefix"]:
         for ip in ip_array:
           if IPAddress(ip) in IPNetwork(prefix):
-            print(value)
-            time.sleep(1)
+            return (ip, idval)
+            
 
 
-Ixp_detector().ixpdetection(test)
+#Ixp_detector().ixpdetection(test)
+
 
 
 """with open('traceroute_20200914_1100','r') as readfile:
