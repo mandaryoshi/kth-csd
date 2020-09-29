@@ -6,11 +6,14 @@ from tqdm import tqdm
 #test = ["208.115.136.24","206.126.236.200","206.223.118.35"]
 
 class IxpDetector:
+
   def __init__(self):
+
     with open('ixp_test.json') as f:
       self.ixp_info = json.load(f)
 
   def ixpdetection(self, ip_array):
+    
     for idval,ixp in self.ixp_info.items():
       for prefix in ixp["ipv4_prefix"]:
         for ip in ip_array:
