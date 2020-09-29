@@ -15,5 +15,5 @@ for i in tqdm(netfac["data"]):
         dictionary[i["local_asn"]] = []
         dictionary[i["local_asn"]].append(i["fac_id"])
 
-with open('ixp_asn_fac.json', 'w') as fp:
+with open('json_results/asn_fac_results.json', 'w') as fp:
         json.dump(dictionary,fp)

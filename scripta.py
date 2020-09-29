@@ -9,7 +9,7 @@ class IxpDetector:
 
   def __init__(self):
 
-    with open('ixp_test.json') as f:
+    with open('json_results/ixp_info_results.json') as f:
       self.ixp_info = json.load(f)
 
   def ixpdetection(self, ip_array):

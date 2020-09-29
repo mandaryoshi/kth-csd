@@ -5,9 +5,9 @@ import time
 id = 0
 
 
-file_object = open('example_traceroute_results', 'w')
+file_object = open('json_results/example_traceroute_results', 'w')
 
-with open('example_traceroute','r') as readfile:
+with open('json_results/example_traceroute','r') as readfile:
 
     for line in readfile:
         json_line = json.loads(line)

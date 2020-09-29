@@ -4,11 +4,11 @@ import time
 from tqdm import tqdm
 from scripta import IxpDetector
 
-file_object = open('example_hop_results', 'w')
+file_object = open('json_results/example_hop_results', 'w')
 
 ix_detector = IxpDetector()
 
-with open('example_traceroute_results','r') as readfile:
+with open('json_results/example_traceroute_results','r') as readfile:
     id = 1
    
     for line in readfile:

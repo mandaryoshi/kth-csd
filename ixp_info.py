@@ -49,7 +49,7 @@ for i in tqdm(ixpfx["data"]):
 
 #print(dictionary)
 
-with open('ixp_test.json', 'w') as fp:
+with open('json_results/ixp_info_results.json', 'w') as fp:
         json.dump(dictionary,fp)
 
 
