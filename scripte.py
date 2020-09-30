@@ -15,7 +15,7 @@ with open('json_results/traceroute_results','r') as readfile:
         json_line = json.loads(line)
         ip_array = []
         iphop_dict = {}
-        iphop_dict[id] = []
+       	iphop_dict["id"] = id
         for i in json_line[str(id)]:
           ip_array.append(i["from"])
 
@@ -26,15 +26,15 @@ with open('json_results/traceroute_results','r') as readfile:
 #If an IXP ip is detected, save it along with its previous and next hop IP addresses.        
         if ixp_ip2 :
             ixp_index = ip_array.index(str(ixp_ip2))
-            previous_hop = ip_array[ixp_index-1] if (ixp_index-1 >= 0) else None
-            current_hop = ip_array[ixp_index]
-            next_hop = ip_array[ixp_index+1] if (ixp_index+1 <= (len(ip_array)-1)) else None
+   #         previous_hop = ip_array[ixp_index-1] if (ixp_index-1 >= 0) else None
+  #          current_hop = ip_array[ixp_index]
+ #           next_hop = ip_array[ixp_index+1] if (ixp_index+1 <= (len(ip_array)-1)) else None
             
-            iphop_dict[id].append({
-               'previous_hop' : previous_hop,
-               'ixp_hop' : current_hop,
-               'next_hop' : next_hop
-            })
+            iphop_dict["data"] = {
+               'previous_hop' : ip_array[ixp_index-1] if (ixp_index-1 >= 0) else None,
+               'ixp_hop' : ip_array[ixp_index],
+               'next_hop' : ip_array[ixp_index+1] if (ixp_index+1 <= (len(ip_array)-1)) else None
+            }
             #print(iphop_dict)
             file_object.write(json.dumps(iphop_dict))
             file_object.write('\n')
