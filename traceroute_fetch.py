@@ -5,11 +5,11 @@ import time
 id = 0
 
 
-file_object = open('json_results/example_traceroute_results', 'w')
+file_object = open('json_results/traceroute_results', 'w')
 
-with open('json_results/example_traceroute','r') as readfile:
+with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as readfile:
 
-    for line in readfile:
+    for line in tqdm(readfile):
         json_line = json.loads(line)
         traceroute_dict = {}
 

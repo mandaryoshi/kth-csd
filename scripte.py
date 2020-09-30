@@ -4,14 +4,14 @@ import time
 from tqdm import tqdm
 from scripta import IxpDetector
 
-file_object = open('json_results/example_hop_results', 'w')
+file_object = open('json_results/hop_results', 'w')
 
 ix_detector = IxpDetector()
 
-with open('json_results/example_traceroute_results','r') as readfile:
+with open('json_results/traceroute_results','r') as readfile:
     id = 1
    
-    for line in readfile:
+    for line in tqdm(readfile):
         json_line = json.loads(line)
         ip_array = []
         iphop_dict = {}
@@ -21,7 +21,7 @@ with open('json_results/example_traceroute_results','r') as readfile:
 
         ixp_ip2, ixp_id = ix_detector.ixpdetection(ip_array)
         #print(ixp_ip2, ixp_id)
-        time.sleep(1)
+#        time.sleep(1)
     
 #If an IXP ip is detected, save it along with its previous and next hop IP addresses.        
         if ixp_ip2 :
