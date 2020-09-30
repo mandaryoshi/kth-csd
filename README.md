@@ -11,4 +11,13 @@ pip install tqdm
 pip install netaddr
 ```
 
+## Usage
+
+First run these scripts to get traceroute and ixp info from a RIPE Atlas traceroute dump and PeeringDB respectively
+
+```bash
+python3 traceroute_fetch.py
+python3 ixp_info.py
+```
+
 ## License
