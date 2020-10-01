@@ -1,4 +1,3 @@
-from netaddr import IPNetwork, IPAddress
 import json 
 import time
 from tqdm import tqdm
@@ -12,17 +11,21 @@ class IxpDetector:
 
     with open('json_results/ixp_info_results.json') as f:
       self.ixp_info = json.load(f)
+      self.pyt = pytricia.PyTricia()
+      for idval,ixp in self.ixp_info.items():
+        for prefix in ixp["ipv4_prefix"]:
+          self.pyt.insert(prefix, idval)
+          #print(prefix)
 
   def ixpdetection(self, ip_array):
-    pyt = pytricia.PyTricia()
-    for idval,ixp in self.ixp_info.items():
-      for prefix in ixp["ipv4_prefix"]:
-        #print(prefix)
-        pyt.insert(prefix, '')
-        for ip in ip_array:
-          if ip in pyt:
-            return (ip, idval)
-    return (None, None)        
+    for ip in ip_array:
+      #if ip in self.pyt:
+      idval = self.pyt.get(ip)
+      if idval != None:
+        #print(ip, idval)
+        #time.sleep(1)
+        return (ip, idval)
+    return (None, None)
 
 
 #Ixp_detector().ixpdetection(test)
