@@ -2,6 +2,7 @@ from netaddr import IPNetwork, IPAddress
 import json 
 import time
 from tqdm import tqdm
+import pytricia
 
 #test = ["208.115.136.24","206.126.236.200","206.223.118.35"]
 
@@ -13,11 +14,13 @@ class IxpDetector:
       self.ixp_info = json.load(f)
 
   def ixpdetection(self, ip_array):
-    
+    pyt = pytricia.PyTricia()
     for idval,ixp in self.ixp_info.items():
       for prefix in ixp["ipv4_prefix"]:
+        #print(prefix)
+        pyt.insert(prefix, '')
         for ip in ip_array:
-          if IPAddress(ip) in IPNetwork(prefix):
+          if ip in pyt:
             return (ip, idval)
     return (None, None)        
 

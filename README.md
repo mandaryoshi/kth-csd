@@ -8,7 +8,7 @@ Use the following
 
 ```bash
 pip install tqdm
-pip install netaddr
+pip install pytricia
 ```
 
 ## Usage
