@@ -3,6 +3,9 @@ import time
 from tqdm import tqdm
 import pytricia
 
+
+
+
 class IxpDetector:
 
   def __init__(self):
@@ -20,3 +23,11 @@ class IxpDetector:
       if idval != None:
         return (ip, idval)
     return (None, None)
+
+
+ix_detector = IxpDetector()
+
+ip_array = ['80.81.202.215']
+
+print(ix_detector.ixpdetection(ip_array))
+
