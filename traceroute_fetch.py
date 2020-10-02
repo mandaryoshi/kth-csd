@@ -2,7 +2,7 @@ import json
 from tqdm import tqdm
 import time
 import ujson
-
+import networkx as nx
 id = 0
 
 
@@ -42,8 +42,6 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
 
     file_object.write(ujson.dumps(traceroute_dict))
     file_object.write('\n')
-        #print(traceroute_dict)
-        #time.sleep(1)
-
+    
 file_object.close()
 

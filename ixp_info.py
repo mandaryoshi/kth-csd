@@ -1,4 +1,5 @@
 import json 
+import ujson
 import requests
 from tqdm import tqdm
 
@@ -6,9 +7,9 @@ response = requests.get("https://peeringdb.com/api/ixlan?depth=2")
 response2 = requests.get("https://peeringdb.com/api/netixlan")
 response3 = requests.get("https://peeringdb.com/api/ixfac")
 
-ixpfx = json.loads(response.text)
-netixlan = json.loads(response2.text)
-ixpfac = json.loads(response3.text)
+ixpfx = uson.load(response)
+netixlan = ujson.load(response2)
+ixpfac = ujson.load(response3)
 
 dictionary = {}
 

@@ -15,7 +15,7 @@ with open('json_results/traceroute_results','r') as readfile:
    
   #counter = 0
   
-  json_line = ujson.loads(readfile)
+  json_line = ujson.load(readfile)
   iphop_dict = {}
   for key, trace in tqdm(json_line.items()):
     ip_array = []
