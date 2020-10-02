@@ -15,12 +15,12 @@ with open('json_results/traceroute_results','r') as readfile:
   counter = 0
   for line in tqdm(readfile):
     json_line = json.loads(line)
-    for key, trace in json_line:
+    for key, trace in json_line.items():
       ip_array = []
       hop_array = []
       iphop_dict = {}
 
-      for i in trace[key]:
+      for i in trace:
         ip_array.append(i["from"])
         hop_array.append(i["hop"])
 
