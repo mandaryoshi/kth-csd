@@ -1,6 +1,7 @@
 import json
 from tqdm import tqdm
 import time
+import ujson
 
 id = 0
 
@@ -8,11 +9,12 @@ id = 0
 file_object = open('json_results/traceroute_results', 'w')
 
 with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as readfile:
+    counter = 0
+    traceroute_dict = {}
 
     for line in tqdm(readfile):
-        json_line = json.loads(line)
-        traceroute_dict = {}
-
+        json_line = ujson.loads(line)
+        
         if "paris_id" in json_line and "result" in json_line:
             if json_line["paris_id"] > 0 and json_line["af"] == 4:
                 id = id + 1
@@ -31,8 +33,15 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
                                 'hop': item['hop'], 
                                 'from' : hop_ip, 
                                 'rtt' : round(rtt_avg, 2)})
-                file_object.write(json.dumps(traceroute_dict))
-                file_object.write('\n')
+                    counter = counter + 1
+                    if counter == 1000000000:
+                        file_object.write(ujson.dumps(traceroute_dict))
+                        file_object.write('\n')
+                        tracereoute_dict = {}
+                        counter = 0
+
+    file_object.write(ujson.dumps(traceroute_dict))
+    file_object.write('\n')
         #print(traceroute_dict)
         #time.sleep(1)
 
