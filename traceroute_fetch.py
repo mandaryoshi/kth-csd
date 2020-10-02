@@ -9,7 +9,7 @@ id = 0
 file_object = open('json_results/traceroute_results', 'w')
 
 with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as readfile:
-    counter = 0
+    #counter = 0
     traceroute_dict = {}
 
     for line in tqdm(readfile):
@@ -33,12 +33,12 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
                                 'hop': item['hop'], 
                                 'from' : hop_ip, 
                                 'rtt' : round(rtt_avg, 2)})
-                    counter = counter + 1
-                    if counter == 1000000000:
+                    """counter = counter + 1
+                    if counter == 1000000:
                         file_object.write(ujson.dumps(traceroute_dict))
                         file_object.write('\n')
                         tracereoute_dict = {}
-                        counter = 0
+                        counter = 0"""
 
     file_object.write(ujson.dumps(traceroute_dict))
     file_object.write('\n')
