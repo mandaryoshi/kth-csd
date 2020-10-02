@@ -15,11 +15,11 @@ with open('json_results/traceroute_results','r') as readfile:
   counter = 0
   for line in tqdm(readfile):
     json_line = json.loads(line)
-    for key, trace in json_line
+    for key, trace in json_line:
       ip_array = []
       hop_array = []
       iphop_dict = {}
-      iphop_dict["id"] = key
+
       for i in trace[key]:
         ip_array.append(i["from"])
         hop_array.append(i["hop"])
@@ -32,7 +32,7 @@ with open('json_results/traceroute_results','r') as readfile:
           
           if ((ixp_index-1 >= 0) and (hop_array[ixp_index-1] == (hop_array[ixp_index] - 1))):
             if ((ixp_index+1 <= (len(ip_array)-1)) and (hop_array[ixp_index] == (hop_array[ixp_index + 1] - 1))):
-              iphop_dict["data"] = {
+              iphop_dict[key] = {
                 'previous_hop' : ip_array[ixp_index-1],
                 'ixp_hop' : ip_array[ixp_index],
                 'next_hop' : ip_array[ixp_index+1]
