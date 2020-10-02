@@ -1,5 +1,6 @@
 import json
 
+
 class IxpIP_AS_mapping:
     def __init__(self):
 
