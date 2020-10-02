@@ -13,9 +13,9 @@ ix_detector = IxpDetector()
 with open('json_results/traceroute_results','r') as readfile:
    
   counter = 0
-  for line in tqdm(readfile):
+  for line in readfile:
     json_line = json.loads(line)
-    for key, trace in json_line.items():
+    for key, trace in tqdm(json_line.items()):
       ip_array = []
       hop_array = []
       iphop_dict = {}
