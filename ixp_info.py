@@ -51,7 +51,7 @@ for i in tqdm(ixpfx["data"]):
 #print(dictionary)
 
 with open('json_results/ixp_info_results.json', 'w') as fp:
-        json.dump(dictionary,fp)
+        ujson.dump(dictionary,fp)
 
 
 
