@@ -7,7 +7,7 @@ import pickle
 
 id = 0
 
-graph = nx.DirGraph()
+graph = nx.DiGraph()
 file_object = open('json_results/traceroute_results', 'w')
 
 with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as readfile:
