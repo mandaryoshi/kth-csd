@@ -23,8 +23,8 @@ python3 traceroute_fetch.py
 python3 ixp_info.py
 python3 asn_fac.py
 ```
-### The first script is going to create 2 files, the first one is a dictionary type file which contains all the useful data in the same format as in the traceroute file, and the second one is the directed graph containing all connections seen in the traceroute file.
-### "ixp_info.py" only has one output and contains a dictionary with all the IXPs and their corresponding useful peering data.
-### "asn_fac.py" provides a mapping between the ASNs and facilities they are present at.
+* The first script is going to create 2 files, the first one is a dictionary type file which contains all the useful data in the same format as in the traceroute file, and the second one is the directed graph containing all connections seen in the traceroute file.
+* "ixp_info.py" only has one output and contains a dictionary with all the IXPs and their corresponding useful peering data.
+* "asn_fac.py" provides a mapping between the ASNs and facilities they are present at.
 
 ## License
