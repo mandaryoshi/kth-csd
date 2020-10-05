@@ -13,7 +13,7 @@ file_object = open('json_results/traceroute_results', 'w')
 with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as readfile:
     #counter = 0
     traceroute_dict = {}
-
+    edges_tuple = []
     for line in tqdm(readfile):
         json_line = ujson.loads(line)
         
@@ -49,7 +49,7 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
             if x < len(edge_array) - 1:
                 if edge_array[x] != "x" and edge_array[x+1] != "x":
                     edges_tuple.append((edge_array[x],edge_array[x+1]))
-        graph.add_edges_from(edges_tuple)
+    graph.add_edges_from(edges_tuple)
 
     file_object.write(ujson.dumps(traceroute_dict))
     file_object.write('\n')
