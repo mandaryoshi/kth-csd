@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 class IPNeighbors:
 
     def __init__(self):
-        self.trace_graph = nx.read_gpickle('network_diagram/traceroute_graph.gpickle')
+        self.trace_graph = nx.read_gpickle('../IK2200HT201-IXP/network_diagram/traceroute_graph.gpickle')
         
     def graphgenerator(self, ip):
         neighbors = list(self.trace_graph.neighbors(ip))

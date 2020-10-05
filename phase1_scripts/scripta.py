@@ -11,7 +11,7 @@ class IxpDetector:
 
   def __init__(self):
 
-    with open('../json_results/ixp_info_results.json') as f:
+    with open('../IK2200HT201-IXP/json_results/ixp_info_results.json') as f:
       self.ixp_info = ujson.load(f)
       self.pyt = pytricia.PyTricia()
       for idval,ixp in self.ixp_info.items():
@@ -26,9 +26,9 @@ class IxpDetector:
     return (None, None)
 
 
-ix_detector = IxpDetector()
+#ix_detector = IxpDetector()
 
-ip_array = ['80.81.202.215']
+#ip_array = ['80.81.202.215']
 
-print(ix_detector.ixpdetection(ip_array))
+#print(ix_detector.ixpdetection(ip_array))
 

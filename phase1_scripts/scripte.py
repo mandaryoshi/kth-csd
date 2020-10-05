@@ -7,11 +7,11 @@ import ujson
 #start_time = timeit.default_timer()
 #print(timeit.default_timer() - start_time)
 
-file_object = open('../json_results/hop_results', 'w')
+file_object = open('../IK2200HT201-IXP/json_results/hop_results', 'w')
 
 ix_detector = IxpDetector()
 
-with open('../json_results/traceroute_results','r') as readfile:
+with open('../IK2200HT201-IXP/json_results/traceroute_results','r') as readfile:
    
   #counter = 0
   
