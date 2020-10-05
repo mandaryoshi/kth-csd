@@ -5,58 +5,39 @@ import ujson
 import networkx as nx
 import matplotlib.pyplot as plt
 
-def graphgenerator(ip, graph):
-    with open('json_results/traceroute_results','r') as readfile:
-        id = 1
-        neighbours = []
-        for line in tqdm(readfile):
-            json_line = ujson.loads(line)
+class IPNeighbors:
 
-            ip_hops = json_line[str(id)]
-
-
-            for hop in ip_hops:
-                hop_index = ip_hops.index(hop)
-                if (hop["from"] == ip) and ((hop_index+1) <= (len(ip_hops)-1)) and ((hop["hop"] + 1) == ip_hops[hop_index + 1]["hop"]):
-                    neighbours.append(ip_hops[hop_index + 1]["from"])
-                    
-            id = id + 1
-
+    def __init__(self):
+        self.trace_graph = nx.read_gpickle('network_diagram/traceroute_graph.gpickle')
         
-        edges_array = []
+    def graphgenerator(self, ip):
+        neighbors = list(self.trace_graph.neighbors(ip))
+        print(neighbors)
+        return neighbors
+        
+        
+        """
+        with open('json_results/hop_results','r') as readfile:
+            trace_graph = nx.read_gpickle('network_diagram/traceroute_graph.gpickle')
+            graph = nx.Graph()
 
-        neighbours = list(dict.fromkeys(neighbours))
-        for ips in neighbours:
-            edges_array.append((ip, ips))
+            hop_results = ujson.load(readfile)
+            count = 0
+            for key, hops in tqdm(hop_results.items()):
+                
+                neighbors = trace_graph.neighbors(hops["previous_hop"])
+                edges = []
+                for neighbor in neighbors:
+                    edges.append((hops["previous_hop"], neighbor))
+                    graph.add_edges_from(edges)
+                count = count + 1
+                if count == 3:
+                    break
+            nx.draw(graph, with_labels = True)
+            plt.show()
+        """
 
-        #graph.add_node()
-        #graph.add_nodes_from(neighbours)
-        graph.add_edges_from(edges_array)
-        #nx.draw(graph, with_labels = True)
-
-        #print(neighbours)
-        #print(edges_array)
-        #plt.show()
-
-
-
-with open('json_results/hop_results','r') as readfile:
-    
-    graph = nx.Graph()
-    count = 0
-
-    for line in tqdm(readfile):
-        json_line = json.loads(line)
-
-        #print(json_line["data"]["previous_hop"])
-        #time.sleep(1)
-
-        graphgenerator(json_line["data"]["previous_hop"], graph)
-        count = count+1
-        if count == 3:
-            break
-    #search through traceroutes with this ip
-    nx.draw(graph, with_labels = True)
-    plt.show()
+ip_neighbors = IPNeighbors()
+ip_neighbors.graphgenerator('80.81.202.215')
 
 
