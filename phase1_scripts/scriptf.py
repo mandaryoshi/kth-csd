@@ -37,7 +37,7 @@ class IPNeighbors:
             plt.show()
         """
 
-#ip_neighbors = IPNeighbors()
-#ip_neighbors.graphgenerator('80.81.202.215')
+ip_neighbors = IPNeighbors()
+ip_neighbors.graphgenerator('80.81.202.215')
 
 
