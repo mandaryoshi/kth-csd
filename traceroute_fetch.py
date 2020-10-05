@@ -46,7 +46,7 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
                         counter = 0"""
         edges_tuple = []
         for x in range(len(edge_array)):
-            if x < len(edge_array) - 1.
+            if x < len(edge_array) - 1:
                 if edge_array[x] != "x" and edge_array[x+1] != "x":
                     edges_tuple.append((edge_array[x],edge_array[x+1]))
         graph.add_edges_from(edges_tuple)
