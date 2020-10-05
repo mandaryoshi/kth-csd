@@ -53,7 +53,7 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
 
     file_object.write(ujson.dumps(traceroute_dict))
     file_object.write('\n')
-    nx.write_gpickle(graph, '../IK2200HT201-IXP/network_diagram/network_diagram/traceroute_graph.gpickle')
+    nx.write_gpickle(graph, '../IK2200HT201-IXP/network_diagram/traceroute_graph.gpickle')
     
 file_object.close()
 
