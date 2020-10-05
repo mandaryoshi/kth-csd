@@ -9,6 +9,9 @@ Use the following
 ```bash
 pip install tqdm
 pip install pytricia
+pip install ujson
+pip install networkx
+pip install matplotlib
 ```
 
 ## Usage

@@ -7,7 +7,7 @@ response = requests.get("https://peeringdb.com/api/ixlan?depth=2")
 response2 = requests.get("https://peeringdb.com/api/netixlan")
 response3 = requests.get("https://peeringdb.com/api/ixfac")
 
-ixpfx = uson.load(response)
+ixpfx = ujson.load(response)
 netixlan = ujson.load(response2)
 ixpfac = ujson.load(response3)
 
