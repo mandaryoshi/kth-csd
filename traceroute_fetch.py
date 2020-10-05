@@ -44,7 +44,7 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
                         file_object.write('\n')
                         tracereoute_dict = {}
                         counter = 0"""
-        edges_tuple = []
+        #edges_tuple = []
         for x in range(len(edge_array)):
             if x < len(edge_array) - 1:
                 if edge_array[x] != "x" and edge_array[x+1] != "x":
