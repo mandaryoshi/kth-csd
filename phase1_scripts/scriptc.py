@@ -4,7 +4,7 @@ class FacilityMapping:
 
   def __init__(self):
 
-    with open('../IK2200HT201-IXP/json_results/ixp_info_results.json') as f:
+    with open('../json_results/ixp_info_results.json') as f:
       self.ixp_info = json.load(f)
 
   def facility_search(self, ixp_id):
@@ -12,3 +12,5 @@ class FacilityMapping:
     return self.ixp_info[str(ixp_id)]["fac_set"]
 
 
+#facs = FacilityMapping()
+#print(facs.facility_search(31))

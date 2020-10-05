@@ -3,9 +3,8 @@ import json
 
 class IxpIP_AS_mapping:
     def __init__(self):
-
-            with open('../IK2200HT201-IXP/json_results/ixp_info_results.json') as f:
-                self.ixp_info = json.load(f)
+        with open('../json_results/ixp_info_results.json') as f:
+            self.ixp_info = json.load(f)
 
     def mapping(self, ixpip):
         for ixp in self.ixp_info.values():
@@ -14,4 +13,6 @@ class IxpIP_AS_mapping:
                     if ip == addr:
                         return (asn)
 
+#asn = IxpIP_AS_mapping()
+#print(asn.mapping('80.81.195.26'))
 

@@ -5,19 +5,22 @@ import ujson
 import networkx as nx
 import matplotlib.pyplot as plt
 import pathlib
+import os
 
 class IPNeighbors:
 
     def __init__(self):
-        print(pathlib.Path.cwd())
-        self.trace_graph = nx.read_gpickle('network_diagram/traceroute_graph.gpickle')
+        self.trace_graph = nx.read_gpickle('../network_diagram/traceroute_graph.gpickle')
         
     def graphgenerator(self, ip):
         neighbors = list(self.trace_graph.neighbors(ip))
         print(neighbors)
         return neighbors
         
-        
+#ip_neighbors = IPNeighbors()
+#ip_neighbors.graphgenerator('80.81.202.215')
+
+ 
 """
 with open('json_results/hop_results','r') as readfile:
     trace_graph = nx.read_gpickle('network_diagram/traceroute_graph.gpickle')
@@ -39,7 +42,6 @@ with open('json_results/hop_results','r') as readfile:
     plt.show()
 """
 
-ip_neighbors = IPNeighbors()
-ip_neighbors.graphgenerator('80.81.202.215')
+
 
 

@@ -4,7 +4,7 @@ from tqdm import tqdm
 
 ix_detector = IxpDetector()
 counter = 0
-with open('../IK2200HT201-IXP/json_results/hop_results', 'r') as readfile:
+with open('../json_results/hop_results', 'r') as readfile:
     
     hop_results = ujson.load(readfile)
 
