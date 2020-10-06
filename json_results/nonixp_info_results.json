@@ -1,1 +1,52 @@
-{}
+{
+    "ip1": {
+        "nonixpip": "1.0.0.0",
+        "prefix_len": "24",
+        "asn": "13335"
+    },
+    "ip2": {
+        "nonixpip": "1.0.4.0",
+        "prefix_len": "22",
+        "asn": "56203"
+    },
+    "ip3": {
+        "nonixpip": "1.0.16.0",
+        "prefix_len": "24",
+        "asn": "2519"
+    },
+    "ip4": {
+        "nonixpip": "1.0.64.0",
+        "prefix_len": "18",
+        "asn": "18144"
+    },
+    "ip5": {
+        "nonixpip": "1.0.128.0",
+        "prefix_len": "17",
+        "asn": "23969"
+    },
+    "ip6": {
+        "nonixpip": "1.1.1.0",
+        "prefix_len": "24",
+        "asn": "13335"
+    },
+    "ip7": {
+        "nonixpip": "1.1.6.0",
+        "prefix_len": "24",
+        "asn": "138449"
+    },
+    "ip8": {
+        "nonixpip": "1.1.8.0",
+        "prefix_len": "24",
+        "asn": "4134"
+    },
+    "ip9": {
+        "nonixpip": "1.1.20.0",
+        "prefix_len": "24",
+        "asn": "133948"
+    },
+    "ip10": {
+        "nonixpip": "1.1.64.0",
+        "prefix_len": "19",
+        "asn": "2519"
+    }
+}
