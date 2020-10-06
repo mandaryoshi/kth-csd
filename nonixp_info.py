@@ -2,7 +2,7 @@ import json
 
 filename = 'json_results/example_nonixp.txt'
 
-#ip dictionary
+#nonixpip dictionary
 dict1 = {}
 
 fields = ['nonixpip','prefix_len','asn']
@@ -18,7 +18,7 @@ with open(filename) as fp:
 
         b=0
 
-        #fields dictionary
+        #nonixpip info dictionary
         dict2 = {}
         while b<3:
             dict2[fields[b]] = describe[b]
