@@ -1,6 +1,6 @@
 import json
 
-filename = 'json_results/example_nonixp.txt'
+filename = 'json_results/example_nonixp.pfx2as'
 
 #nonixpip dictionary
 dict1 = {}
@@ -13,7 +13,7 @@ with open(filename) as fp:
     for line in fp:
         #Readling line by line from text file
         describe = list(line.strip().split(None,2))
-        #print(describe)
+        print(describe)
         ip_no='ip'+str(a)
 
         b=0
