@@ -37,7 +37,8 @@ with open('../json_results/traceroute_results','r') as readfile:
             iphop_dict[key] = {
               'previous_hop' : ip_array[ixp_index-1],
               'ixp_hop' : ip_array[ixp_index],
-              'next_hop' : ip_array[ixp_index+1]
+              'next_hop' : ip_array[ixp_index+1],
+              'ixp_id' : ixp_id
             }
             """
             counter = counter + 1
