@@ -9,9 +9,9 @@ class IxpIP_AS_mapping:
     def mapping(self, ixpip):
         for ixp in self.ixp_info.values():
             for addr,asn in ixp["net_set"].items():
-                for ip in ixpip:
-                    if ip == addr:
-                        return (asn)
+                #for ip in ixpip:
+                if ixpip == addr:
+                    return (asn)
 
 #asn = IxpIP_AS_mapping()
 #print(asn.mapping('80.81.195.26'))
