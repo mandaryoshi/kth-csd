@@ -25,6 +25,7 @@ class non_IxpIP_AS_mapping:
             asn = self.pyt.get(ip)
             if asn != None:
                 return (ip, asn)
+        return (None, None)
 
 asn = non_IxpIP_AS_mapping()
 ip_array = ['185.111.204.20'] #, '185.111.204.20', '213.144.173.173']
