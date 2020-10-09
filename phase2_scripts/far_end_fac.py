@@ -16,22 +16,32 @@ import sys
 import ujson
 import time
 from tqdm import tqdm
+import collections
 
 sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
 from phase1_scripts.scriptb import IxpIP_AS_mapping
 from phase1_scripts.scriptc import FacilityMapping
 from phase1_scripts.scriptd import non_IxpIP_AS_mapping
+from phase1_scripts.scriptf import IPNeighbors
 
 #Class instances
 ixp_to_asn = IxpIP_AS_mapping()
 ixp_to_fac = FacilityMapping()
 nonixp_to_asn = non_IxpIP_AS_mapping()
+ip_neighbors = IPNeighbors()
 
 with open('../json_results/asn_fac_results.json') as f:
     asn_fac_info = ujson.load(f)
 
 with open('../json_results/hop_results') as readfile:
     hop_results = ujson.load(readfile)
+    counter1 = 0
+    counter2 = 0
+    counter3 = 0
+    counter4 = 0
+    counter5 = 0
+    counter6 = 0
+
     for key, hops in tqdm(hop_results.items()):
         ixp_fac_set = ixp_to_fac.facility_search(hops["ixp_id"])
         #print(ixp_fac_set)
@@ -45,7 +55,61 @@ with open('../json_results/hop_results') as readfile:
             for facility in ixp_fac_set:
                 if facility in ixp_asn_fac_set:
                     fac_result.append(facility)
-            #print(fac_result)
-            #time.sleep(1)
+            if len(fac_result) == 1:
+                counter1 = counter1 + 1
+            elif (len(fac_result) > 1):
+                counter2 = counter2 + 1
+
+                neighbours = ip_neighbors.graphgenerator(hops["ixp_hop"])
+                neighbour_fac_set = []
+                neighbour_as_set = []
+
+                for ip in neighbours:
+                    ip_ip2, asn2 = nonixp_to_asn.mapping(ip)
+                    if asn2 != None and (str(asn2) in asn_fac_info) and (asn2 != ixp_asn):
+                         neighbour_as_set.append(asn2)
+
+                for asnumber in neighbour_as_set:
+                    neighbour_fac_set.append(asn_fac_info[str(asnumber)])
+
+                c = 0
+                if len(neighbour_fac_set) > 0:
+                    flat_list = []
+                    for sublist in neighbour_fac_set:
+                        for fac_id in fac_result:
+                            if fac_id in sublist:
+                                flat_list.append(fac_id)
+                    cnt = collections.Counter(flat_list)
+                    new_list = []
+                    for f_id, times in cnt.items():
+                        if times/len(neighbour_fac_set) >= 0.75:
+                            new_list.append(f_id)
+                    if len(new_list) == 1:
+                        counter3 = counter3 + 1
+                    else:
+                        counter4 = counter4 + 1
+
+            elif (len(fac_result) == 0):
+                counter5 = counter5 + 1
+
+        else:
+            counter6 = counter6 + 1
+
+    first_step_fac = (counter1)*100/(len(hop_results))
+    multiple_fac = (counter2)*100/(len(hop_results))
+    last_step_fac = (counter3)*100/(len(hop_results))
+    couldnotfind_fac = (counter4)*100/(len(hop_results))
+    no_mapping = (counter5)*100/len(hop_results)
+    no_info = (counter6)*100/len(hop_results)
+
+
+
+    print("FIRST STEP CONSTRAINED FACILITIES",first_step_fac, counter1)
+    print("MULTIPLE FACILITIES FOUND WHILE CONSTRAINING",multiple_fac, counter2)
+    print("LAST STEP CONSTRAINED FACILITIES", last_step_fac, counter3)
+    print("Multiple facilities remaining after last step", couldnotfind_fac, counter4)
+    print("Could not find a common facility from part 1", no_mapping, counter5)
+    print("Peeringdb or caida problem", no_info, counter6)
+
+
 #What if there is no common facility from part a itself? What does that mean?
-# get the length of fac_result > 1, script f

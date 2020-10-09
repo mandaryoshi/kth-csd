@@ -20,11 +20,10 @@ class non_IxpIP_AS_mapping:
                             break
 
 
-    def mapping(self, iparray):
-        for ip in iparray:
-            asn = self.pyt.get(ip)
-            if asn != None:
-                return (ip, asn)
+    def mapping(self, ip):
+        asn = self.pyt.get(ip)
+        if asn != None:
+            return (ip, asn)
         return (None, None)
 
 asn = non_IxpIP_AS_mapping()
