@@ -27,11 +27,14 @@ from phase1_scripts.scriptd import non_IxpIP_AS_mapping
 from phase1_scripts.scriptf import IPNeighbors
 from phase1_scripts.scripta import IxpDetector
 
+#file open 
+file = open('../json_results/ixp_info_results.json')
+ixp_info = ujson.load(file)
 
 ip_asn = non_IxpIP_AS_mapping()
-ixp_fac = FacilityMapping()
+ixp_fac = FacilityMapping(ixp_info)
 ip_neighbors = IPNeighbors()
-ix_detector = IxpDetector()
+ix_detector = IxpDetector(ixp_info)
 
 with open('../json_results/asn_fac_results.json') as f:
     asn_fac_info = ujson.load(f)

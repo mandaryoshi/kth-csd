@@ -24,9 +24,13 @@ from phase1_scripts.scriptc import FacilityMapping
 from phase1_scripts.scriptd import non_IxpIP_AS_mapping
 from phase1_scripts.scriptf import IPNeighbors
 
+#file open 
+file = open('../json_results/ixp_info_results.json')
+ixp_info = ujson.load(file)
+
 #Class instances
-ixp_to_asn = IxpIP_AS_mapping()
-ixp_to_fac = FacilityMapping()
+ixp_to_asn = IxpIP_AS_mapping(ixp_info)
+ixp_to_fac = FacilityMapping(ixp_info)
 nonixp_to_asn = non_IxpIP_AS_mapping()
 ip_neighbors = IPNeighbors()
 
