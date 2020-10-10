@@ -9,7 +9,9 @@ import ujson
 
 file_object = open('../json_results/hop_results', 'w')
 
-ix_detector = IxpDetector()
+info = open('../json_results/ixp_info_results.json')
+ixp_info = ujson.load(info)
+ix_detector = IxpDetector(ixp_info)
 
 with open('../json_results/traceroute_results','r') as readfile:
    
