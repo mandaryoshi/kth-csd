@@ -27,5 +27,5 @@ class non_IxpIP_AS_mapping:
         return (None, None)
 
 asn = non_IxpIP_AS_mapping()
-ip_array = ['185.111.204.20'] #, '185.111.204.20', '213.144.173.173']
+ip_array = '185.111.204.20' #, '185.111.204.20', '213.144.173.173']
 print(asn.mapping(ip_array))

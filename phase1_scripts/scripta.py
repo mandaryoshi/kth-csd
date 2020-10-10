@@ -14,7 +14,7 @@ class IxpDetector:
     #with open('../json_results/ixp_info_results.json') as f:
     # self.ixp_info = ujson.load(f)
     self.pyt = pytricia.PyTricia()
-    for idval,ixp in self.file.items():
+    for idval,ixp in file.items():
       for prefix in ixp["ipv4_prefix"]:
         self.pyt.insert(prefix, idval)
 

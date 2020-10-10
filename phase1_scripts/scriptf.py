@@ -14,7 +14,7 @@ class IPNeighbors:
         
     def graphgenerator(self, ip):
         neighbors = list(self.trace_graph.neighbors(ip))
-        print(neighbors)
+#        print(neighbors)
         return neighbors
         
 #ip_neighbors = IPNeighbors()
