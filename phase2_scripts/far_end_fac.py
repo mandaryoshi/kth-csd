@@ -50,7 +50,7 @@ with open('../json_results/hop_results') as readfile:
         ixp_fac_set = ixp_to_fac.facility_search(hops["ixp_id"])
         #print(ixp_fac_set)
         #time.sleep(1)
-        ixp_asn = ixp_to_asn.mapping(hops["ixp_hop"])
+        ixp_asn = ixp_to_asn.mapping(hops["ixp_hop"], hops["ixp_id"])
         if ixp_asn != None and str(ixp_asn) in asn_fac_info:
             ixp_asn_fac_set = asn_fac_info[str(ixp_asn)]
             #print(ixp_asn_fac_set)
