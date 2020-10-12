@@ -36,7 +36,7 @@ Once the scripts that retrieve the information from the databases are done we ge
 
 * Script C: The structure used in c is the same as a) and b) but in this case we thought that the input would be more useful in phase 2 if the input was only on IXP IP as when we analyze the traceroutes it will be done one by one to infer the facilities so there will be only 1 IP, and the result in this case is an array containing the Facilities where that IXP is present.
 
-* Script D: ----
+* Script D: This script takes a non-IXP IP as its input and returns the ASN of that IP. 
 
 * Script E: To use this script just run it like a normal python3 script, like in the first step, this will output a file called "hop_results" where you will find the previous and next hops to all IXP IP hops in a traceroute file, with the consideration that only one IXP hop will be found in each (note: there's some cases where 2 IXP IPs can be found consecutively)
 
