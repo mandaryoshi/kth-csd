@@ -22,7 +22,7 @@ import collections
 import matplotlib.pyplot as plt
 import numpy as np
 
-#sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
+sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
 #sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
 
 #make sure to change the path
@@ -38,7 +38,7 @@ from phase1_scripts.scripta import IxpDetector
 
 values = []
 values2 = []
-percentages = np.arange(0, 1, 0.5)
+percentages = np.arange(0.45, 1, 0.025)
 #file open 
 file = open('json_results/ixp_info_results.json')
 ixp_info = ujson.load(file)
@@ -54,7 +54,7 @@ with open('json_results/asn_fac_results.json') as f:
 
 with open("json_results/hop_results") as readfile:
     hop_results = ujson.load(readfile)
-    for threshold in percentages:
+    for threshold in tqdm(percentages):
         counter = 0
         counter1 = 0
         counter2 = 0
@@ -90,7 +90,6 @@ with open("json_results/hop_results") as readfile:
                     for asnumber in other_as_set:
                         other_fac_set.append(asn_fac_info[str(asnumber)])
 
-                    c = 0
                     if len(other_fac_set) > 0:                                  
                         flat_list = []                                          
                         for sublist in other_fac_set:                           
@@ -132,20 +131,19 @@ with open("json_results/hop_results") as readfile:
                     for asnumber in neighbour_as_set:
                         neighbour_fac_set.append(asn_fac_info[str(asnumber)])
 
-                    c = 0
                     if len(neighbour_fac_set) > 0:
                         flat_list = []
                         for sublist in neighbour_fac_set:
                             for fac_id in fac_result:
                                 if fac_id in sublist:
                                     flat_list.append(fac_id)
-                        cnt = collections.Counter(flat_list)
-                        val = list(cnt.values())
-                        if len(val) > 1:
-                            if (val[0]/len(neighbour_fac_set) >= threshold) and (val[0] != val[1]):
+                        cnt2 = collections.Counter(flat_list)
+                        val2 = list(cnt2.values())
+                        if len(val2) > 1:
+                            if (val2[0]/len(neighbour_fac_set) >= threshold) and (val2[0] != val2[1]):
                                 counter4 = counter4 + 1
-                        elif len(val) == 1:
-                            if val[0]/len(neighbour_fac_set) >= threshold:
+                        elif len(val2) == 1:
+                            if val2[0]/len(neighbour_fac_set) >= threshold:
                                 counter4 = counter4 + 1   
             
         values.append(counter3)
@@ -155,12 +153,12 @@ with open("json_results/hop_results") as readfile:
 
 #plt.plot(percentages, values)
 fig, ax = plt.subplots()
-ax.plot(percentages, values, label = 'near-end')
-ax.plot(percentages, values2, label= 'far-end')
-ax.set_title('Facilities inferred in last step for certain thresholds')
-ax.set_xlabel('Threshold percentages')
-ax.set_xticks(np.arange(0.1, 1, 0.05))
-ax.set_ylabel('Facilities inferred')
+ax.plot(percentages, values, label = 'Near-end')
+ax.plot(percentages, values2, label= 'Far-end')
+ax.set_title('Facilities Inferred in Last Step for Certain Thresholds')
+ax.set_xlabel('Threshold Percentages')
+ax.set_xticks(np.arange(0.45, 1, 0.05))
+ax.set_ylabel('Facilities Inferred')
 ax.legend()
 plt.grid()
 plt.show()
