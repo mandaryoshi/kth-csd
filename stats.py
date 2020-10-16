@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 #IXP statistics
 
+"""
 
 fd = open('json_results/ixp_info_results.json')
 ixp_info = ujson.load(fd)
@@ -17,29 +18,32 @@ facs = []
 
 for key in tqdm(ixp_info):
     for value in ixp_info[key]["net_set"]:
-        asns.append(ixp_info[key]["net_set"][value])
+        if ixp_info[key]["net_set"][value] not in asns:
+            asns.append(ixp_info[key]["net_set"][value])
     total_asn.append(len(ixp_info[key]["net_set"]))
     for value in ixp_info[key]["fac_set"]:
         facs.append(value)
     total_fac.append(len(ixp_info[key]["fac_set"]))
 
 
-asns = list(dict.fromkeys(asns))
-facs = list(dict.fromkeys(facs))
+#asns = list(dict.fromkeys(asns))
+#facs = list(dict.fromkeys(facs))
 
 print(len(asns))
 print(len(facs))
 
+print('\n')
 
 print(len(ixp_info))
 print(sum(total_asn))
 print(sum(total_fac))
 
-
+"""
 
 
 #Graph Statistics
 
+"""
 
 graph = nx.read_gpickle('network_diagram/traceroute_graph.gpickle')
 
@@ -57,7 +61,7 @@ nx.draw(graph, **options)
 plt.show()
 
 
-
+"""
 
 #ASN-FAC statistics
 
@@ -70,12 +74,14 @@ total_fac = []
 for key in tqdm(asn_fac_info):
     total_fac.append(asn_fac_info[key])
 
-#print(total_fac)
+print(len(total_fac))
 
 flat_list = []
 for sublist in total_fac:
     for item in sublist:
         flat_list.append(item)
+
+print(len(flat_list))
 
 total_fac = list(dict.fromkeys(flat_list))
 
