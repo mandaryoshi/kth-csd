@@ -17,7 +17,9 @@ import ujson
 import time
 from tqdm import tqdm
 import collections
+import matplotlib.pyplot as plt
 
+#sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
 sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
 from phase1_scripts.scriptb import IxpIP_AS_mapping
 from phase1_scripts.scriptc import FacilityMapping
@@ -42,10 +44,6 @@ with open('../json_results/hop_results') as readfile:
     counter1 = 0
     counter2 = 0
     counter3 = 0
-    counter4 = 0
-    counter5 = 0
-    counter6 = 0
-
     for key, hops in tqdm(hop_results.items()):
         ixp_fac_set = ixp_to_fac.facility_search(hops["ixp_id"])
         #print(ixp_fac_set)
@@ -71,7 +69,7 @@ with open('../json_results/hop_results') as readfile:
                 for ip in neighbours:
                     ip_ip2, asn2 = nonixp_to_asn.mapping(ip)
                     if asn2 != None and (str(asn2) in asn_fac_info) and (asn2 != ixp_asn):
-                         neighbour_as_set.append(asn2)
+                        neighbour_as_set.append(asn2)
 
                 for asnumber in neighbour_as_set:
                     neighbour_fac_set.append(asn_fac_info[str(asnumber)])
@@ -83,37 +81,20 @@ with open('../json_results/hop_results') as readfile:
                         for fac_id in fac_result:
                             if fac_id in sublist:
                                 flat_list.append(fac_id)
-                    cnt = collections.Counter(flat_list)
-                    new_list = []
-                    for f_id, times in cnt.items():
-                        if times/len(neighbour_fac_set) >= 0.75:
-                            new_list.append(f_id)
-                    if len(new_list) == 1:
-                        counter3 = counter3 + 1
-                    else:
-                        counter4 = counter4 + 1
+                    cnt2 = collections.Counter(flat_list)
+                    val2 = list(cnt2.values())
+                    if len(val2) > 1:
+                        if (val2[0]/len(neighbour_fac_set) >= 0.75) and (val2[0] != val2[1]):
+                            counter3 = counter3 + 1
+                    elif len(val2) == 1:
+                        if val2[0]/len(neighbour_fac_set) >= 0.75:
+                            counter3 = counter3 + 1   
 
-            elif (len(fac_result) == 0):
-                counter5 = counter5 + 1
-
-        else:
-            counter6 = counter6 + 1
 
     first_step_fac = (counter1)*100/(len(hop_results))
     multiple_fac = (counter2)*100/(len(hop_results))
     last_step_fac = (counter3)*100/(len(hop_results))
-    couldnotfind_fac = (counter4)*100/(len(hop_results))
-    no_mapping = (counter5)*100/len(hop_results)
-    no_info = (counter6)*100/len(hop_results)
-
-
 
     print("FIRST STEP CONSTRAINED FACILITIES",first_step_fac, counter1)
     print("MULTIPLE FACILITIES FOUND WHILE CONSTRAINING",multiple_fac, counter2)
     print("LAST STEP CONSTRAINED FACILITIES", last_step_fac, counter3)
-    print("Multiple facilities remaining after last step", couldnotfind_fac, counter4)
-    print("Could not find a common facility from part 1", no_mapping, counter5)
-    print("Peeringdb or caida problem", no_info, counter6)
-
-
-#What if there is no common facility from part a itself? What does that mean?
