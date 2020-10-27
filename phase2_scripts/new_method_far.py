@@ -27,7 +27,8 @@ ip_neighbors = IPNeighbors()
 with open('../json_results/asn_fac_results.json') as f:
     asn_fac_info = ujson.load(f)
 
-with open('../json_results/hop_results') as readfile:
+#change the name of the folder
+with open('/home/csd/traceroutes/14092020/hop_results') as readfile:
     hop_results = ujson.load(readfile)
     fac_ips = {}
     counter1 = 0

@@ -8,8 +8,11 @@ import pickle
 id = 0
 
 graph = nx.DiGraph()
-file_object = open('json_results/traceroute_results', 'w')
 
+#change the name of the folder
+file_object = open('/home/csd/traceroutes/14092020/traceroute_results', 'w')
+
+#change the name of the folder
 with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as readfile:
     #counter = 0
     traceroute_dict = {}
@@ -53,7 +56,8 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
 
     file_object.write(ujson.dumps(traceroute_dict))
     file_object.write('\n')
-    nx.write_gpickle(graph, 'network_diagram/traceroute_graph.gpickle')
+    #change the name of the folder
+    nx.write_gpickle(graph, '/home/csd/traceroutes/14092020/traceroute_graph.gpickle')
     
 file_object.close()
 

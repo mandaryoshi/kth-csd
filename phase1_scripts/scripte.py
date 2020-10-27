@@ -7,13 +7,15 @@ import ujson
 #start_time = timeit.default_timer()
 #print(timeit.default_timer() - start_time)
 
-file_object = open('../json_results/hop_results', 'w')                        # Open the file where de dictionary is going to be dumped
+#change the date of the folder
+file_object = open('/home/csd/traceroutes/14092020/hop_results', 'w')                        # Open the file where de dictionary is going to be dumped
 
 info = open('../json_results/ixp_info_results.json')                          # Open ixp_info file to insert it in script a) instance
 ixp_info = ujson.load(info)
 ix_detector = IxpDetector(ixp_info)
 
-with open('../json_results/traceroute_results','r') as readfile:              # Open traceroute results file that is gonna be analyzed
+#change the name of the folder
+with open('/home/csd/traceroutes/14092020/traceroute_results','r') as readfile:              # Open traceroute results file that is gonna be analyzed
   #counter = 0
   json_line = ujson.load(readfile)
   iphop_dict = {}

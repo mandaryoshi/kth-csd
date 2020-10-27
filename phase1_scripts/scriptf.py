@@ -10,7 +10,8 @@ import os
 class IPNeighbors:
 
     def __init__(self):
-        self.trace_graph = nx.read_gpickle('../network_diagram/traceroute_graph.gpickle')
+        #change the name of the folder
+        self.trace_graph = nx.read_gpickle('/home/csd/traceroutes/14092020/traceroute_graph.gpickle')
         
     def graphgenerator(self, ip):
         neighbors = list(self.trace_graph.neighbors(ip))
