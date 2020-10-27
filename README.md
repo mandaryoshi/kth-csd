@@ -16,16 +16,18 @@ pip install matplotlib
 
 ## Usage
 
-First run these scripts to get traceroute and ixp info from a RIPE Atlas traceroute dump and PeeringDB respectively
+First run these scripts to get traceroute and ixp info from a RIPE Atlas traceroute dump, PeeringDB and CAIDA respectively.
 
 ```bash
 python3 traceroute_fetch.py
 python3 ixp_info.py
 python3 asn_fac.py
+python3 nonixp_info.py
 ```
 * The first script is going to create 2 files, the first one ("traceroute_results.json") is a dictionary type file which contains all the useful data in the same format as in the traceroute file, and the second one ("traceroute_graph.gpickle") is the directed graph containing all connections seen in the traceroute file.
 * "ixp_info.py" only has one output ("ixp_info_results.json") and contains a dictionary with all the IXPs and their corresponding useful peering data.
 * "asn_fac.py" provides a mapping between the ASNs and the facilities they are present at. ("asn_fac_results.json")
+* "nonixp_info.py" provides a mapping between the IP prefix and ASN from the CAIDA data-set stored as a dictionary, which is then parsed by the 'Pytricia' python library.
 
 
 Once the scripts that retrieve the information from the databases are done we get into phase 1 scrips which use this data to retrieve and classify the information.
@@ -36,7 +38,7 @@ Once the scripts that retrieve the information from the databases are done we ge
 
 * Script C: The structure used in c is the same as a) and b) but in this case we thought that the input would be more useful in phase 2 if the input was only on IXP IP as when we analyze the traceroutes it will be done one by one to infer the facilities so there will be only 1 IP, and the result in this case is an array containing the Facilities where that IXP is present.
 
-* Script D: This script takes a non-IXP IP as its input and returns the ASN of that IP. 
+* Script D: This script takes a single non-IXP IP as its input and returns the ASN of the same. The mapping is retrieved from the 'nonixp_info_results.json' file. 
 
 * Script E: To use this script just run it like a normal python3 script, like in the first step, this will output a file called "hop_results" where you will find the previous and next hops to all IXP IP hops in a traceroute file, with the consideration that only one IXP hop will be found in each (note: there's some cases where 2 IXP IPs can be found consecutively)
 
