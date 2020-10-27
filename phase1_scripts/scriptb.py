@@ -2,20 +2,14 @@
 
 
 class IxpIP_AS_mapping:
-    def __init__(self, file):
-        #with open('json_results/ixp_info_results.json') as f:
-        #    self.ixp_info = json.load(f)
+    def __init__(self, file):                                          # "file" variable is meant to be the ixp_info file extracted from script ixp_info.py
         self.ixp_info = file
 
-    def mapping(self, ixpip, ix_id):
-        """for ixp in self.ixp_info.values():
-            for addr,asn in ixp["net_set"].items():
-                #for ip in ixpip:
-                if ixpip == addr:
-                    return (asn)"""
-        if str(ix_id) in self.ixp_info:
-            if ixpip in self.ixp_info[str(ix_id)]["net_set"]:
-                return self.ixp_info[str(ix_id)]["net_set"][ixpip]
+    def mapping(self, ixpip, ix_id):                                   # The ix_id input is used to access directly the net_set of the IXP
+                                                                       # to decrease the amount of values to compare.    
+        if str(ix_id) in self.ixp_info:                                # Checking if the IXP id introduced exists in the dictionary.
+            if ixpip in self.ixp_info[str(ix_id)]["net_set"]:          # Checking if the IXP IP exists inside the net_set of the IXP
+                return self.ixp_info[str(ix_id)]["net_set"][ixpip]     # Return the ASN value accessed directly from the dictionary using the 2 values introduced
 
 
 #asn = IxpIP_AS_mapping()

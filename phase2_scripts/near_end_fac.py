@@ -41,12 +41,10 @@ with open('../json_results/asn_fac_results.json') as f:
 
 with open("../json_results/hop_results") as readfile:
     hop_results = ujson.load(readfile)
+    fac_ips = {}
     counter = 0
     counter2 = 0
     counter3 = 0
-    counter4 = 0
-    counter5 = 0
-    counter6 = 0
     for key, hops in tqdm(hop_results.items()):
         #print([hops["previous_hop"]])
         #time.sleep(1)
@@ -60,6 +58,12 @@ with open("../json_results/hop_results") as readfile:
                     fac_match.append(facility_id)
 
             if len(fac_match) == 1:
+                if fac_match[0] in fac_ips:
+                    if hops["previous_hop"] not in fac_ips[fac_match[0]]:
+                        fac_ips[fac_match[0]].append(hops["previous_hop"])
+                else:
+                    fac_ips[fac_match[0]] = []
+                    fac_ips[fac_match[0]].append(hops["previous_hop"])
                 counter = counter + 1
             elif (len(fac_match) > 1): 
                 counter2 = counter2 + 1
@@ -86,32 +90,48 @@ with open("../json_results/hop_results") as readfile:
                             if fac_id in sublist:
                                 flat_list.append(fac_id)
                     cnt = collections.Counter(flat_list)
-                    new_list = []
-                    for f_id, times in cnt.items():
-                        if times/len(other_fac_set) >= 0.75:
-                            new_list.append(f_id)
-                    if len(new_list) == 1:
-                        counter3 = counter3 + 1
-                    else:
-                        counter4 = counter4 + 1
-                
-            elif (len(fac_match) == 0): 
-                counter5 = counter5 + 1
-        else:
-            counter6 = counter6 + 1
+                    val = list(cnt.values())
+                    keys = list(cnt.keys())
+
+                    if len(val) > 1:
+                        if (val[0]/len(other_fac_set) >= 0.75) and (val[0] != val[1]):
+                            if keys[0] in fac_ips:
+                                if hops["previous_hop"] not in fac_ips[keys[0]]:
+                                    fac_ips[keys[0]].append(hops["previous_hop"])
+                            else:
+                                fac_ips[keys[0]] = []
+                                fac_ips[keys[0]].append(hops["previous_hop"])
+                            counter3 = counter3 + 1
+                    elif len(val) == 1:
+                        if val[0]/len(other_fac_set) >= 0.75:
+                            if keys[0] in fac_ips:
+                                if hops["previous_hop"] not in fac_ips[keys[0]]:
+                                    fac_ips[keys[0]].append(hops["previous_hop"])
+                            else:
+                                fac_ips[keys[0]] = []
+                                fac_ips[keys[0]].append(hops["previous_hop"])
+                            counter3 = counter3 + 1
 
     first_step_fac = (counter)*100/(len(hop_results))
     multiple_fac = (counter2)*100/(len(hop_results))
     last_step_fac = (counter3)*100/(len(hop_results))
-    couldnotfind_fac = (counter4)*100/(len(hop_results))
-    no_mapping = (counter5)*100/len(hop_results)
-    no_info = (counter6)*100/len(hop_results)
-
-
 
     print("FIRST SETP CONSTRINED FACILITIES",first_step_fac, counter)
     print("MULTIPLE FACILITIES FOUND WHILE CONSTRAINING",multiple_fac, counter2)
     print("LAST STEP CONTRAINED FACILITIES", last_step_fac, counter3)
-    print("Multiple facilities remaining after last step", couldnotfind_fac, counter4)
-    print("Could not find a common facility from part 1", no_mapping, counter5)
-    print("Peeringdb or caida problem", no_info, counter6)
+
+    counter10 = 0
+    maxval = (0, 0)
+    minval = (1000000, 0)
+    for fac, ip_array in fac_ips.items():
+        if len(ip_array) < minval[0]:
+            minval = (len(ip_array), fac)
+        if len(ip_array) > maxval[0]:
+            maxval = (len(ip_array), fac)
+        counter10 = counter10 + len(ip_array)
+    #print(fac_ips[maxval[1]])
+    print("max ips per fac", maxval)
+    print("min ips per fac", minval)
+    
+    print("average ips per fac", counter10/len(fac_ips))
+    print("unique facs inferred", len(fac_ips))
