@@ -10,10 +10,10 @@ id = 0
 graph = nx.DiGraph()
 
 #change the name of the folder
-file_object = open('/home/csd/traceroutes/14092020/traceroute_results', 'w')
+file_object = open('/home/csd/traceroutes/14102020/traceroute_results', 'w')
 
 #change the name of the folder
-with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as readfile:
+with open('/home/csd/traceroutes/14102020/traceroute-2020-10-14T1100','r') as readfile:
     #counter = 0
     traceroute_dict = {}
     edges_tuple = []
@@ -57,7 +57,7 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
     file_object.write(ujson.dumps(traceroute_dict))
     file_object.write('\n')
     #change the name of the folder
-    nx.write_gpickle(graph, '/home/csd/traceroutes/14092020/traceroute_graph.gpickle')
+    nx.write_gpickle(graph, '/home/csd/traceroutes/14102020/traceroute_graph.gpickle')
     
 file_object.close()
 
