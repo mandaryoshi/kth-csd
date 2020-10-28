@@ -19,13 +19,13 @@ with open('/home/csd/traceroutes/17102020/traceroute-2020-10-17T0600','r') as re
     edges_tuple = []
     for line in tqdm(readfile):
         json_line = ujson.loads(line)
-        
+        edge_array = []
         if "paris_id" in json_line and "result" in json_line:
             if json_line["paris_id"] > 0 and json_line["af"] == 4:
 
                 id = id + 1
                 traceroute_dict[id] = []
-                edge_array = []
+        #        edge_array = []
                 for item in json_line["result"]:
                     rtt = 0
                     hop_ip = "x"
