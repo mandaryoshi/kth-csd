@@ -48,7 +48,7 @@ Once the scripts that retrieve the information from the databases are done we ge
 
 * example - 'wget https://data-store.ripe.net/datasets/atlas-daily-dumps/2020-10-14/traceroute-2020-10-14T0900.bz2'
 * bzip2 -d traceroute-2020-10-14T0900.bz2
-* Edit lines 13 (date) and 16(extracted bz2 file) with different paths of the  in traceroute_fetch.py
+* Edit lines 13 (date) and 16(extracted bz2 file) and 60(date) with different paths of the  in traceroute_fetch.py
 * Edit lines 11 (date) and 18(date) in scripte.py
 * Edit line 14 (date) in scriptf.py
 * Edit line 39 (date) in new_method_near.py
