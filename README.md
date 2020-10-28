@@ -44,4 +44,15 @@ Once the scripts that retrieve the information from the databases are done we ge
 
 * Script F: In this script we make use of a class structure again, and this time the input for the function is a IP hop, which should be extracted from script e) and the return will be an array of neighbours of the hop, found in the graph previously created in the first step.
 
+## How to manually change the traceroutes file info
+
+* example - 'wget https://data-store.ripe.net/datasets/atlas-daily-dumps/2020-10-14/traceroute-2020-10-14T0900.bz2'
+* bzip2 traceroute-2020-10-14T0900.bz2
+* Edit lines 13 (date) and 16(extracted bz2 file) with different paths of the  in traceroute_fetch.py
+* Edit lines 11 (date) and 18(date) in scripte.py
+* Edit line 14 (date) in scriptf.py
+* Edit line 39 (date) in new_method_near.py
+* Edit line 31 (date) in new_method_far.py
+
+
 ## License
