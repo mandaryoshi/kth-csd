@@ -40,8 +40,10 @@ with open("/home/csd/traceroutes/17102020/hop_results") as readfile:
     hop_results = ujson.load(readfile)
     fac_ips = {}
     counter = 0
+    counter1 = 0
     counter2 = 0
     counter3 = 0
+    counter4 = 0
     for key, hops in tqdm(hop_results.items()):
         #print([hops["previous_hop"]])
         #time.sleep(1)
@@ -129,7 +131,7 @@ with open("/home/csd/traceroutes/17102020/hop_results") as readfile:
                         else:
                             fac_ips[keys2[0]] = []
                             fac_ips[keys2[0]].append(hops["previous_hop"])
-                        counter3 = counter3 + 1
+                        counter4 = counter4 + 1
         elif len(ixp_fac_set) != 0:
             if ixp_fac_set[0] in fac_ips:
                 if hops["previous_hop"] not in fac_ips[ixp_fac_set[0]]:
@@ -137,14 +139,18 @@ with open("/home/csd/traceroutes/17102020/hop_results") as readfile:
             else:
                 fac_ips[ixp_fac_set[0]] = []
                 fac_ips[ixp_fac_set[0]].append(hops["previous_hop"])
-            counter = counter + 1                        
-
-    first_step_fac = (counter)*100/(len(hop_results))
+            counter1 = counter1 + 1                   
+     
+    first_step_fac = (counter1)*100/(len(hop_results))
+    second_step_fac = (counter)*100/(len(hop_results))
     multiple_fac = (counter2)*100/(len(hop_results))
+    third_step_fac = (counter4)*100/(len(hop_results))
     last_step_fac = (counter3)*100/(len(hop_results))
 
-    print("FIRST STEP CONSTRAINED FACILITIES",first_step_fac, counter)
+    print("FIRST STEP CONSTRAINED FACILITIES",first_step_fac, counter1)
+    print("SECOND STEP CONSTRAINED FACILITIES",second_step_fac, counter)
     print("MULTIPLE FACILITIES FOUND WHILE CONSTRAINING",multiple_fac, counter2)
+    print("THIRD STEP CONTRAINED FACILITIES", third_step_fac, counter4)
     print("LAST STEP CONTRAINED FACILITIES", last_step_fac, counter3)
 
     counter10 = 0

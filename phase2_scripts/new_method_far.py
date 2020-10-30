@@ -28,12 +28,14 @@ with open('../json_results/asn_fac_results.json') as f:
     asn_fac_info = ujson.load(f)
 
 #change the name of the folder
-with open('/home/csd/traceroutes/17102020/hop_results') as readfile:
+with open('/home/csd/traceroutes/14102020/hop_results') as readfile:
     hop_results = ujson.load(readfile)
     fac_ips = {}
     counter1 = 0
     counter2 = 0
     counter3 = 0
+    counter4 = 0
+    counter5 = 0
     for key, hops in tqdm(hop_results.items()):
         ixp_fac_set = ixp_to_fac.facility_search(hops["ixp_id"])
         if len(ixp_fac_set) > 1:
@@ -118,7 +120,7 @@ with open('/home/csd/traceroutes/17102020/hop_results') as readfile:
                         else:
                             fac_ips[keys2[0]] = []
                             fac_ips[keys2[0]].append(hops["ixp_hop"])
-                        counter3 = counter3 + 1
+                        counter5 = counter5 + 1
         elif len(ixp_fac_set) != 0:
             if ixp_fac_set[0] in fac_ips:
                 if hops["ixp_hop"] not in fac_ips[ixp_fac_set[0]]:
@@ -126,14 +128,18 @@ with open('/home/csd/traceroutes/17102020/hop_results') as readfile:
             else:
                 fac_ips[ixp_fac_set[0]] = []
                 fac_ips[ixp_fac_set[0]].append(hops["ixp_hop"])
-            counter1 = counter1 + 1    
+            counter4 = counter4 + 1    
 
-    first_step_fac = (counter1)*100/(len(hop_results))
+    first_step_fac = (counter4)*100/(len(hop_results))
+    second_step_fac = (counter1)*100/(len(hop_results))
     multiple_fac = (counter2)*100/(len(hop_results))
+    third_step_fac = (counter5)*100/(len(hop_results))
     last_step_fac = (counter3)*100/(len(hop_results))
 
-    print("FIRST STEP CONSTRAINED FACILITIES",first_step_fac, counter1)
+    print("FIRST STEP CONSTRAINED FACILITIES",first_step_fac, counter4)
+    print("SECOND STEP CONSTRAINED FACILITIES",second_step_fac, counter1)
     print("MULTIPLE FACILITIES FOUND WHILE CONSTRAINING",multiple_fac, counter2)
+    print("THIRD STEP CONSTRAINED FACILITIES",third_step_fac, counter5)
     print("LAST STEP CONSTRAINED FACILITIES", last_step_fac, counter3)
 
     counter10 = 0
