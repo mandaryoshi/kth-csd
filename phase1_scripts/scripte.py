@@ -22,11 +22,13 @@ with open('/home/csd/traceroutes/17102020/traceroute_results','r') as readfile: 
   for key, trace in tqdm(json_line.items()):                                  # Loop through each traceroute recorded in the dictionary
     ip_array = []
     hop_array = []
+    rtt_array = []
     
 
     for i in trace:                                                           # For every hop in the traceroute a IP array and hop number array are created
       ip_array.append(i["from"])                          
       hop_array.append(i["hop"])                                              # This array allows us to identify if there is any missing hops in between
+      rtt_array.append(i["rtt"])
 
     ixp_ip2, ixp_id = ix_detector.ixpdetection(ip_array)                      # Search in the hop IP array if there is an IXP IP
   
@@ -40,7 +42,8 @@ with open('/home/csd/traceroutes/17102020/traceroute_results','r') as readfile: 
               'previous_hop' : ip_array[ixp_index-1],
               'ixp_hop' : ip_array[ixp_index],
               'next_hop' : ip_array[ixp_index+1],
-              'ixp_id' : ixp_id
+              'ixp_id' : ixp_id,
+              'rtts' : [rtt_array[ixp_index-1], rtt_array[ixp_index]]
             }
             """
             counter = counter + 1
