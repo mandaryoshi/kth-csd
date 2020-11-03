@@ -2,12 +2,14 @@ import json
 import ujson
 import pytricia
 import time
+import sys
 
+sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
 
 class non_IxpIP_AS_mapping:
 
     def __init__(self):
-        with open('../json_results/nonixp_info_results.json') as f:     # The same way as in script a) all prefixes are loaded
+        with open('json_results/nonixp_info_results.json') as f:     # The same way as in script a) all prefixes are loaded
             self.nonixp_info = ujson.load(f)                            # into a pytricia tree.
             self.pyt = pytricia.PyTricia()
             for ip in self.nonixp_info:

@@ -4,10 +4,12 @@ from tqdm import tqdm
 import time
 import collections
 
+#date = sys.argv[1]
+#hour = sys.argv[2]
 
-sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
+#sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
 #sys.path.insert(0, '/Users/enric.carrera.aguiar/Documents/UPC/Erasmus/CSD/IK2200HT201-IXP')
-#sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
+sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
 
 from phase1_scripts.scripta import IxpDetector
 from phase1_scripts.scriptb import IxpIP_AS_mapping
@@ -16,22 +18,23 @@ from phase1_scripts.scriptd import non_IxpIP_AS_mapping
 from phase1_scripts.scriptf import IPNeighbors
 
 #change the name of the folder
-#hop_result_file = open("json_results/hop_results")
+#input_path = "/home/csd/traceroutes/" + date + "/" + hour + "/hop_results"
+#hop_result_file = open(input_path)
 #hop_results = ujson.load(hop_result_file)
         
 class CFS:
-    def __init__(self, hop_results):
-        ixp_results_file = open('json_results/ixp_info_results.json')
+    def __init__(self, hop_results, date, hour):
+        ixp_results_file = open('/home/csd/IK2200HT201-IXP/json_results/ixp_info_results.json')
         ixp_info = ujson.load(ixp_results_file)
 
-        asn_fac_mapping_file = open('json_results/asn_fac_results.json')
+        asn_fac_mapping_file = open('/home/csd/IK2200HT201-IXP/json_results/asn_fac_results.json')
         self.asn_fac_info = ujson.load(asn_fac_mapping_file)
 
         self.hop_results = hop_results
 
         self.ip_asn = non_IxpIP_AS_mapping()
         self.ixp_fac = FacilityMapping(ixp_info)
-        self.ip_neighbors = IPNeighbors()
+        self.ip_neighbors = IPNeighbors(date, hour)
         self.ix_detector = IxpDetector(ixp_info)
         self.ixp_to_asn = IxpIP_AS_mapping(ixp_info)
 

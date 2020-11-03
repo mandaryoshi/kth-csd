@@ -3,19 +3,23 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import folium
 
-sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
+date = sys.argv[1]
+hour = sys.argv[2]
+
+#sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
 #sys.path.insert(0, '/Users/enric.carrera.aguiar/Documents/UPC/Erasmus/CSD/IK2200HT201-IXP')
-#sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
+sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
 
 from phase2_scripts.phase2_impl import *
 
 coordinates = ujson.load(open("json_results/fac_loc_results.json"))
 
 #change the name of the folder
-hop_result_file = open("json_results/hop_results")
+input_path = "/home/csd/traceroutes/" + date + "/" + hour + "/hop_results"
+hop_result_file = open(input_path)
 hop_results = ujson.load(hop_result_file)
 
-cfs = CFS(hop_results)
+cfs = CFS(hop_results, date, hour)
 
 m = folium.Map(
     world_copy_jump=False,
@@ -23,7 +27,7 @@ m = folium.Map(
 )
 
 
-def forwarding_model(cfs, hop_results, m):
+def forwarding_model(cfs, hop_results, m, date, hour):
     map1 = cfs.NearEnd()
     map2 = cfs.FarEnd()
 
@@ -83,11 +87,12 @@ def forwarding_model(cfs, hop_results, m):
     print('length of fwd dict: ', len(fwd_dict))
     print('list of actual links: ', counter)
     print('facilities without coordinates identified: ', no_info)
-    m.save('phase3_scripts/results/map.html')
-
-    with open('phase3_scripts/results/connections', 'w') as fp:
+    map_path = "/home/csd/traceroutes/" + date + "/" + hour + "/map.html"    
+    m.save(map_path)
+    forwarding_model_path = "/home/csd/traceroutes/" + date + "/" + hour + "/connections"
+    with open(forwarding_model_path, 'w') as fp:
         ujson.dump(fwd_dict,fp)
  
-forwarding_model(cfs, hop_results, m)
+forwarding_model(cfs, hop_results, m, date, hour)
 
 
