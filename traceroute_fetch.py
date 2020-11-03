@@ -4,16 +4,22 @@ import time
 import ujson
 import networkx as nx
 import pickle
+import sys
+
+date = sys.argv[1]
+hour = sys.argv[2]
 
 id = 0
 
 graph = nx.DiGraph()
 
 #change the name of the folder
-file_object = open('/home/csd/traceroutes/17102020/traceroute_results', 'w')
+folder_path = "/home/csd/traceroutes/" + date + "/" + hour + "/traceroute_results"
+file_object = open(folder_path, 'w')
 
 #change the name of the folder
-with open('/home/csd/traceroutes/17102020/traceroute-2020-10-17T0600','r') as readfile:
+trace_file_path = "/home/csd/traceroutes/" + date + "/" + hour + "/traceroute-" + date + "T" + hour
+with open(trace_file_path,'r') as readfile:
     #counter = 0
     traceroute_dict = {}
     edges_tuple = []
@@ -57,7 +63,8 @@ with open('/home/csd/traceroutes/17102020/traceroute-2020-10-17T0600','r') as re
     file_object.write(ujson.dumps(traceroute_dict))
     file_object.write('\n')
     #change the name of the folder
-    nx.write_gpickle(graph, '/home/csd/traceroutes/17102020/traceroute_graph.gpickle')
+    graph_path = "/home/csd/traceroutes/" + date + "/" + hour + "/traceroute_graph.gpickle"
+    nx.write_gpickle(graph, graph_path)
     
 file_object.close()
 
