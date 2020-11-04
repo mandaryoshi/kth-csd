@@ -33,7 +33,7 @@ with open(input_path,'r') as readfile:  			              # Open traceroute resul
     rtt_array = []
     
 
-    for i in trace:                                                           # For every hop in the traceroute a IP array and hop number array are created
+    for i in trace["hops"]:                                                           # For every hop in the traceroute a IP array and hop number array are created
       ip_array.append(i["from"])                          
       hop_array.append(i["hop"])                                              # This array allows us to identify if there is any missing hops in between
       rtt_array.append(i["rtt"])
@@ -51,7 +51,10 @@ with open(input_path,'r') as readfile:  			              # Open traceroute resul
               'ixp_hop' : ip_array[ixp_index],
               'next_hop' : ip_array[ixp_index+1],
               'ixp_id' : ixp_id,
-              'rtts' : [rtt_array[ixp_index-1], rtt_array[ixp_index]]
+              'rtts' : [rtt_array[ixp_index-1], rtt_array[ixp_index]],
+              'msm_id' : trace["msm_id"],
+              'prb_id' : trace["prb_id"],
+              'timestamp' : trace["timestamp"],
             }
             """
             counter = counter + 1

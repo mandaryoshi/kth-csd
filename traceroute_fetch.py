@@ -28,9 +28,12 @@ with open(trace_file_path,'r') as readfile:
         edge_array = []
         if "paris_id" in json_line and "result" in json_line:
             if json_line["paris_id"] > 0 and json_line["af"] == 4:
-
+                info_dict = {}
+                info_dict["hops"] = []
+                info_dict["msm_id"] = json_line["msm_id"]
+                info_dict["prb_id"] = json_line["prb_id"]
+                info_dict["timestamp"] = json_line["timestamp"]
                 id = id + 1
-                traceroute_dict[id] = []
         #        edge_array = []
                 for item in json_line["result"]:
                     rtt = 0
@@ -43,7 +46,7 @@ with open(trace_file_path,'r') as readfile:
                                 rtt_avg = rtt/len(item["result"])
                         edge_array.append(hop_ip)
                         if hop_ip != "x":
-                            traceroute_dict[id].append({
+                            info_dict["hops"].append({
                                 'hop': item['hop'], 
                                 'from' : hop_ip, 
                                 'rtt' : round(rtt_avg, 2)})
@@ -53,6 +56,8 @@ with open(trace_file_path,'r') as readfile:
                         file_object.write('\n')
                         tracereoute_dict = {}
                         counter = 0"""
+                traceroute_dict[id] = info_dict
+              
         #edges_tuple = []
         for x in range(len(edge_array)):
             if x < len(edge_array) - 1:
