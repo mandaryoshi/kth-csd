@@ -47,21 +47,37 @@ def forwarding_model(cfs, hop_results, m, date, hour):
     
     
     near_end_map = {}
+    near_end_list = []
     for fac, ips in map1.items():
         for x in ips:
-            near_end_map[x] = fac
+            if x in near_end_map:
+                near_end_list.append(x)
+            else:    
+                near_end_map[x] = fac
             
+    near_end_list = list(dict.fromkeys(near_end_list))
+    for item in near_end_list:
+        del near_end_map[item]
+
     far_end_map = {}        
+    far_end_list = []
     for fac, ips in map2.items():
         for x in ips:
-            far_end_map[x] = fac
+            if x in far_end_map:
+                far_end_list.append(x)
+            else:
+                far_end_map[x] = fac
+    
+    far_end_list = list(dict.fromkeys(far_end_list))
+    for item in far_end_list:
+        del far_end_map[item]
     
 
     fwd_dict = {}
 
     counter = 0
     link_list = []
-    
+
     for key, hops in tqdm(hop_results.items()):
         if (hops["previous_hop"] in near_end_map) and (hops["ixp_hop"] in far_end_map):
 
@@ -69,11 +85,12 @@ def forwarding_model(cfs, hop_results, m, date, hour):
                 link_list.append((near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]))
 
             counter = counter + 1
+            rtt_diff = hops["rtts"][1] - hops["rtts"][0]
 
             if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in fwd_dict:
-                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])] = 1
+                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])] = [rtt_diff]
             else:
-                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])] = fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])] + 1
+                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])].append(rtt_diff)
     
     for x in link_list:
         if str(x[0]) in coordinates and str(x[1]) in coordinates:
@@ -95,4 +112,8 @@ def forwarding_model(cfs, hop_results, m, date, hour):
  
 forwarding_model(cfs, hop_results, m, date, hour)
 
-
+"""
+notes https://deparkes.co.uk/2016/06/03/plot-lines-in-folium/
+https://nbviewer.jupyter.org/github/python-visualization/folium/blob/master/examples/TimeSliderChoropleth.ipynb
+https://nbviewer.jupyter.org/github/python-visualization/folium/tree/master/examples/
+"""

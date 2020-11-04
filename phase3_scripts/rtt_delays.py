@@ -24,10 +24,14 @@ rtt_array=[]
 #new_map1 ={}
 
 near_end_map = {}
+duplicate_fac= []
 for fac, ips in map1.items():  
     for x in ips:
-        near_end_map[x] = fac
-#print(near_end_map)
+        if x in near_end_map:
+            duplicate_fac.append(x)
+        else:
+            near_end_map[x] = fac
+print(len(list(dict.fromkeys(duplicate_fac))))
 
 far_end_map = {}
 for fac, ips in map2.items():
@@ -44,6 +48,5 @@ for key, hops in tqdm(hop_results.items()):
 
         fac_rtt_dict[(ne_fac, fe_fac)] = round(rtt_diff,2)
 
-time.sleep(1)
-print(fac_rtt_dict)
+#print(fac_rtt_dict)
 
