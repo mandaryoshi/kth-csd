@@ -6,6 +6,7 @@ from math import sqrt
 import scipy.stats as st
 import time
 
+#Define wilson function to determine confidence interval
 def wilson(p, n, z = 1.96):
     denominator = 1 + z**2/n
     centre_adjusted_probability = p + z*z / (2*n)
@@ -16,6 +17,7 @@ def wilson(p, n, z = 1.96):
 
     return (round(lower_bound*n), round(upper_bound*n))
 
+#Retrieve a whole day data as reference computation
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
 hour  = hours[0]
