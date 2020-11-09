@@ -104,7 +104,7 @@ def forwarding_model(cfs, hop_results, m, date, hour):
     print('length of fwd dict: ', len(fwd_dict))
     print('list of actual links: ', counter)
     print('facilities without coordinates identified: ', no_info)
-    map_path = "/home/csd/traceroutes/" + date + "/" + hour + "/map.html"    
+    map_path = "/home/csd/traceroutes/" + date + "/" + hour + "/map" + date + hour + ".html"    
     m.save(map_path)
     forwarding_model_path = "/home/csd/traceroutes/" + date + "/" + hour + "/connections"
     with open(forwarding_model_path, 'w') as fp:

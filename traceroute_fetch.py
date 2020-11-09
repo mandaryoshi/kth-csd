@@ -49,7 +49,7 @@ with open(trace_file_path,'r') as readfile:
                             info_dict["hops"].append({
                                 'hop': item['hop'], 
                                 'from' : hop_ip, 
-                                'rtt' : round(rtt_avg, 2)})
+                                'rtt' : round(rtt_avg, 5)})
                     """counter = counter + 1
                     if counter == 1000000:
                         file_object.write(ujson.dumps(traceroute_dict))
