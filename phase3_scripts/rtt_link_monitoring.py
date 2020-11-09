@@ -8,6 +8,7 @@ import time
 
 a = 0.03
 
+#Define wilson function to determine confidence interval
 def wilson(p, n, z = 1.96):
     denominator = 1 + z**2/n
     centre_adjusted_probability = p + z*z / (2*n)
