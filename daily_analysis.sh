@@ -3,13 +3,14 @@
 echo "INSERT DATE (YYYY-MM-DD):"
 read date
 
+mkdir /home/csd/traceroutes/$date
+
 for hour in {00..23}
 
 do
 
 echo "CREATING FOLDERS"
 
-mkdir /home/csd/traceroutes/$date
 mkdir /home/csd/traceroutes/$date/$hour\00
 
 echo "DOWNLOADING TRACEROUTES FILE"

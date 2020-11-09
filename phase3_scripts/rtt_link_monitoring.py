@@ -22,7 +22,7 @@ date = sys.argv[1]
 hour = sys.argv[2]
 path = "/home/csd/traceroutes/" + date + "/" + hour + "/connections"
 
-ref_file = open("results/ref_values")
+ref_file = open("results/rtt_ref_values")
 ref = ujson.load(ref_file)
 
 file = open(path)
@@ -45,6 +45,6 @@ for link in ref.keys():
 	    "upper_bd" : round(interval[1]*a + ref_interval[1]*(1-a),5)
 	}
 
-ref_file = open("results/ref_values", 'w')
+ref_file = open("results/rtt_ref_values", 'w')
 ref_file.write(ujson.dumps(ref))
 ref_file.close()

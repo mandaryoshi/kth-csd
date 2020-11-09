@@ -5,13 +5,14 @@ import numpy as np
 from math import sqrt
 import scipy.stats as st
 import time
+import ast
 
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11"]
 
 output_file = open("results/fw_ref_values",'w')
 
 
-input_file = open("results/ref_values",'r') #change this to rtt_ref_values
+input_file = open("results/rtt_ref_values",'r') #change this to rtt_ref_values
 rtt_ref_values = ujson.load(input_file)
 
 
@@ -23,14 +24,18 @@ for hour in hours:
     links = ujson.load(file)
 
     for link in tqdm(link_list):
+        link = ast.literal_eval(link)
+        #print(val[0])
+        #time.sleep(1)
         if link[0] in fw_dict:
             if link[1] in fw_dict[link[0]]:
-                fw_dict[link[0]][link[1]].append(len(links[link]))
+                fw_dict[link[0]][link[1]].append(len(links[str(link)]))
             else:
-                fw_dict[link[0]][link[1]] = [len(links[link])]
+                fw_dict[link[0]][link[1]] = [len(links[str(link)])]
         else:
+            #print(link[0])
             fw_dict[link[0]] = {
-                link[1] : [len(links[link])]
+                link[1] : [len(links[str(link)])]
             }
 
 
