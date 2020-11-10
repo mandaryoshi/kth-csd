@@ -27,7 +27,10 @@ fw_dict = ref
 
 for key in links:
     link = ast.literal_eval(key)
-    if str(link[0]) in fw_dict:
+    link[0] = str(link[0])
+    link[1] = str(link[1])
+
+    if link[0] in fw_dict:
         if link[1] in fw_dict[link[0]]:
             fw_dict[link[0]][link[1]].append(len(links[str(link)]))
             print('append')
@@ -55,7 +58,6 @@ for src in fw_dict.keys():
         fw_dict[src][dest] = round(num/denom,2)
 
 #print(fw_dict) 
-
 
 #ref_file = open("results/fw_ref_values", 'w')
 #ref_file.write(ujson.dumps(ref))

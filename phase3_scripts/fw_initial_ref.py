@@ -28,6 +28,10 @@ for hour in hours:
         link = ast.literal_eval(link)
         #print(val[0])
         #time.sleep(1)
+
+        link[0] = str(link[0])
+        link[1] = str(link[1])
+
         if link[0] in fw_dict:
             if link[1] in fw_dict[link[0]]:
                 fw_dict[link[0]][link[1]].append(len(links[str(link)]))
