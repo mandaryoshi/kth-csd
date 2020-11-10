@@ -29,18 +29,18 @@ for hour in hours:
         #print(val[0])
         #time.sleep(1)
 
-        link[0] = str(link[0])
-        link[1] = str(link[1])
+        link0 = str(link[0])
+        link1 = str(link[1])
 
-        if link[0] in fw_dict:
-            if link[1] in fw_dict[link[0]]:
-                fw_dict[link[0]][link[1]].append(len(links[str(link)]))
+        if link0 in fw_dict:
+            if link1 in fw_dict[link0]:
+                fw_dict[link0][link1].append(len(links[str(link)]))
             else:
-                fw_dict[link[0]][link[1]] = [len(links[str(link)])]
+                fw_dict[link0][link1] = [len(links[str(link)])]
         else:
             #print(link[0])
-            fw_dict[link[0]] = {
-                link[1] : [len(links[str(link)])]
+            fw_dict[link0] = {
+                link1 : [len(links[str(link)])]
             }
 
 
