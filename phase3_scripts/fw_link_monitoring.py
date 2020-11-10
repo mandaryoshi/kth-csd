@@ -25,9 +25,9 @@ fw_dict = ref
 
 ### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
 
-for link in tqdm(links):
-    link = ast.literal_eval(link)
-    if link[0] in fw_dict:
+for key in tqdm(links):
+    link = ast.literal_eval(key)
+    if link[0] in fw_dict and len(links[key]) > 5:
         if link[1] in fw_dict[link[0]]:
             fw_dict[link[0]][link[1]].append(len(links[str(link)]))
         else:
@@ -38,18 +38,18 @@ for link in tqdm(links):
 for src in fw_dict.keys():    
     
     denom = 0
-    for val in src.values():
+    for val in fw_dict[src].values():
         if len(val) > 1:
             denom = denom + abs(val[1] - val[0])
         else:
             denom = denom + abs(0 - val[0])
 
-    for dest, value in src.items():
+    for dest, value in fw_dict[src].items():
         if len(value) > 1:
             num = (value[1] - value[0])
         else:
              num = (0 - value[0])
-        fw_dict[src][value] = round(num/denom,2)
+        fw_dict[src][dest] = round(num/denom,2)
 
 print(fw_dict) 
 
