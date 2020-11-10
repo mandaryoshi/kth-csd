@@ -35,7 +35,7 @@ for key in links:
     link0 = str(link[0])
     link1 = str(link[1])
 
-    if link0 in fw_dict:
+    if link0 in fw_dict and len(links[key]) > 5:
         if link1 in fw_dict[link0]:
             fw_dict[link0][link1].append(len(links[str(link)]))
         else:
