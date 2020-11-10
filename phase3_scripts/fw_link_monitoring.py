@@ -25,13 +25,16 @@ fw_dict = ref
 
 ### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
 
-for key in tqdm(links):
+for key in links:
     link = ast.literal_eval(key)
-    if link[0] in fw_dict and len(links[key]) > 5:
+    if str(link[0]) in fw_dict:
         if link[1] in fw_dict[link[0]]:
             fw_dict[link[0]][link[1]].append(len(links[str(link)]))
+            print('append')
         else:
             fw_dict[link[0]][link[1]] = [0,len(links[str(link)])]
+        print('inside link[0]')
+    #print(link[0])
 
 
 #compare the two forwarding dictionaries
@@ -51,7 +54,7 @@ for src in fw_dict.keys():
              num = (0 - value[0])
         fw_dict[src][dest] = round(num/denom,2)
 
-print(fw_dict) 
+#print(fw_dict) 
 
 
 #ref_file = open("results/fw_ref_values", 'w')
