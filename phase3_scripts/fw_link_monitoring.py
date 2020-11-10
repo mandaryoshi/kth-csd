@@ -20,6 +20,11 @@ links = ujson.load(file)
 ref_file = open("results/fw_ref_values")
 ref = ujson.load(ref_file)
 
+#path to save the old reference values in the beginning
+#save_path = "/home/csd/traceroutes/" + date + "/" + hour + "/fw_ref_values"
+#ref_path = "results/fw_ref_values"
+#copyfile(ref_path, save_path)
+
 #create a new forwarding dictionary for the new values
 fw_dict = ref
 
