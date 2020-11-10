@@ -55,9 +55,12 @@ for src in fw_dict.keys():
             num = (value[1] - value[0])
         else:
              num = (0 - value[0])
-        fw_dict[src][dest] = round(num/denom,2)
 
-print(fw_dict) 
+        try:
+            fw_dict[src][dest] = round(num/denom,2)
+        except ZeroDivisionError: 
+            print(fw_dict[src])
+#print(fw_dict) 
 
 #ref_file = open("results/fw_ref_values", 'w')
 #ref_file.write(ujson.dumps(ref))
