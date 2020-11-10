@@ -7,12 +7,13 @@ import scipy.stats as st
 import time
 import ast
 
-hours = ["00","01","02","03","04","05","06","07","08","09","10","11"]
+hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
+         "14","15","16","17","18","19","20","21","22","23"]
 
 output_file = open("results/fw_ref_values",'w')
 
 
-input_file = open("results/rtt_ref_values",'r') #change this to rtt_ref_values
+input_file = open("results/rtt_ref_values",'r')
 rtt_ref_values = ujson.load(input_file)
 
 
@@ -43,21 +44,8 @@ for hour in hours:
 
 for key in fw_dict.keys():
     for dest, value in fw_dict[key].items():
-        fw_dict[key][dest] = np.median(value)
+        fw_dict[key][dest] = [np.median(value)]
 
 
 output_file.write(ujson.dumps(fw_dict))
 output_file.close()
-
-"""
-initial_ref_values = dict.fromkeys(link_list)
-for key, val in link_dict.items():
-    initial_ref_values[key] = {
-        "lower_bd" : round(np.median(link_dict[key]["lower_bd"]),5),
-        "median" : round(np.median(link_dict[key]["median"]),5),
-        "upper_bd" : round(np.median(link_dict[key]["upper_bd"]),5)
-    }
-
-output_file.write(ujson.dumps(initial_ref_values))
-output_file.close()
-"""
