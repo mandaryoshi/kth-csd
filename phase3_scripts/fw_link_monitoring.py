@@ -33,7 +33,6 @@ for key in links:
     if link0 in fw_dict:
         if link1 in fw_dict[link0]:
             fw_dict[link0][link1].append(len(links[str(link)]))
-            print('append')
         else:
             fw_dict[link0][link1] = [0,len(links[str(link)])]
         #print('inside link[0]')
@@ -59,8 +58,8 @@ for src in fw_dict.keys():
         try:
             fw_dict[src][dest] = round(num/denom,2)
         except ZeroDivisionError: 
-            print(fw_dict[src])
-#print(fw_dict) 
+            fw_dict[src][dest] = round(0,2)
+print(fw_dict) 
 
 #ref_file = open("results/fw_ref_values", 'w')
 #ref_file.write(ujson.dumps(ref))
