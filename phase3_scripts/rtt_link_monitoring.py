@@ -50,7 +50,7 @@ for link in ref.keys():
         interval = (round(sorted_rtts[ranks[0]],5), round(sorted_rtts[ranks[1]],5))
         ref_interval = (ref[link]["lower_bd"],ref[link]["upper_bd"])
         if (((interval[0] - ref_interval[1]) > 1) or  ((ref_interval[0] - interval[1]) > 1)):
-            print("Alarm triggered!!", link, interval, ref_interval)
+            #print("Alarm triggered!!", link, interval, ref_interval)
             alarm_dict["alarms"].append(link)
 
         median_dict[link] = {
@@ -81,3 +81,5 @@ with open(results_path, 'w') as fp:
     ujson.dump(alarm_dict, fp)
 
 fp.close()
+
+print(date, hour)

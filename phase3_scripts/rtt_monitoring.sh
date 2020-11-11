@@ -17,12 +17,12 @@ while [ "$startdate" != "$enddate" ]; do
 
     for hour in {00..23}
     do
-       python3 rrt_link_monitoring.py $startdate $hour
+       python3 rtt_link_monitoring.py $startdate $hour\00
     done
 
 
 
-    startdate=$(date -I -d "$d + 1 day")
+    startdate=$(date -I -d "$startdate + 1 day")
 done
 
-python3 rtt_monitoring_graph.py $start_date $end_date 58 60
+#python3 rtt_monitoring_graph.py $start_date $end_date 58 60

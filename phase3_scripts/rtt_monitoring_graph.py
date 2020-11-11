@@ -19,10 +19,14 @@ end_date = sys.argv[2].split('-')
 source = sys.argv[3]
 dest = sys.argv[4]
 
-sdate = date(start_date[0], start_date[1], start_date[2])   # start date
-edate = date(end_date[0], end_date[1], end_date[2])   # end date
+sdate = date(int(start_date[0]), int(start_date[1]), int(start_date[2]))   # start date
+edate = date(int(end_date[0]), int(end_date[1]), int(end_date[2]))   # end date
 
 delta = edate - sdate       # as timedelta
+
+#print(sdate)
+#print(edate)
+#print(delta.days)
 
 normal_reference_upper = []
 normal_reference_median = []
@@ -35,37 +39,34 @@ rtt_lower = []
 
 
 for date in tqdm(range(delta.days + 1)):
-    
+    day = sdate + timedelta(days=date)
+    #print(day)
+    #print(date)    
     for hour in tqdm(hours):
 
-        file1 = open("/home/csd/traceroutes/" + date + "/" + hour + "/rtt_ref_values")
+        file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_ref_values")
         rtt_ref_values = ujson.load(file1)
+        key = str((int(source), int(dest)))
+        if key in rtt_ref_values:
+            normal_reference_upper.append(rtt_ref_values[key]["upper_bd"])
+            normal_reference_lower.append(rtt_ref_values[key]["lower_bd"])
+            normal_reference_median.append(rtt_ref_values[key]["median"])
 
-        if source in rtt_ref_values:
-            if dest in rtt_ref_values[source]:
-                normal_reference_upper.append(rtt_ref_values[source][dest]["upper_bd"])
-                normal_reference_lower.append(rtt_ref_values[source][dest]["lower_bd"])
-                normal_reference_median.append(rtt_ref_values[source][dest]["median"])
+            file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_medians")
+            rtt_medians = ujson.load(file2)
+            rtt_upper.append(rtt_medians[key]["upper_bd"])
+            rtt_lower.append(rtt_medians[key]["lower_bd"])
+            rtt_median.append(rtt_medians[key]["median"])
 
-                file2 = open("/home/csd/traceroutes/" + date + "/" + hour + "/rtt_medians")
-                rtt_medians = ujson.load(file2)
-                rtt_upper.append(rtt_medians[source][dest]["upper_bd"])
-                rtt_lower.append(rtt_medians[source][dest]["lower_bd"])
-                rtt_median.append(rtt_medians[source][dest]["median"])
-
-                file2.close()
-
-            else:
-                print("INVALID LINK")
-                sys.exit()
+            file2.close()
         else:
             print("INVALID LINK")
             sys.exit()
         
         file1.close()
        
-    day = sdate + timedelta(days=date)
-    print(day)
+    #day = sdate + timedelta(days=date)
+    #print(day)
 
 print(len(normal_reference_upper))
 print(len(normal_reference_lower))
