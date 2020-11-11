@@ -7,6 +7,8 @@ import scipy.stats as st
 import time
 import ast
 
+date = sys.argv[1]
+
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
 
@@ -17,10 +19,11 @@ input_file = open("results/rtt_ref_values",'r')
 rtt_ref_values = ujson.load(input_file)
 
 
+
 link_list = list(rtt_ref_values.keys()) 
 fw_dict = {}
 for hour in hours:
-    path = "/home/csd/traceroutes/" + "2020-11-01" + "/" + hour + "00" + "/connections"
+    path = "/home/csd/traceroutes/" + date + "/" + hour + "00" + "/connections"
     file = open(path)
     links = ujson.load(file)
 
