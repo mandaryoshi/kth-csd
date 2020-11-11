@@ -63,8 +63,8 @@ for date in tqdm(range(delta.days + 1)):
             file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_medians")
             rtt_medians = ujson.load(file2)
             
-            rtt_upper.append(rtt_medians[key]["upper_bd"])
-            rtt_lower.append(rtt_medians[key]["lower_bd"])
+            rtt_upper.append(rtt_medians[key]["upper_bd"] - rtt_medians[key]["median"])
+            rtt_lower.append(rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"])
             rtt_median.append(rtt_medians[key]["median"])
 
             #rtt_intervallist.append([rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"], rtt_medians[key]["upper_bd"] - rtt_medians[key]["median"]])
@@ -81,16 +81,19 @@ for date in tqdm(range(delta.days + 1)):
 
 #start graphing
 
-plt.figure()
+plt.figure(figsize=(30,10))
 
 
 #plt.boxplot(rtt_intervallist)
 #plt.plot(date_list)
-#plt.xticks(date_list)
+plt.xticks(np.arange(96),date_list,rotation='vertical')
 
 err_list = [rtt_lower, rtt_upper]
 
-plt.errorbar(date_list, rtt_median, yerr=err_list, fmt='o')
+plt.plot(np.arange(96), normal_reference_median)
+plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
+
+plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
 
 plt.savefig('results/rtt_graph.png')
 
