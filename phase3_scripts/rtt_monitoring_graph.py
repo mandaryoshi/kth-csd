@@ -58,7 +58,7 @@ for date in tqdm(range(delta.days + 1)):
             normal_reference_lower.append(rtt_ref_values[key]["lower_bd"])
             normal_reference_median.append(rtt_ref_values[key]["median"])
 
-            ref_intervallist.append(rtt_ref_values[key]["lower_bd"],rtt_ref_values[key]["upper_bd"])
+            #ref_intervallist.append([rtt_ref_values[key]["lower_bd"],rtt_ref_values[key]["upper_bd"]])
 
             file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_medians")
             rtt_medians = ujson.load(file2)
