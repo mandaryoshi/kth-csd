@@ -39,6 +39,7 @@ rtt_lower = []
 date_list = []
 
 rtt_intervallist = []
+ref_intervallist = []
 
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)
@@ -57,14 +58,16 @@ for date in tqdm(range(delta.days + 1)):
             normal_reference_lower.append(rtt_ref_values[key]["lower_bd"])
             normal_reference_median.append(rtt_ref_values[key]["median"])
 
+            ref_intervallist.append(rtt_ref_values[key]["lower_bd"],rtt_ref_values[key]["upper_bd"])
+
             file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_medians")
             rtt_medians = ujson.load(file2)
-            #rtt_upper.append(rtt_medians[key]["upper_bd"])
-            #rtt_lower.append(rtt_medians[key]["lower_bd"])
-            #rtt_median.append(rtt_medians[key]["median"])
+            
+            rtt_upper.append(rtt_medians[key]["upper_bd"])
+            rtt_lower.append(rtt_medians[key]["lower_bd"])
+            rtt_median.append(rtt_medians[key]["median"])
 
-
-            rtt_intervallist.append([rtt_medians[key]["lower_bd"],rtt_medians[key]["median"],rtt_medians[key]["upper_bd"]])
+            rtt_intervallist.append([rtt_medians[key]["lower_bd"],rtt_medians[key]["upper_bd"]])
 
             file2.close()
         else:
@@ -80,11 +83,40 @@ for date in tqdm(range(delta.days + 1)):
 
 plt.figure()
 
-plt.plot(rtt_intervallist)
+
+#plt.boxplot(rtt_intervallist)
 #plt.plot(date_list)
-#plt.set_xticks(date_list)
+#plt.xticks(date_list)
+
+plt.errorbar(date_list, rtt_median, yerr=rtt_intervallist, fmt='o')
 
 plt.savefig('results/rtt_graph.png')
 
 
 #plt.show()
+
+
+""" import numpy as np
+import matplotlib.pyplot as plt
+
+# example data
+x = np.arange(0.1, 4, 0.5)
+y = np.exp(-x)
+
+# example error bar values that vary with x-position
+error = 0.1 + 0.2 * x
+
+fig, (ax0, ax1) = plt.subplots(nrows=2, sharex=True)
+ax0.errorbar(x, y, yerr=error, fmt='-o')
+ax0.set_title('variable, symmetric error')
+
+# error bar values w/ different -/+ errors that
+# also vary with the x-position
+lower_error = 0.4 * error
+upper_error = error
+asymmetric_error = [lower_error, upper_error]
+
+ax1.errorbar(x, y, yerr=asymmetric_error, fmt='o')
+ax1.set_title('variable, asymmetric error')
+ax1.set_yscale('log')
+plt.show() """
