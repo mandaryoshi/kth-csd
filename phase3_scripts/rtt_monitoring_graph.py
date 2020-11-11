@@ -38,8 +38,8 @@ rtt_lower = []
 
 date_list = []
 
-rtt_intervallist = []
-ref_intervallist = []
+#rtt_intervallist = []
+#ref_intervallist = []
 
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)
@@ -67,7 +67,7 @@ for date in tqdm(range(delta.days + 1)):
             rtt_lower.append(rtt_medians[key]["lower_bd"])
             rtt_median.append(rtt_medians[key]["median"])
 
-            rtt_intervallist.append([rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"], rtt_medians[key]["upper_bd"] - rtt_medians[key]["median"]])
+            #rtt_intervallist.append([rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"], rtt_medians[key]["upper_bd"] - rtt_medians[key]["median"]])
 
             file2.close()
         else:
@@ -88,7 +88,9 @@ plt.figure()
 #plt.plot(date_list)
 #plt.xticks(date_list)
 
-plt.errorbar(date_list, rtt_median, yerr=rtt_intervallist, fmt='o')
+err_list = [rtt_lower, rtt_upper]
+
+plt.errorbar(date_list, rtt_median, yerr=err_list, fmt='o')
 
 plt.savefig('results/rtt_graph.png')
 
