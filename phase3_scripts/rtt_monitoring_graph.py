@@ -46,7 +46,7 @@ for date in tqdm(range(delta.days + 1)):
     #print(date)    
     for hour in tqdm(hours):
         if hour == "00":
-            date_list.append(day)
+            date_list.append(str(day))
         else:
             date_list.append(hour)
         file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_ref_values")
@@ -80,8 +80,9 @@ for date in tqdm(range(delta.days + 1)):
 
 plt.figure()
 
-plt.boxplot(rtt_intervallist)
-plt.plot(date_list)
+plt.plot(rtt_intervallist)
+#plt.plot(date_list)
+#plt.set_xticks(date_list)
 
 plt.savefig('results/rtt_graph.png')
 
