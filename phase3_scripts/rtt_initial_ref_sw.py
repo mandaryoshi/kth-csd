@@ -51,6 +51,7 @@ index_of_0 = hours.index("00")
 index_of_23 = hours.index("23")
 diff = index_of_23 - index_of_0
 
+#Check if the hour is in the previous or current data
 previous_array =[]
 curr_array = []
 if diff == -1:
