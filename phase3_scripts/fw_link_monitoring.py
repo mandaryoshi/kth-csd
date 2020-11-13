@@ -10,7 +10,7 @@ import ast
 date = sys.argv[1]
 hour = sys.argv[2]
 
-path = "/home/csd/traceroutes/" + date + "/" + hour + "/connections"
+path = "/home/csd/traceroutes/" + date + "/" + hour + "00/connections"
 file = open(path)
 links = ujson.load(file)
 
