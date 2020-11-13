@@ -51,7 +51,7 @@ for date in tqdm(range(delta.days + 1)):
             if source == link0:
                 link_ok = True
             
-            if len(connections[key]) > 5):
+            if len(connections[key]) > 5:
 
                 if link0 in fw_dict:
                     if link1 in fw_dict[link0]:
