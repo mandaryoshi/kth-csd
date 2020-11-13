@@ -16,8 +16,8 @@ while [ "$d" != "$enddate" ]; do
         then
             :
         else
-            python3 fw_initial_ref.py $d $hour\00
-            python3 fw_link_monitoring.py $d $hour\00
+            python3 fw_initial_ref.py $d $hour
+            python3 fw_link_monitoring.py $d $hour
         fi
     done
 
