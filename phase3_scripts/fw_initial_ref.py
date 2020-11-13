@@ -6,16 +6,17 @@ from math import sqrt
 #import scipy.stats as st
 import time
 import ast
-from datetime import date, timedelta
+#from datetime import date, timedelta
+import datetime as dt
 
 date = sys.argv[1]
 hour = sys.argv[2]
 
 split_date = date.split('-')
-sdate = date(int(split_date[0]), int(split_date[1]), int(split_date[2]))   # start date
+
+sdate = dt.date(int(split_date[0]), int(split_date[1]), int(split_date[2]))   # start date
 #delta = sdate
 #range(delta.days - 1)
-
 
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
@@ -27,7 +28,7 @@ fw_dict = {}
 for h in index_interval:
 
     if index_interval[0] >= 21 and h >= 0:
-        day = sdate + timedelta(days= -1)
+        day = sdate + dt.timedelta(days= -1)
         path = "/home/csd/traceroutes/" + str(day) + "/" + hours[h] + "00" + "/connections"
     else:
         path = "/home/csd/traceroutes/" + date + "/" + hours[h] + "00" + "/connections"
