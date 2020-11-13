@@ -115,7 +115,9 @@ for i in hours:
         del link_dict[x]
     file.close()
 
-print(link_dict)
+link_dict_1, link_dict_2 = np.split(link_dict, [17])
+print(len(link_dict_1))
+print(len(link_dict_2))
 
 initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
@@ -126,3 +128,5 @@ for key, val in link_dict.items():
     }
 output_file.write(ujson.dumps(initial_ref_values))
 output_file.close()
+
+#median = 0.9*median(18hours) + 0.1*median(6hours)
