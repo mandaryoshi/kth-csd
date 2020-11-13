@@ -83,7 +83,7 @@ for source in fw_dict.keys():
         r_val_dict = r_values(fw_dict[source])
         for dest in r_val_dict:
             if r_val_dict[dest] < -0.25:
-                alarm_dict["alarms"].append(tuple(source, dest, r_val_dict[dest]))
+                alarm_dict["alarms"].append((source, dest, r_val_dict[dest]))
 
 #save alarms and references
 

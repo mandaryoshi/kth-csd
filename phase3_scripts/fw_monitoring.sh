@@ -12,7 +12,7 @@ while [ "$d" != "$enddate" ]; do
 
     for hour in {00..23}
     do
-        if ($d == startdate) && ($hour <= 03)
+        if [ "$d" == "$startdate" ] && [ $hour -le 03 ]
         then
             :
         else
