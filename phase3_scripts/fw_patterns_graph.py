@@ -73,7 +73,7 @@ for date in tqdm(range(delta.days + 1)):
 plt.figure(figsize=(25,10))
 
 for key, count in fw_dict[source].items():
-    if len(count) == 96:
+    if len(count) == len(date_list):
         plt.plot(np.arange(len(date_list)), count)
 
 #start graphing
@@ -92,4 +92,4 @@ plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 
 #plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
 
-plt.savefig('results/fw_graph_60.png')
+plt.savefig('results/fw_graph_58.png')
