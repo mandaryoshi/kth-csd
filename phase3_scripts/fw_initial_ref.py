@@ -11,7 +11,7 @@ from datetime import date, timedelta
 date = sys.argv[1]
 hour = sys.argv[2]
 
-split_date = sys.argv[1].split('-')
+split_date = date.split('-')
 sdate = date(int(split_date[0]), int(split_date[1]), int(split_date[2]))   # start date
 #delta = sdate
 #range(delta.days - 1)
