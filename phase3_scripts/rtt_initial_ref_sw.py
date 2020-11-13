@@ -115,17 +115,19 @@ for i in hours:
         del link_dict[x]
     file.close()
 
-link_dict_1, link_dict_2 = np.split(link_dict, [17])
-print(len(link_dict_1))
-print(len(link_dict_2))
+#link_dict_1, link_dict_2 = np.split(link_dict, [17])
 
 initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
+    lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [18])
+    median_array_1, median_array_2 = np.split(link_dict[key]["median"], [18])
+    ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [18])
     initial_ref_values[key] = {
-        "lower_bd" : round(np.median(link_dict[key]["lower_bd"]),5),
-        "median" : round(np.median(link_dict[key]["median"]),5),
-        "upper_bd" : round(np.median(link_dict[key]["upper_bd"]),5)
+        "lower_bd" : round((np.median(lb_array_1)*0.9 + np.median(lb_array_2)*0.1),5),
+        "median" : round((np.median(median_array_1)*0.9 + np.median(median_array_2)*0.1),5),
+        "upper_bd" : round((np.median(ub_array_1)*0.9 + np.median(ub_array_2)*0.1),5)
     }
+
 output_file.write(ujson.dumps(initial_ref_values))
 output_file.close()
 
