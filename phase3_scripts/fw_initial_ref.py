@@ -27,7 +27,7 @@ fw_dict = {}
 
 for h in index_interval:
 
-    if index_interval[0] >= 21 and h >= 0:
+    if index_interval[0] >= 21 and h in [0,1,2,3]:
         day = sdate + dt.timedelta(days= -1)
         path = "/home/csd/traceroutes/" + str(day) + "/" + hours[h] + "00" + "/connections"
     else:
