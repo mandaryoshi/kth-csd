@@ -33,11 +33,11 @@ def sliding_window(curr_hour):
 
 
 #Retrieve a whole day data as reference computation
-#curr_date = sys.argv[1] #%yy/mm/dd
-#curr_hour = sys.argv[2] #%hh
+curr_date = sys.argv[1] #%yy/mm/dd
+curr_hour = sys.argv[2] #%hh
 
-curr_date = "20/10/31"
-curr_hour = sys.argv[1]
+#curr_date = "20/10/31"
+#curr_hour = sys.argv[1]
 
 curr_date_dateTime = datetime.strptime(curr_date, "%y/%m/%d")
 previous_date = str((curr_date_dateTime - timedelta(days = 1)).date())
@@ -131,4 +131,4 @@ for key, val in link_dict.items():
 output_file.write(ujson.dumps(initial_ref_values))
 output_file.close()
 
-#median = 0.9*median(18hours) + 0.1*median(6hours)
+
