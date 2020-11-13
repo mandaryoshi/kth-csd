@@ -2,8 +2,6 @@ import ujson
 import sys
 from tqdm import tqdm
 import numpy as np
-import scipy.stats as st
-import time
 import matplotlib.pyplot as plt
 from datetime import date, timedelta
 
@@ -30,7 +28,6 @@ rtt_median =  []
 rtt_lower = []
 
 date_list = []
-
 
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)   
@@ -64,17 +61,11 @@ for date in tqdm(range(delta.days + 1)):
             sys.exit()
         
         file1.close()
-       
-    #day = sdate + timedelta(days=date)
-    #print(day)
 
 #start graphing
 
 plt.figure(figsize=(30,10))
 
-
-#plt.boxplot(rtt_intervallist)
-#plt.plot(date_list)
 plt.xticks(np.arange(96),date_list,rotation='vertical')
 
 err_list = [rtt_lower, rtt_upper]
@@ -83,7 +74,8 @@ plt.plot(np.arange(96), normal_reference_median)
 plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
 plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
-
+plt.xlabel("Date")
+plt.ylabel("Differential RTTs")
 plt.savefig('results/rtt_sw_graph.png')
 
 

@@ -33,39 +33,32 @@ def sliding_window(curr_hour):
 
 
 #Retrieve a whole day data as reference computation
-curr_date = sys.argv[1] #%yy/mm/dd
+curr_date = sys.argv[1] 
 curr_hour = sys.argv[2] #%hh
 
 curr_date_dateTime = datetime.strptime(curr_date, "%Y-%m-%d")
-print(curr_date_dateTime)
 previous_date = str((curr_date_dateTime - timedelta(days = 1)).date())
-print(previous_date)
-
-#print(previous_date)
 
 hours = sliding_window(curr_hour)
 #find the index of "00" in hours
-index_of_0 = hours.index("00")
-index_of_23 = hours.index("23")
-diff = index_of_23 - index_of_0
+first_hour_index = hours.index("00")
+last_hour_index = hours.index("23")
+diff = last_hour_index - first_hour_index
 
-#Check if the hour is in the previous or current data
+#Check if the hour is in the previous date array or current date array
 previous_array =[]
 curr_array = []
+
 if diff == -1:
-    for i in range(0,(index_of_23)+1):
+    for i in range(0,(last_hour_index)+1):
         previous_array.append(hours[i])
-    for j in range(index_of_0, len(hours)):
+    for j in range(first_hour_index, len(hours)):
         curr_array.append(hours[j])    
 else:
     for i in range(0,len(hours)):
         previous_array.append(hours[i])
-print(previous_array)
-print(curr_array)
-print(hours)
 
 hour  = hours[0]
-
 path = "/home/csd/traceroutes/" + previous_date + "/" + hour + "00" + "/connections"
 output_file = open("results/rtt_sw_ref_values",'w')
 file = open(path)
@@ -75,7 +68,6 @@ link_dict = dict.fromkeys(links.keys())
 for i in hours:
     deletions_list = []
     hour = i
-    print(hour)
     if hour in previous_array:
         path = "/home/csd/traceroutes/" + previous_date + "/" + hour + "00" + "/connections"
     elif hour in curr_array:
@@ -104,18 +96,13 @@ for i in hours:
                 link_dict[link]["lower_bd"].append(interval[0])
                 link_dict[link]["median"].append(normal_ref)
                 link_dict[link]["upper_bd"].append(interval[1])
-            #print("Wilson confidence interval", interval)
-            #print(normal_ref)
-            #print("python confidence intervals", st.norm.interval(alpha=0.95, loc=normal_ref, scale=st.sem(sorted_links1)))
-            #time.sleep(1)
         else:
             deletions_list.append(link)
-    #print(deletions_list)
+
     for x in deletions_list:
         del link_dict[x]
     file.close()
 
-#link_dict_1, link_dict_2 = np.split(link_dict, [17])
 
 initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
@@ -130,5 +117,4 @@ for key, val in link_dict.items():
 
 output_file.write(ujson.dumps(initial_ref_values))
 output_file.close()
-
 

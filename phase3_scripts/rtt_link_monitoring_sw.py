@@ -3,7 +3,6 @@ import sys
 from tqdm import tqdm
 import numpy as np
 from math import sqrt
-import scipy.stats as st
 import time
 from shutil import copyfile
 
@@ -18,9 +17,8 @@ def wilson(p, n, z = 1.96):
     return (round(lower_bound*n), round(upper_bound*n))
 
 
-
 date = sys.argv[1]
-hour = sys.argv[2] #0500
+hour = sys.argv[2] 
 
 #path for fetching the hourly connection values
 connections_path = "/home/csd/traceroutes/" + date + "/" + hour + "/connections"
