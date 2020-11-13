@@ -25,11 +25,10 @@ def sliding_window(curr_hour):
     #n = no of time the array must be rotated.
     n = hours.index(curr_hour)   
     for i in range(0,n):
-        first = hours[0];    
+        first = hours[0]    
         for j in range(0, len(hours)-1):     
-            hours[j] = hours[j+1];    
-
-        hours[len(hours)-1] = first;    
+            hours[j] = hours[j+1]    
+        hours[len(hours)-1] = first    
     return hours            
 
 
@@ -116,7 +115,7 @@ for i in hours:
         del link_dict[x]
     file.close()
 
-print(hour)
+print(link_dict)
 
 initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
