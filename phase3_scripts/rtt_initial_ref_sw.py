@@ -36,11 +36,10 @@ def sliding_window(curr_hour):
 curr_date = sys.argv[1] #%yy/mm/dd
 curr_hour = sys.argv[2] #%hh
 
-#curr_date = "20/10/31"
-#curr_hour = sys.argv[1]
-
-curr_date_dateTime = datetime.strptime(curr_date, "%y/%m/%d")
+curr_date_dateTime = datetime.strptime(curr_date, "%Y-%m-%d")
+print(curr_date_dateTime)
 previous_date = str((curr_date_dateTime - timedelta(days = 1)).date())
+print(previous_date)
 
 #print(previous_date)
 
@@ -80,6 +79,7 @@ for i in hours:
     if hour in previous_array:
         path = "/home/csd/traceroutes/" + previous_date + "/" + hour + "00" + "/connections"
     elif hour in curr_array:
+        #path = "/home/csd/traceroutes/" + str(curr_date_dateTime.date()) + "/" + hour + "00" + "/connections"
         path = "/home/csd/traceroutes/" + str(curr_date_dateTime.date()) + "/" + hour + "00" + "/connections"
         
     print(path)
