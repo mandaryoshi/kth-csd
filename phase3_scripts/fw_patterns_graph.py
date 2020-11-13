@@ -74,7 +74,7 @@ plt.figure(figsize=(25,10))
 
 for key, count in fw_dict[source].items():
     if len(count) == 96:
-        plt.plot(np.arange(96), count)
+        plt.plot(np.arange(len(date_list)), count)
 
 #start graphing
 
@@ -83,7 +83,7 @@ for key, count in fw_dict[source].items():
 
 #plt.boxplot(rtt_intervallist)
 #plt.plot(date_list)
-plt.xticks(np.arange(96),date_list,rotation='vertical')
+plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 
 #err_list = [rtt_lower, rtt_upper]
 
