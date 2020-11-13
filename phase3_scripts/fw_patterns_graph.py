@@ -4,6 +4,7 @@ from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import date, timedelta
+import ast 
 
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
@@ -40,8 +41,8 @@ for date in tqdm(range(delta.days + 1)):
 
         ### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
         link_ok = False
-        for link in connections:
-            link = ast.literal_eval(link)
+        for key in connections:
+            link = ast.literal_eval(key)
             #print(val[0])
             #time.sleep(1)
             link0 = str(link[0])
@@ -50,17 +51,17 @@ for date in tqdm(range(delta.days + 1)):
             if source == link0:
                 link_ok = True
             
-            if len(connections[link] > 5):
+            if len(connections[key] > 5):
 
                 if link0 in fw_dict:
                     if link1 in fw_dict[link0]:
-                        fw_dict[link0][link1].append(len(connections[str(link)]))
+                        fw_dict[link0][link1].append(len(connections[str(key)]))
                     else:
-                        fw_dict[link0][link1] = [len(connections[str(link)])]
+                        fw_dict[link0][link1] = [len(connections[str(key)])]
                 else:
                     #print(link[0])
                     fw_dict[link0] = {
-                        link1 : [len(connections[str(link)])]
+                        link1 : [len(connections[str(key)])]
                         
                     }
             
