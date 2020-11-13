@@ -87,7 +87,10 @@ for source in fw_dict.keys():
 
 #save alarms and references
 
-
+output_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_alarms"
+output_file = open(output_path,'w')
+output_file.write(ujson.dumps(alarm_dict)
+output_file.close()
 
 
 
