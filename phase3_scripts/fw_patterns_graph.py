@@ -26,6 +26,7 @@ fw_dict = {}
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)
  
+    
     for hour in tqdm(hours):
         if hour == "00":
             date_list.append(str(day))
@@ -35,33 +36,36 @@ for date in tqdm(range(delta.days + 1)):
         
         connections = ujson.load(file1)
 
-        if source in connections:
+        
 
         ### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
+        link_ok = False
+        for link in connections:
+            link = ast.literal_eval(link)
+            #print(val[0])
+            #time.sleep(1)
+            link0 = str(link[0])
+            link1 = str(link[1])
 
-            for link in connections:
-                link = ast.literal_eval(link)
-                #print(val[0])
-                #time.sleep(1)
+            if source == link0:
+                link_ok = True
+            
+            if len(connections[link] > 5):
 
-                if len(connections[link] > 5):
-
-                    link0 = str(link[0])
-                    link1 = str(link[1])
-
-                    if link0 in fw_dict:
-                        if link1 in fw_dict[link0]:
-                            fw_dict[link0][link1].append(len(connections[str(link)]))
-                        else:
-                            fw_dict[link0][link1] = [len(connections[str(link)])]
+                if link0 in fw_dict:
+                    if link1 in fw_dict[link0]:
+                        fw_dict[link0][link1].append(len(connections[str(link)]))
                     else:
-                        #print(link[0])
-                        fw_dict[link0] = {
-                            link1 : [len(connections[str(link)])]
-                            
-                        }
-            file1.close()
-        else:
+                        fw_dict[link0][link1] = [len(connections[str(link)])]
+                else:
+                    #print(link[0])
+                    fw_dict[link0] = {
+                        link1 : [len(connections[str(link)])]
+                        
+                    }
+            
+        file1.close()
+        if link_ok == False:
             print("INVALID SOURCE")
             sys.exit()
             
