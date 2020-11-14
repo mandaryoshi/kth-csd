@@ -38,23 +38,23 @@ for date in tqdm(range(delta.days + 1)):
 
         ### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
         for source in new_model:
-            for dest, value in new_model[source].items:
+            for dest, value in new_model[source].items():
                 if source in fw_comp_model:
                     if dest in fw_comp_model[source]:
                         fw_comp_model[source][dest]["ref"].append(value[0])
-                        if len(value) == 0:
+                        if len(value) == 1:
                             fw_comp_model[source][dest]["obs"].append(0)
                         else:
                             fw_comp_model[source][dest]["obs"].append(value[1])
                     else:
                         fw_comp_model[source][dest] = {"ref" : [value[0]]}
-                        if len(value) == 0:
+                        if len(value) == 1:
                             fw_comp_model[source][dest]["obs"] = [0]
                         else:
                             fw_comp_model[source][dest]["obs"] = [value[1]]       
                 else:
                     fw_comp_model[source] = {dest : {"ref" : [value[0]]}}
-                    if len(value) == 0:
+                    if len(value) == 1:
                         fw_comp_model[source][dest]["obs"] = [0]
                     else:
                         fw_comp_model[source][dest]["obs"] = [value[1]]
