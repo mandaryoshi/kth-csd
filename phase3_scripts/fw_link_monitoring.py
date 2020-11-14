@@ -94,7 +94,10 @@ output_file = open(output_path,'w')
 output_file.write(ujson.dumps(alarm_dict))
 output_file.close()
 
-
+comparison_out_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_model_comparison"
+comparison_out_file = open(comparison_out_path,'w')
+comparison_out_file.write(ujson.dumps(fw_dict))
+comparison_out_file.close()
 
 #then, if the chi sqaure result detects an anomaly, check the link using the responsibility metric
 """
