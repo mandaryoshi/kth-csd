@@ -49,13 +49,13 @@ for date in tqdm(range(delta.days + 1)):
                         else:
                             fw_comp_model[source][dest]["obs"].append(value[1])
                     else:
-                        fw_comp_model[source][dest] = {"ref" : [value[0]]}
+                        fw_comp_model[source][dest] = {"ref": [value[0]]}
                         if len(value) == 1:
                             fw_comp_model[source][dest]["obs"] = [0]
                         else:
                             fw_comp_model[source][dest]["obs"] = [value[1]]       
                 else:
-                    fw_comp_model[source] = {dest : {"ref" : [value[0]]}}
+                    fw_comp_model[source] = {dest : {"ref": [value[0]]}}
                     if len(value) == 1:
                         fw_comp_model[source][dest]["obs"] = [0]
                     else:
@@ -66,11 +66,11 @@ for date in tqdm(range(delta.days + 1)):
             link1 = key[1]
             if link0 in fw_comp_model:
                 if link1 in fw_comp_model[link0]:
-                    if "colours" in fw_comp_model[link0][link1]:
-                        fw_comp_model[link0][link1].append(len(date_list)-1)
+                    if "alarms" in fw_comp_model[link0][link1]:
+                        fw_comp_model[link0][link1]["alarms"].append(len(date_list)-1)
                     else:
-                        fw_comp_model[link0][link1] = {"colours" : [len(date_list)-1]}
-
+                        fw_comp_model[link0][link1]["alarms"] =  [len(date_list)-1]
+        file2.close()
 plt.figure(figsize=(25,10))
 
 
@@ -79,13 +79,14 @@ if origin in fw_comp_model:
     for key, values in fw_comp_model[origin].items():
         reference = values["ref"]
         observed = values["obs"]
-        colours = ['green'] * len(date_list)
-        if "colours" in values:
-            for index in values["colours"]:
-                colours[index] = 'red'
+        alarm_values = []
+        if "alarms" in values:
+            for index in values["alarms"]:
+                alarm_values.append(observerd[index])
+            plt.plot(values["alarms"], alarm_values, color = 'red')
         if len(values["ref"]) == len(date_list):
             plt.plot(np.arange(len(date_list)), reference, color = 'blue')
-            plt.plot(np.arange(len(date_list)), observed, color = colours)
+            plt.plot(np.arange(len(date_list)), observed)
             
 
 #start graphing
