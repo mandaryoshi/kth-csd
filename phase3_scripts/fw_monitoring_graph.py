@@ -64,6 +64,8 @@ for date in tqdm(range(delta.days + 1)):
         for key in alarms["alarms"]:
             link0 = key[0]
             link1 = key[1]
+            if link0 == origin:
+                print("alarm")
             if link0 in fw_comp_model:
                 if link1 in fw_comp_model[link0]:
                     if "alarms" in fw_comp_model[link0][link1]:
@@ -82,7 +84,7 @@ if origin in fw_comp_model:
         alarm_values = []
         if "alarms" in values:
             for index in values["alarms"]:
-                alarm_values.append(observerd[index])
+                alarm_values.append(observed[index])
             plt.scatter(values["alarms"], alarm_values, color = 'red')
         if len(values["ref"]) == len(date_list):
             plt.plot(np.arange(len(date_list)), reference, color = 'blue')
@@ -104,5 +106,5 @@ plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 #plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
 #plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
-
-plt.savefig('results/fw_graph_58.png')
+save_path = "results/fw_graph_alarms_" + origin + ".png"
+plt.savefig(save_path)
