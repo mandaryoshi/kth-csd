@@ -36,6 +36,8 @@ for date in tqdm(range(delta.days + 1)):
         file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/fw_model_comparison")
         new_model = ujson.load(file1)
 
+        file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/fw_alarms")
+        alarms = ujson.load(file2)
         ### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
         for source in new_model:
             for dest, value in new_model[source].items():
@@ -59,8 +61,16 @@ for date in tqdm(range(delta.days + 1)):
                     else:
                         fw_comp_model[source][dest]["obs"] = [value[1]]
         file1.close()
-        
-            
+        for key in alarms["alarms"]:
+            link0 = key[0]
+            link1 = key[1]
+            if link0 in fw_comp_model:
+                if link1 in fw_comp_model[link0]:
+                    if "colours" in fw_comp_model[link0][link1]:
+                        fw_comp_model[link0][link1].append(len(date_list)-1)
+                    else:
+                        fw_comp_model[link0][link1] = {"colours" : [len(date_list)-1]}
+
 plt.figure(figsize=(25,10))
 
 
@@ -69,9 +79,14 @@ if origin in fw_comp_model:
     for key, values in fw_comp_model[origin].items():
         reference = values["ref"]
         observed = values["obs"]
+        colours = ['green'] * len(date_list)
+        if "colours" in values:
+            for index in values["colours"]:
+                colours[index] = 'red'
         if len(values["ref"]) == len(date_list):
             plt.plot(np.arange(len(date_list)), reference, color = 'blue')
-            plt.plot(np.arange(len(date_list)), observed)
+            plt.plot(np.arange(len(date_list)), observed, color = colours)
+            
 
 #start graphing
 
