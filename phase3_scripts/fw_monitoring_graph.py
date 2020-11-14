@@ -83,7 +83,7 @@ if origin in fw_comp_model:
         if "alarms" in values:
             for index in values["alarms"]:
                 alarm_values.append(observerd[index])
-            plt.plot(values["alarms"], alarm_values, color = 'red')
+            plt.scatter(values["alarms"], alarm_values, color = 'red')
         if len(values["ref"]) == len(date_list):
             plt.plot(np.arange(len(date_list)), reference, color = 'blue')
             plt.plot(np.arange(len(date_list)), observed)
