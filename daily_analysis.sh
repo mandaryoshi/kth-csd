@@ -1,7 +1,10 @@
 #!/bin/bash
 
-echo "INSERT DATE (YYYY-MM-DD):"
-read date
+echo "INSERT START DATE (YYYY-MM-DD):"
+read sdate
+echo "INSERT END DATE (YYYY-MM-DD):"
+read edate
+
 
 mkdir /home/csd/traceroutes/$date
 
