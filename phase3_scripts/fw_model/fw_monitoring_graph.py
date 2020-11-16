@@ -78,8 +78,12 @@ for date in tqdm(range(delta.days + 1)):
                 if link1 in fw_comp_model[link0]:
                     if "alarms" in fw_comp_model[link0][link1]:
                         fw_comp_model[link0][link1]["alarms"].append(len(date_list)-1)
+                        fw_comp_model[link0][link1]["r_p_value"].append((key[2], key[3]))
+
                     else:
                         fw_comp_model[link0][link1]["alarms"] =  [len(date_list)-1]
+                        fw_comp_model[link0][link1]["r_p_value"] = [(key[2], key[3])]
+                    
         file2.close()
 plt.figure(figsize=(25,10))
 
@@ -94,7 +98,8 @@ if origin in fw_comp_model:
             if "alarms" in values:
                 for index in values["alarms"]:
                     alarm_values.append(observed[index])
-                plt.scatter(values["alarms"], alarm_values, color = 'red')
+
+                plt.scatter(values["alarms"], alarm_values, color = 'red', label=values["r_p_values"])
             if len(values["ref"]) == len(date_list):
                 plt.plot(np.arange(len(date_list)), reference, color = 'blue')
                 plt.plot(np.arange(len(date_list)), observed)
@@ -111,6 +116,7 @@ plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 
 #err_list = [rtt_lower, rtt_upper]
 
+plt.legend()
 
 #plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
