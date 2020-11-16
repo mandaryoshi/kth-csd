@@ -4,25 +4,37 @@ import time
 import ujson
 import networkx as nx
 import pickle
+import sys
+
+date = sys.argv[1]
+hour = sys.argv[2]
 
 id = 0
 
 graph = nx.DiGraph()
-file_object = open('json_results/traceroute_results', 'w')
 
-with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as readfile:
+#change the name of the folder
+folder_path = "/home/csd/traceroutes/" + date + "/" + hour + "/traceroute_results"
+file_object = open(folder_path, 'w')
+
+#change the name of the folder
+trace_file_path = "/home/csd/traceroutes/" + date + "/" + hour + "/traceroute-" + date + "T" + hour
+with open(trace_file_path,'r') as readfile:
     #counter = 0
     traceroute_dict = {}
     edges_tuple = []
     for line in tqdm(readfile):
         json_line = ujson.loads(line)
-        
+        edge_array = []
         if "paris_id" in json_line and "result" in json_line:
             if json_line["paris_id"] > 0 and json_line["af"] == 4:
-
+                info_dict = {}
+                info_dict["hops"] = []
+                info_dict["msm_id"] = json_line["msm_id"]
+                info_dict["prb_id"] = json_line["prb_id"]
+                info_dict["timestamp"] = json_line["timestamp"]
                 id = id + 1
-                traceroute_dict[id] = []
-                edge_array = []
+        #        edge_array = []
                 for item in json_line["result"]:
                     rtt = 0
                     hop_ip = "x"
@@ -34,16 +46,18 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
                                 rtt_avg = rtt/len(item["result"])
                         edge_array.append(hop_ip)
                         if hop_ip != "x":
-                            traceroute_dict[id].append({
+                            info_dict["hops"].append({
                                 'hop': item['hop'], 
                                 'from' : hop_ip, 
-                                'rtt' : round(rtt_avg, 2)})
+                                'rtt' : round(rtt_avg, 5)})
                     """counter = counter + 1
                     if counter == 1000000:
                         file_object.write(ujson.dumps(traceroute_dict))
                         file_object.write('\n')
                         tracereoute_dict = {}
                         counter = 0"""
+                traceroute_dict[id] = info_dict
+              
         #edges_tuple = []
         for x in range(len(edge_array)):
             if x < len(edge_array) - 1:
@@ -53,7 +67,9 @@ with open('/home/csd/traceroutes/14092020/traceroute-2020-09-14T1100','r') as re
 
     file_object.write(ujson.dumps(traceroute_dict))
     file_object.write('\n')
-    nx.write_gpickle(graph, 'network_diagram/traceroute_graph.gpickle')
+    #change the name of the folder
+    graph_path = "/home/csd/traceroutes/" + date + "/" + hour + "/traceroute_graph.gpickle"
+    nx.write_gpickle(graph, graph_path)
     
 file_object.close()
 
