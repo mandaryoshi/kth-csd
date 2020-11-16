@@ -92,4 +92,4 @@ plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 
 #plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
 
-plt.savefig('results/fw_graph_58.png')
+plt.savefig('../results/fw_graph_58.png')

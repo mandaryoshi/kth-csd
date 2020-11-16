@@ -60,7 +60,7 @@ else:
 
 hour  = hours[0]
 path = "/home/csd/traceroutes/" + previous_date + "/" + hour + "00" + "/connections"
-output_file = open("results/rtt_sw_ref_values",'w')
+output_file = open("../results/rtt_sw_ref_values",'w')
 file = open(path)
 links = ujson.load(file)
 link_dict = dict.fromkeys(links.keys()) 

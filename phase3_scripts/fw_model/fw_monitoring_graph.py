@@ -106,5 +106,5 @@ plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 #plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
 #plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
-save_path = "results/fw_graph_alarms_" + origin + ".png"
+save_path = "../results/fw_graph_alarms_" + origin + ".png"
 plt.savefig(save_path)

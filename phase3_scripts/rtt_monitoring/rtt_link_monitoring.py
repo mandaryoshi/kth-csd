@@ -30,12 +30,12 @@ links = ujson.load(file)
 
 
 #path for fetching the reference values
-ref_file = open("results/rtt_ref_values")
+ref_file = open("../results/rtt_ref_values")
 ref = ujson.load(ref_file)
 
 #path to save the old reference values in the beginning
 save_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_ref_values"
-ref_path = "results/rtt_ref_values"
+ref_path = "../results/rtt_ref_values"
 copyfile(ref_path, save_path)
 
 median_dict = {}
@@ -66,7 +66,7 @@ for link in ref.keys():
 	    }
 
 ref_file.close()
-ref_file = open("results/rtt_ref_values", 'w')
+ref_file = open("../results/rtt_ref_values", 'w')
 ref_file.write(ujson.dumps(ref))
 ref_file.close()
 

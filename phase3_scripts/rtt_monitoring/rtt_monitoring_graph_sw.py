@@ -76,6 +76,6 @@ plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, 
 plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
 plt.xlabel("Date")
 plt.ylabel("Differential RTTs")
-plt.savefig('results/rtt_sw_graph.png')
+plt.savefig('../results/rtt_sw_graph.png')
 
 

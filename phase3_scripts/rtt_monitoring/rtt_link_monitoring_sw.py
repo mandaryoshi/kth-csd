@@ -31,7 +31,7 @@ ref = ujson.load(ref_file)
 
 #path to save the old reference values in the beginning
 save_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_ref_values"
-ref_path = "results/rtt_sw_ref_values"
+ref_path = "../results/rtt_sw_ref_values"
 copyfile(ref_path, save_path)
 
 median_dict = {}

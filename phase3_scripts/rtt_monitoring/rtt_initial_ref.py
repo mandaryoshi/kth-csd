@@ -23,7 +23,7 @@ hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
 hour  = hours[0]
 path = "/home/csd/traceroutes/" + date + "/" + hour + "00" + "/connections"
-output_file = open("results/rtt_ref_values",'w')
+output_file = open("../results/rtt_ref_values",'w')
 file = open(path)
 links = ujson.load(file)
 link_dict = dict.fromkeys(links.keys()) 

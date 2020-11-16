@@ -95,7 +95,7 @@ plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, 
 
 plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
 
-plt.savefig('results/rtt_graph.png')
+plt.savefig('../results/rtt_graph.png')
 
 
 #plt.show()
