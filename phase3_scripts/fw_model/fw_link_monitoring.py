@@ -7,7 +7,7 @@ from scipy.stats import chisquare
 import time
 import ast
 
-np.seterr(divide='ignore', invalid='ignore')
+#np.seterr(divide='ignore', invalid='ignore')
 
 date = sys.argv[1]
 hour = sys.argv[2]
@@ -69,19 +69,22 @@ alarm_dict = {"alarms" : []}
 
 #two lists to compare
 for source in fw_dict.keys():
-    dests = []
+    #dests = []
     ref_list = []
     results_list = []
     for dest, val in fw_dict[source].items():
-        ref_list.append(val[0])
-        dests.append(dest)
-        if len(val) == 1:
-            results_list.append(0)
-        else:
+        #ref_list.append(val[0])
+        #dests.append(dest)
+        #if len(val) == 1:
+            #results_list.append(0)
+        if val[0] != 0 and len(val) == 2:
+            ref_list.append(val[0])
             results_list.append(val[1])
+        #else:
+            #results_list.append(val[1])
     #first compute the chi sqaured test
     p_value = chisquare(results_list, ref_list)[1]
-    if p_value > 0.005:
+    if p_value > 0.01:
         r_val_dict = r_values(fw_dict[source])
         for dest in r_val_dict:
             if r_val_dict[dest] < -0.25 or r_val_dict[dest] > 0.25:
