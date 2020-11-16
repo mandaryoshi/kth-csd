@@ -39,7 +39,7 @@ echo "IXP HOPS FOUND"
 
 echo "FORWARDING MODEL ONGOING"
 
-python3 phase3_scripts/fw_model.py $date $hour
+python3 phase3_scripts/fw_model/fw_model.py $date $hour
 
 rm /home/csd/traceroutes/$date/$hour/traceroute_results
 
