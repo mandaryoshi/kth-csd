@@ -90,7 +90,7 @@ if origin in fw_comp_model:
         reference = values["ref"]
         observed = values["obs"]
         alarm_values = []
-        if observed == len(date_list):
+        if len(observed) == len(date_list):
             if "alarms" in values:
                 for index in values["alarms"]:
                     alarm_values.append(observed[index])
