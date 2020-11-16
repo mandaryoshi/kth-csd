@@ -43,23 +43,31 @@ for date in tqdm(range(delta.days + 1)):
             for dest, value in new_model[source].items():
                 if source in fw_comp_model:
                     if dest in fw_comp_model[source]:
-                        fw_comp_model[source][dest]["ref"].append(value[0])
-                        if len(value) == 1:
-                            fw_comp_model[source][dest]["obs"].append(0)
-                        else:
+                        if len(value) == 2 and value[0] != 0:
+                            fw_comp_model[source][dest]["ref"].append(value[0])
                             fw_comp_model[source][dest]["obs"].append(value[1])
+                        
+                        #fw_comp_model[source][dest]["ref"].append(value[0])
+                        #if len(value) == 1:
+                        #    fw_comp_model[source][dest]["obs"].append(0)
+                        #else:
+                        #    fw_comp_model[source][dest]["obs"].append(value[1])
                     else:
-                        fw_comp_model[source][dest] = {"ref": [value[0]]}
-                        if len(value) == 1:
-                            fw_comp_model[source][dest]["obs"] = [0]
-                        else:
-                            fw_comp_model[source][dest]["obs"] = [value[1]]       
+                        if len(value) == 2 and value[0] != 0:
+                            fw_comp_model[source][dest] = {"ref": [value[0]], "obs": [value[1]]}
+                        #fw_comp_model[source][dest] = {"ref": [value[0]]}
+                        #if len(value) == 1:
+                        #    fw_comp_model[source][dest]["obs"] = [0]
+                        #else:
+                        #    fw_comp_model[source][dest]["obs"] = [value[1]]       
                 else:
-                    fw_comp_model[source] = {dest : {"ref": [value[0]]}}
-                    if len(value) == 1:
-                        fw_comp_model[source][dest]["obs"] = [0]
-                    else:
-                        fw_comp_model[source][dest]["obs"] = [value[1]]
+                    if len(value) == 2 and value[0] != 0:
+                        fw_comp_model[source] = {dest : {"ref": [value[0]], "obs": [value[1]]}}
+                    #fw_comp_model[source] = {dest : {"ref": [value[0]]}}
+                    #if len(value) == 1:
+                    #    fw_comp_model[source][dest]["obs"] = [0]
+                    #else:
+                    #    fw_comp_model[source][dest]["obs"] = [value[1]]
         file1.close()
         for key in alarms["alarms"]:
             link0 = key[0]
@@ -82,13 +90,14 @@ if origin in fw_comp_model:
         reference = values["ref"]
         observed = values["obs"]
         alarm_values = []
-        if "alarms" in values:
-            for index in values["alarms"]:
-                alarm_values.append(observed[index])
-            plt.scatter(values["alarms"], alarm_values, color = 'red')
-        if len(values["ref"]) == len(date_list):
-            plt.plot(np.arange(len(date_list)), reference, color = 'blue')
-            plt.plot(np.arange(len(date_list)), observed)
+        if observed == len(date_list):
+            if "alarms" in values:
+                for index in values["alarms"]:
+                    alarm_values.append(observed[index])
+                plt.scatter(values["alarms"], alarm_values, color = 'red')
+            if len(values["ref"]) == len(date_list):
+                plt.plot(np.arange(len(date_list)), reference, color = 'blue')
+                plt.plot(np.arange(len(date_list)), observed)
             
 
 #start graphing
