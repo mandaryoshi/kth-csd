@@ -84,6 +84,8 @@ for source in fw_dict.keys():
             #results_list.append(val[1])
     #first compute the chi sqaured test
     p_value = chisquare(results_list, ref_list)[1]
+    if source == "60" and date == "2020-10-30" and hour == "18":
+        print(p_value)
     if p_value > 0.01:
         r_val_dict = r_values(fw_dict[source])
         for dest in r_val_dict:
