@@ -5,6 +5,11 @@ read sdate
 echo "INSERT END DATE (YYYY-MM-DD):"
 read edate
 
+startdate=$(date -I -d "$sdate") || exit -1
+enddate=$(date -I -d "$edate")   || exit -1
+
+date="$startdate"
+while [ "$date" != "$enddate" ]; do
 
 mkdir /home/csd/traceroutes/$date
 
@@ -50,5 +55,9 @@ python3 phase3_scripts/fw_model/fw_model.py $date $hour\00
 rm /home/csd/traceroutes/$date/$hour\00/traceroute_results
 
 echo "CONSTRAINT FACILITY SEARCH PERFORMED SUCCESSFULLY"
+
+done
+
+date=$(date -I -d "$date + 1 day")
 
 done
