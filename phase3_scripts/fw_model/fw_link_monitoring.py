@@ -58,11 +58,11 @@ for key in links:
     link0 = str(link[0])
     link1 = str(link[1])
 
-    if link0 in fw_dict and len(links[key]) > 5:
+    if link0 in fw_dict and len(links[key]["rtts"]) > 5 and len(links[key]["probes"]) > 4:
         if link1 in fw_dict[link0]:
-            fw_dict[link0][link1].append(len(links[str(link)]))
+            fw_dict[link0][link1].append(len(links[key]["rtts"]))
         else:
-            fw_dict[link0][link1] = [0,len(links[str(link)])]
+            fw_dict[link0][link1] = [0,len(links[key]["rtts"])]
  
 
 alarm_dict = {"alarms" : []}
@@ -96,7 +96,7 @@ for source in fw_dict.keys():
         if p_value <= 0.01:
             r_val_dict = r_values(fw_dict[source])
             for dest in r_val_dict:
-                if r_val_dict[dest] < -0.4 or r_val_dict[dest] > 0.4:
+                if r_val_dict[dest] < -0.5 or r_val_dict[dest] > 0.5:
                     alarm_dict["alarms"].append((source, dest, r_val_dict[dest], p_value))
 
 #save alarms and references

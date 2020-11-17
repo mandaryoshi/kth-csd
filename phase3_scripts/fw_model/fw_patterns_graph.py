@@ -51,17 +51,17 @@ for date in tqdm(range(delta.days + 1)):
             if source == link0:
                 link_ok = True
             
-            if len(connections[key]) > 5:
+            if len(connections[key]["rtts"]) > 5 and len(connections[key]["probes"]) > 5:
 
                 if link0 in fw_dict:
                     if link1 in fw_dict[link0]:
-                        fw_dict[link0][link1].append(len(connections[str(key)]))
+                        fw_dict[link0][link1].append(len(connections[key]["rtts"]))
                     else:
-                        fw_dict[link0][link1] = [len(connections[str(key)])]
+                        fw_dict[link0][link1] = [len(connections[key]["rtts"])]
                 else:
                     #print(link[0])
                     fw_dict[link0] = {
-                        link1 : [len(connections[str(key)])]
+                        link1 : [len(connections[key]["rtts"])]
                         
                     }
             

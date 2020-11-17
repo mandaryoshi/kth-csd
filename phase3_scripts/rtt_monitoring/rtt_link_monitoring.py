@@ -42,8 +42,8 @@ median_dict = {}
 alarm_dict = {"alarms" : []}
 
 for link in ref.keys():
-    if link in links and len(links[link]) > 5:
-        sorted_rtts = sorted(links[link])
+    if link in links and len(links[link]["rtts"]) > 5:
+        sorted_rtts = sorted(links[link]["rtts"])
         normal_ref = np.median(sorted_rtts)
         ranks = wilson(0.5,len(sorted_rtts))
         #print(ranks, len(sorted_rtts))

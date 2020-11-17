@@ -48,20 +48,20 @@ def forwarding_model(cfs, hop_results, m, date, hour):
     
     near_end_map = {}
     near_end_list = []
-    for fac, ips in map1.items():
+    for fac, ips in map1.items():                   #Reverse FAc to ip mapping into ip to fac mapping
         for x in ips:
             if x in near_end_map:
                 near_end_list.append(x)
             else:    
                 near_end_map[x] = fac
             
-    near_end_list = list(dict.fromkeys(near_end_list))
+    near_end_list = list(dict.fromkeys(near_end_list))              #delete IPs with more than one facility attached to them
     for item in near_end_list:
         del near_end_map[item]
 
     far_end_map = {}        
     far_end_list = []
-    for fac, ips in map2.items():
+    for fac, ips in map2.items():                     #Reverse FAc to ip mapping into ip to fac mapping
         for x in ips:
             if x in far_end_map:
                 far_end_list.append(x)
@@ -81,16 +81,21 @@ def forwarding_model(cfs, hop_results, m, date, hour):
     for key, hops in tqdm(hop_results.items()):
         if (hops["previous_hop"] in near_end_map) and (hops["ixp_hop"] in far_end_map):
 
-            if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in link_list:
-                link_list.append((near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]))
+
+            if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in link_list:             #ONLY FOR THE MAP
+                link_list.append((near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]))            #ONLY FOR THE MAP
 
             counter = counter + 1
             rtt_diff = hops["rtts"][1] - hops["rtts"][0]
 
             if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in fwd_dict:
-                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])] = [rtt_diff]
+                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["rtts"] = [rtt_diff]
+                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["probes"] = [hops["prb_id"]]
             else:
-                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])].append(rtt_diff)
+                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["rtts"].append(rtt_diff)
+                
+                if hops["prb_id"] not in fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["probes"]:
+                    fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["probes"].append(hops["prb_id"])
     
     for x in link_list:
         if str(x[0]) in coordinates and str(x[1]) in coordinates:
