@@ -110,9 +110,9 @@ for key, val in link_dict.items():
     median_array_1, median_array_2 = np.split(link_dict[key]["median"], [18])
     ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [18])
     initial_ref_values[key] = {
-        "lower_bd" : round((np.median(lb_array_1)*0.9 + np.median(lb_array_2)*0.1),5),
-        "median" : round((np.median(median_array_1)*0.9 + np.median(median_array_2)*0.1),5),
-        "upper_bd" : round((np.median(ub_array_1)*0.9 + np.median(ub_array_2)*0.1),5)
+        "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),
+        "median" : round((np.median(median_array_1)*0.1 + np.median(median_array_2)*0.9),5),
+        "upper_bd" : round((np.median(ub_array_1)*0.1 + np.median(ub_array_2)*0.9),5)
     }
 
 output_file.write(ujson.dumps(initial_ref_values))
