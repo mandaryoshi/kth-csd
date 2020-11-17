@@ -26,7 +26,7 @@ file = open(connections_path)
 links = ujson.load(file)
 
 #path for fetching the reference values
-ref_file = open("results/rtt_sw_ref_values")
+ref_file = open("../results/rtt_sw_ref_values")
 ref = ujson.load(ref_file)
 
 #path to save the old reference values in the beginning
