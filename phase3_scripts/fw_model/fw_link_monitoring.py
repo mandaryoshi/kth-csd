@@ -3,7 +3,7 @@ import sys
 from tqdm import tqdm
 import numpy as np
 from math import sqrt
-from scipy.stats import chisquare, chi2_contingency
+from scipy.stats import chisquare
 import time
 import ast
 
@@ -84,20 +84,19 @@ for source in fw_dict.keys():
             #results_list.append(val[1])
     #first compute the chi sqaured test
     p_value = chisquare(ref_list, results_list)[1]
-    arry = [ref_list, results_list]
+    #arry = [ref_list, results_list]
     #print(arry)
     if source == "60" and date == "2020-10-30" and hour == "18":
         print(p_value)
         print("ref list", ref_list)
         print("results list", results_list)
-        print(chi2_contingency(arry)[1])
         print(chisquare(results_list, ref_list,ddof=10)[0])
     if len(ref_list) > 0 and len(results_list) > 0:
-        #p_value = chi2_contingency(arry)[1]
+        #p_value = chi2_contingency(arr)[1]
         if p_value <= 0.01:
             r_val_dict = r_values(fw_dict[source])
             for dest in r_val_dict:
-                if r_val_dict[dest] < -0.25 or r_val_dict[dest] > 0.25:
+                if r_val_dict[dest] < -0.4 or r_val_dict[dest] > 0.4:
                     alarm_dict["alarms"].append((source, dest, r_val_dict[dest], p_value))
 
 #save alarms and references
