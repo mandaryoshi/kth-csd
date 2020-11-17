@@ -106,9 +106,9 @@ for i in hours:
 
 initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
-    lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [18])
-    median_array_1, median_array_2 = np.split(link_dict[key]["median"], [18])
-    ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [18])
+    lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [21])
+    median_array_1, median_array_2 = np.split(link_dict[key]["median"], [21])
+    ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [21])
     initial_ref_values[key] = {
         "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),
         "median" : round((np.median(median_array_1)*0.1 + np.median(median_array_2)*0.9),5),
