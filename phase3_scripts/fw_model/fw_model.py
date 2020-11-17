@@ -89,8 +89,10 @@ def forwarding_model(cfs, hop_results, m, date, hour):
             rtt_diff = hops["rtts"][1] - hops["rtts"][0]
 
             if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in fwd_dict:
-                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["rtts"] = [rtt_diff]
-                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["probes"] = [hops["prb_id"]]
+                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])] = {
+                    "rtts": rtt_diff,
+                    "probes": [hops["prb_id"]]
+                }
             else:
                 fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["rtts"].append(rtt_diff)
                 
