@@ -90,7 +90,7 @@ def forwarding_model(cfs, hop_results, m, date, hour):
 
             if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in fwd_dict:
                 fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])] = {
-                    "rtts": rtt_diff,
+                    "rtts": [rtt_diff],
                     "probes": [hops["prb_id"]]
                 }
             else:
