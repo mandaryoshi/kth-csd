@@ -83,7 +83,7 @@ for source in fw_dict.keys():
         #else:
             #results_list.append(val[1])
     #first compute the chi sqaured test
-    p_value = chisquare(ref_list, results_list,ddof=10)[1]
+    p_value = chisquare(ref_list, results_list)[1]
     arry = [ref_list, results_list]
     #print(arry)
     if source == "60" and date == "2020-10-30" and hour == "18":
@@ -93,7 +93,7 @@ for source in fw_dict.keys():
         print(chi2_contingency(arry)[1])
         print(chisquare(results_list, ref_list,ddof=10)[0])
     if len(ref_list) > 0 and len(results_list) > 0:
-        p_value = chi2_contingency(arry)[1]
+        #p_value = chi2_contingency(arry)[1]
         if p_value <= 0.01:
             r_val_dict = r_values(fw_dict[source])
             for dest in r_val_dict:

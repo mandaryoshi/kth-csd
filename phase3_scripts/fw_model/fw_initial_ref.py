@@ -27,12 +27,12 @@ fw_dict = {}
 
 for h in index_interval:
 
-    if index_interval[0] >= 21 and h in [0,1,2]:
+    if index_interval[0] >= 21 and h not in [0,1,2]:
         day = sdate + dt.timedelta(days= -1)
         path = "/home/csd/traceroutes/" + str(day) + "/" + hours[h] + "00" + "/connections"
     else:
         path = "/home/csd/traceroutes/" + date + "/" + hours[h] + "00" + "/connections"
-    
+    #print(path)
     file = open(path)
     links = ujson.load(file)
 
