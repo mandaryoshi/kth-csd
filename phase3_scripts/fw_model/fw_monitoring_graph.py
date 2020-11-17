@@ -8,26 +8,34 @@ import ast
 
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
-         
+
+# Date format = 2020-10-20
 start_date = sys.argv[1].split('-')
 end_date = sys.argv[2].split('-')
 
-origin = sys.argv[3]
+# Near-end facility which links are going to be printed in the graph
+origin = sys.argv[3] 
 #dest = sys.argv[4]
 
 sdate = date(int(start_date[0]), int(start_date[1]), int(start_date[2]))   # start date
 edate = date(int(end_date[0]), int(end_date[1]), int(end_date[2]))   # end date
 
-delta = edate - sdate       # as timedelta
+#Calculate the range of days used for the loop
+delta = edate - sdate      
 
 date_list = []
 
 fw_comp_model = {}
 
+# Loop through the days considered in the graph
 for date in tqdm(range(delta.days + 1)):
+
+    # "Calculate" what day is going to be looped through
     day = sdate + timedelta(days=date)
  
-    
+    # For each hour, add to the fw_comp-dictionary the observed values and the expected usage values of each link with the 
+    # "origin" as near-end facility
+    # Also adding a list of alarms and r and p values to plot them over the observations
     for hour in tqdm(hours):
         if hour == "00":
             date_list.append(str(day))
@@ -85,10 +93,13 @@ for date in tqdm(range(delta.days + 1)):
                         fw_comp_model[link0][link1]["r_p_value"] = [(key[2], key[3])]
                     
         file2.close()
-plt.figure(figsize=(25,10))
 
 
+# Creation of the base figure with the size
+plt.figure(figsize=(30,10))
 
+# For every link of the origin near-end facility, check if it appears in every hour of the period observed
+# and create 3 lists that will be plotted corresponding to the expected values, the observed, and the alarms triggered
 if origin in fw_comp_model:
     for key, values in fw_comp_model[origin].items():
         reference = values["ref"]
@@ -103,24 +114,15 @@ if origin in fw_comp_model:
                 plt.scatter(values["alarms"], alarm_values, color = 'red')
             if len(values["ref"]) == len(date_list):
                 plt.plot(np.arange(len(date_list)), reference, color = 'blue')
-                plt.plot(np.arange(len(date_list)), observed)
+                plt.plot(np.arange(len(date_list)), observed, label=fw_comp_model[origin][dest])
             
 
-#start graphing
 
-
-
-
-#plt.boxplot(rtt_intervallist)
-#plt.plot(date_list)
+# Set the ticks of the X Axis 
 plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
-
-#err_list = [rtt_lower, rtt_upper]
 
 plt.legend()
 
-#plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
-
-#plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
+# save the figure in a folder
 save_path = "../results/fw_graph_alarms_" + origin + ".png"
 plt.savefig(save_path)

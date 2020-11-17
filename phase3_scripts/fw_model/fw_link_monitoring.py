@@ -7,25 +7,25 @@ from scipy.stats import chisquare
 import time
 import ast
 
-#np.seterr(divide='ignore', invalid='ignore')
-
+# Input the date and hour for forwarding model link monitoring
+# Date format = 2020-10-20
+# Hour format = 18
 date = sys.argv[1]
 hour = sys.argv[2]
 
+# Path for the hour you are monitoring
 path = "/home/csd/traceroutes/" + date + "/" + hour + "00/connections"
 file = open(path)
 links = ujson.load(file)
 
-#change the path
+# Path for the reference values, for now, the past 3 hours
 ref_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_references"
 ref_file = open(ref_path)
 ref = ujson.load(ref_file)
 
-#path to save the old reference values in the beginning
-#save_path = "/home/csd/traceroutes/" + date + "/" + hour + "/fw_ref_values"
-#ref_path = "results/fw_ref_values"
-#copyfile(ref_path, save_path)
-
+# Function to calculate the responsibility metric
+# Given one list of values (observed and reference)
+# Return the r value for each link in a dictionary format
 def r_values(src_fw_dict):
     r_values_dict = {}
     denom = 0
@@ -47,11 +47,15 @@ def r_values(src_fw_dict):
             r_values_dict[dest] = round(0,2)
     return r_values_dict
 
-#create a new forwarding dictionary for the new values
+# Create a new forwarding dictionary for the new values starting off
+# with the fw_reference values from the previous 3 hours
+# Format example of the dictionary:
+# {Fac1: {Fac2:[40]}, {Fac3:[45]}, {Fac5:[40]}, {Fac10:[60]}}
+
 fw_dict = ref
 
-### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
-
+# For each link used in this hour, append the usage value to the ref list for comparison,
+# if the link is not in the dictionary, a new entry is created with ref value 0
 for key in links:
     
     link = ast.literal_eval(key)
@@ -65,11 +69,11 @@ for key in links:
             fw_dict[link0][link1] = [0,len(links[key]["rtts"])]
  
 
+# Creating a dictionary to store the alarms
 alarm_dict = {"alarms" : []}
 
-#two lists to compare
+# Two lists to compare with the chisquare test: the reference list and the observed list
 for source in fw_dict.keys():
-    #dests = []
     ref_list = []
     results_list = []
     for dest, val in fw_dict[source].items():
@@ -77,32 +81,27 @@ for source in fw_dict.keys():
         #dests.append(dest)
         #if len(val) == 1:
             #results_list.append(0)
-        if val[0] != 0 and len(val) == 2:
-            ref_list.append(val[0])
-            results_list.append(val[1])
+        if val[0] != 0 and len(val) == 2:        # only compare the links that have a reference value and 
+            ref_list.append(val[0])              # an observation different than 0
+            results_list.append(val[1])          # This way we ensure the continuity of the data
         #else:
             #results_list.append(val[1])
-    #first compute the chi sqaured test
-    p_value = chisquare(ref_list, results_list)[1]
-    #arry = [ref_list, results_list]
-    #print(arry)
-    if source == "60" and date == "2020-10-30" and hour == "18":
-        print(p_value)
-        print("ref list", ref_list)
-        print("results list", results_list)
-        print(chisquare(results_list, ref_list,ddof=10)[0])
+    
+    # First compute the chi squared test
+    # Then, if the chi sqaure result detects an anomaly, check the link using the responsibility metric
     if len(ref_list) > 0 and len(results_list) > 0:
-        #p_value = chi2_contingency(arr)[1]
+        p_value = chisquare(ref_list, results_list)[1]
         if p_value <= 0.01:
             r_val_dict = r_values(fw_dict[source])
             for dest in r_val_dict:
                 if r_val_dict[dest] < -0.5 or r_val_dict[dest] > 0.5:
                     alarm_dict["alarms"].append((source, dest, r_val_dict[dest], p_value))
-
-#save alarms and references
+    else:
+        print("empty ref and results list")
 
 print(len(alarm_dict["alarms"]))
 
+# Save alarms and references
 output_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_alarms"
 output_file = open(output_path,'w')
 output_file.write(ujson.dumps(alarm_dict))
@@ -112,28 +111,3 @@ comparison_out_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_mode
 comparison_out_file = open(comparison_out_path,'w')
 comparison_out_file.write(ujson.dumps(fw_dict))
 comparison_out_file.close()
-
-#then, if the chi sqaure result detects an anomaly, check the link using the responsibility metric
-"""
-for src in fw_dict.keys():    
-    
-    denom = 0
-    for val in fw_dict[src].values():
-        if len(val) > 1:
-            denom = denom + abs(val[1] - val[0])
-        else:
-            denom = denom + abs(0 - val[0])
-
-    for dest, value in fw_dict[src].items():
-        if len(value) > 1:
-            num = (value[1] - value[0])
-        else:
-             num = (0 - value[0])
-
-        try:
-            fw_dict[src][dest] = round(num/denom,2)
-        except ZeroDivisionError: 
-            fw_dict[src][dest] = round(0,2)
-print(fw_dict) 
-"""
-

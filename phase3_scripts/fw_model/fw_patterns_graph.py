@@ -8,26 +8,30 @@ import ast
 
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
-         
+
+# Date format = 2020-10-20
 start_date = sys.argv[1].split('-')
 end_date = sys.argv[2].split('-')
 
+# Near-end facility which links are going to be printed in the graph
 source = sys.argv[3]
 #dest = sys.argv[4]
 
 sdate = date(int(start_date[0]), int(start_date[1]), int(start_date[2]))   # start date
 edate = date(int(end_date[0]), int(end_date[1]), int(end_date[2]))   # end date
 
-delta = edate - sdate       # as timedelta
+#Calculate the range of days used for the loop
+delta = edate - sdate       
 
 date_list = []
 
 fw_dict = {}
 
+# Loop through the days considered in the graph
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)
  
-    
+    # For each hour, add to the fw dictionary the observed values
     for hour in tqdm(hours):
         if hour == "00":
             date_list.append(str(day))
@@ -66,6 +70,8 @@ for date in tqdm(range(delta.days + 1)):
                     }
             
         file1.close()
+        # If the near-end facility is not present in all the hours of the observation
+        # cancel the plot and print an error message
         if link_ok == False:
             print("INVALID SOURCE")
             sys.exit()
@@ -73,6 +79,7 @@ for date in tqdm(range(delta.days + 1)):
 plt.figure(figsize=(25,10))
 
 for key, count in fw_dict[source].items():
+    # Only plot the links present in all the hourly time bins
     if len(count) == len(date_list):
         plt.plot(np.arange(len(date_list)), count)
 
