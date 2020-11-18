@@ -29,22 +29,24 @@ ref = ujson.load(ref_file)
 def r_values(src_fw_dict):
     r_values_dict = {}
     denom = 0
-    for val in src_fw_dict.values():
-        if len(val["comp"]) > 1:
-            denom = denom + abs(val["comp"][1] - val["comp"][0])
-        else:
-            denom = denom + abs(0 - val["comp"][0])
+    for key, val in src_fw_dict.items():
+        if key != "p_value":
+            if len(val["comp"]) > 1:
+                denom = denom + abs(val["comp"][1] - val["comp"][0])
+            else:
+                denom = denom + abs(0 - val["comp"][0])
 
     for dest, value in src_fw_dict.items():
-        if len(value["comp"]) > 1:
-            num = (value["comp"][1] - value["comp"][0])
-        else:
-             num = (0 - value["comp"][0])
+        if key != "p_value":
+            if len(value["comp"]) > 1:
+                num = (value["comp"][1] - value["comp"][0])
+            else:
+                num = (0 - value["comp"][0])
 
-        try:
-            r_values_dict[dest] = round(num/denom,2)
-        except ZeroDivisionError: 
-            r_values_dict[dest] = round(0,2)
+            try:
+                r_values_dict[dest] = round(num/denom,2)
+            except ZeroDivisionError: 
+                r_values_dict[dest] = round(0,2)
     return r_values_dict
 
 # Create a new forwarding dictionary for the new values starting off
