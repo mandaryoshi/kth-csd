@@ -48,7 +48,7 @@ for h in index_interval:
         link0 = str(link[0])
         link1 = str(link[1])
 
-        if len(links[key]["rtts"]) > 5 and len(links[key]["probes"] > 4):
+        if len(links[key]["rtts"]) > 5 and len(links[key]["probes"]) >= 4:
             if link0 in fw_dict:
                 if link1 in fw_dict[link0]:
                     fw_dict[link0][link1].append(len(links[key]["rtts"]))
@@ -66,8 +66,8 @@ for h in index_interval:
 # {Fac1: {Fac2:[40]}, {Fac3:[45]}, {Fac5:[40]}, {Fac10:[50]}}
 # Delete links that are not present in all the hours 
 
-for key in fw_dict.keys():
-    for dest, value in fw_dict[key].items():
+for key in list(fw_dict.keys()):
+    for dest, value in list(fw_dict[key].items()):
         if len(fw_dict[key][dest]) == len(index_interval):
             fw_dict[key][dest] = [np.median(value)]
         else: 

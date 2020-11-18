@@ -101,7 +101,7 @@ plt.figure(figsize=(30,10))
 # For every link of the origin near-end facility, check if it appears in every hour of the period observed
 # and create 3 lists that will be plotted corresponding to the expected values, the observed, and the alarms triggered
 if origin in fw_comp_model:
-    for key, values in fw_comp_model[origin].items():
+    for dest, values in fw_comp_model[origin].items():
         reference = values["ref"]
         observed = values["obs"]
         alarm_values = []
@@ -114,7 +114,7 @@ if origin in fw_comp_model:
                 plt.scatter(values["alarms"], alarm_values, color = 'red')
             if len(values["ref"]) == len(date_list):
                 plt.plot(np.arange(len(date_list)), reference, color = 'blue')
-                plt.plot(np.arange(len(date_list)), observed, label=fw_comp_model[origin][dest])
+                plt.plot(np.arange(len(date_list)), observed, label=dest)
             
 
 
@@ -124,5 +124,5 @@ plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 plt.legend()
 
 # save the figure in a folder
-save_path = "../results/fw_graph_alarms_" + origin + ".png"
+save_path = "../results/fw_graph_alarms_" + origin + "_new.png"
 plt.savefig(save_path)

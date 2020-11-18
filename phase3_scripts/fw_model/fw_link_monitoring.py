@@ -86,7 +86,7 @@ for source in fw_dict.keys():
             results_list.append(val[1])          # This way we ensure the continuity of the data
         #else:
             #results_list.append(val[1])
-    
+    #print(ref_list, results_list)
     # First compute the chi squared test
     # Then, if the chi sqaure result detects an anomaly, check the link using the responsibility metric
     if len(ref_list) > 0 and len(results_list) > 0:
@@ -96,8 +96,8 @@ for source in fw_dict.keys():
             for dest in r_val_dict:
                 if r_val_dict[dest] < -0.5 or r_val_dict[dest] > 0.5:
                     alarm_dict["alarms"].append((source, dest, r_val_dict[dest], p_value))
-    else:
-        print("empty ref and results list")
+    #else:
+        #print("empty ref and results list")
 
 print(len(alarm_dict["alarms"]))
 
