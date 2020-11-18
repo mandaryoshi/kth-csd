@@ -29,17 +29,17 @@ ref = ujson.load(ref_file)
 def r_values(src_fw_dict):
     r_values_dict = {}
     denom = 0
-    for val in src_fw_dict.values():
+    for val in src_fw_dict.values()["comp"]:
         if len(val) > 1:
             denom = denom + abs(val[1] - val[0])
         else:
             denom = denom + abs(0 - val[0])
 
     for dest, value in src_fw_dict.items():
-        if len(value) > 1:
-            num = (value[1] - value[0])
+        if len(value["comp"]) > 1:
+            num = (value["comp"][1] - value["comp"][0])
         else:
-             num = (0 - value[0])
+             num = (0 - value["comp"][0])
 
         try:
             r_values_dict[dest] = round(num/denom,2)
