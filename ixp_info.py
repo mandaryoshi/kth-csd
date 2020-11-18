@@ -7,9 +7,9 @@ response = requests.get("https://peeringdb.com/api/ixlan?depth=2")
 response2 = requests.get("https://peeringdb.com/api/netixlan")
 response3 = requests.get("https://peeringdb.com/api/ixfac")
 
-ixpfx = ujson.load(response)
-netixlan = ujson.load(response2)
-ixpfac = ujson.load(response3)
+ixpfx = json.loads(response.text)
+netixlan = json.loads(response2.text)
+ixpfac = json.loads(response3.text)
 
 dictionary = {}
 
@@ -51,9 +51,7 @@ for i in tqdm(ixpfx["data"]):
 #print(dictionary)
 
 with open('json_results/ixp_info_results.json', 'w') as fp:
-        ujson.dump(dictionary,fp)
-
-
+        json.dump(dictionary,fp)
 
 
 def find_key_for_value(d, value):

@@ -2,7 +2,8 @@ import json
 from tqdm import tqdm
 import time
 
-filename = '../json_results/routeviews-rv2-20201005-1200.pfx2as'
+filename = 'json_results/routeviews-rv2-20201116-2000.pfx2as'
+#../json_results/routeviews-rv2-20201005-1200.pfx2as
 
 #nonixpip dictionary
 dict1 = {}
@@ -17,5 +18,5 @@ with open(filename) as fp:
         describe[0] = describe[0] + '/' + describe[1]
         dict1[describe[0]] = describe[2]
 
-output_file = open("../json_results/nonixp_info_results.json", "w")
+output_file = open("json_results/nonixp_info_results.json", "w")
 json.dump(dict1, output_file, indent = 4)
