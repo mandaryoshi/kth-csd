@@ -29,11 +29,11 @@ ref = ujson.load(ref_file)
 def r_values(src_fw_dict):
     r_values_dict = {}
     denom = 0
-    for val in src_fw_dict.values()["comp"]:
-        if len(val) > 1:
-            denom = denom + abs(val[1] - val[0])
+    for val in src_fw_dict.values():
+        if len(val["comp"]) > 1:
+            denom = denom + abs(val["comp"][1] - val["comp"][0])
         else:
-            denom = denom + abs(0 - val[0])
+            denom = denom + abs(0 - val["comp"][0])
 
     for dest, value in src_fw_dict.items():
         if len(value["comp"]) > 1:
