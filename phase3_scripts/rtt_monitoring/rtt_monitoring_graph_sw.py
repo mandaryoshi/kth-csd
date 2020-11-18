@@ -66,21 +66,21 @@ for date in tqdm(range(delta.days + 1)):
 
 plt.figure(figsize=(30,10))
 
-plt.xticks(np.arange(96),date_list,rotation='vertical')
+plt.xticks(np.arange(216),date_list,rotation='vertical')
 
 err_list = [rtt_lower, rtt_upper]
 
-plt.plot(np.arange(96), normal_reference_median, marker ='s')
-for x,y in zip(np.arange(96), normal_reference_median):
-    label = y
-    plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
+plt.plot(np.arange(216), normal_reference_median, marker ='s')
+#for x,y in zip(np.arange(216), normal_reference_median):
+ #   label = y
+ #   plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
 
-plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
+plt.fill_between(np.arange(216), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
-plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
-for x,y in zip(np.arange(96), rtt_median):
-    label = y
-    plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
+plt.errorbar(np.arange(216), rtt_median, yerr=err_list, fmt='o',capsize=5)
+#for x,y in zip(np.arange(216), rtt_median):
+#    label = y
+#    plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
 plt.xlabel("Date")
 plt.ylabel("Differential RTT values")
 plt.savefig('../results/rtt_sw_graph.png')
