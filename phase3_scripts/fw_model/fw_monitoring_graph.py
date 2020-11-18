@@ -49,45 +49,46 @@ for date in tqdm(range(delta.days + 1)):
         ### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
         for source in new_model:
             for dest, value in new_model[source].items():
-                if source in fw_comp_model:
-                    if dest in fw_comp_model[source] and dest != "p_value":
-                        if len(value["comp"]) == 2 and value["comp"][0] != 0:
-                            fw_comp_model[source][dest]["ref"].append(value["comp"][0])
-                            fw_comp_model[source][dest]["obs"].append(value["comp"][1])
-                            fw_comp_model[source][dest]["probes"].append(len(value["probes"]))
-                        #fw_comp_model[source][dest]["ref"].append(value[0])
-                        #if len(value) == 1:
-                        #    fw_comp_model[source][dest]["obs"].append(0)
-                        #else:
-                        #    fw_comp_model[source][dest]["obs"].append(value[1])
+                if dest != "p_value":
+                    if source in fw_comp_model:
+                        if dest in fw_comp_model[source]:
+                            if len(value["comp"]) == 2 and value["comp"][0] != 0:
+                                fw_comp_model[source][dest]["ref"].append(value["comp"][0])
+                                fw_comp_model[source][dest]["obs"].append(value["comp"][1])
+                                fw_comp_model[source][dest]["probes"].append(len(value["probes"]))
+                            #fw_comp_model[source][dest]["ref"].append(value[0])
+                            #if len(value) == 1:
+                            #    fw_comp_model[source][dest]["obs"].append(0)
+                            #else:
+                            #    fw_comp_model[source][dest]["obs"].append(value[1])
+                        else:
+                            print(value)
+                            if len(value["comp"]) == 2 and value["comp"][0] != 0:
+                                fw_comp_model[source][dest] = {
+                                    "ref": [value["comp"][0]], 
+                                    "obs": [value["comp"][1]],
+                                    "probes": [len(value["probes"])]
+                                }
+                            #fw_comp_model[source][dest] = {"ref": [value[0]]}
+                            #if len(value) == 1:
+                            #    fw_comp_model[source][dest]["obs"] = [0]
+                            #else:
+                            #    fw_comp_model[source][dest]["obs"] = [value[1]]       
                     else:
-                        print(value)
+                        print(value["comp"][0])
                         if len(value["comp"]) == 2 and value["comp"][0] != 0:
-                            fw_comp_model[source][dest] = {
-                                "ref": [value["comp"][0]], 
-                                "obs": [value["comp"][1]],
-                                "probes": [len(value["probes"])]
+                            fw_comp_model[source] = {
+                                dest : {
+                                    "ref": [value["comp"][0]], 
+                                    "obs": [value["comp"][1]],
+                                    "probes": [len(value["probes"])]
+                                }
                             }
-                        #fw_comp_model[source][dest] = {"ref": [value[0]]}
+                        #fw_comp_model[source] = {dest : {"ref": [value[0]]}}
                         #if len(value) == 1:
                         #    fw_comp_model[source][dest]["obs"] = [0]
                         #else:
-                        #    fw_comp_model[source][dest]["obs"] = [value[1]]       
-                else:
-                    print(value["comp"][0])
-                    if len(value["comp"]) == 2 and value["comp"][0] != 0:
-                        fw_comp_model[source] = {
-                            dest : {
-                                "ref": [value["comp"][0]], 
-                                "obs": [value["comp"][1]],
-                                "probes": [len(value["probes"])]
-                            }
-                        }
-                    #fw_comp_model[source] = {dest : {"ref": [value[0]]}}
-                    #if len(value) == 1:
-                    #    fw_comp_model[source][dest]["obs"] = [0]
-                    #else:
-                    #    fw_comp_model[source][dest]["obs"] = [value[1]]
+                        #    fw_comp_model[source][dest]["obs"] = [value[1]]
         file1.close()
         for key in alarms["alarms"]:
             link0 = key[0]
