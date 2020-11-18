@@ -64,9 +64,11 @@ for key in links:
 
     if link0 in fw_dict and len(links[key]["rtts"]) > 5 and len(links[key]["probes"]) > 4:
         if link1 in fw_dict[link0]:
-            fw_dict[link0][link1].append(len(links[key]["rtts"]))
+            fw_dict[link0][link1]["comp"].append(len(links[key]["rtts"]))
+            fw_dict[link0][link1]["probes"].append(links[key]["probes"])
         else:
-            fw_dict[link0][link1] = [0,len(links[key]["rtts"])]
+            fw_dict[link0][link1]["comp"] = [0,len(links[key]["rtts"])]
+            fw_dict[link0][link1]["probes"] = [(links[key]["probes"])]
  
 
 # Creating a dictionary to store the alarms
@@ -81,9 +83,9 @@ for source in fw_dict.keys():
         #dests.append(dest)
         #if len(val) == 1:
             #results_list.append(0)
-        if val[0] != 0 and len(val) == 2:        # only compare the links that have a reference value and 
-            ref_list.append(val[0])              # an observation different than 0
-            results_list.append(val[1])          # This way we ensure the continuity of the data
+        if val["comp"][0] != 0 and len(val["comp"]) == 2:        # only compare the links that have a reference value and 
+            ref_list.append(val["comp"][0])              # an observation different than 0
+            results_list.append(val["comp"][1])          # This way we ensure the continuity of the data
         #else:
             #results_list.append(val[1])
     #print(ref_list, results_list)
@@ -91,6 +93,7 @@ for source in fw_dict.keys():
     # Then, if the chi sqaure result detects an anomaly, check the link using the responsibility metric
     if len(ref_list) > 0 and len(results_list) > 0:
         p_value = chisquare(ref_list, results_list)[1]
+        fw_dict[source]["p_value"] = p_value
         if p_value <= 0.01:
             r_val_dict = r_values(fw_dict[source])
             for dest in r_val_dict:

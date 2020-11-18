@@ -50,19 +50,23 @@ for date in tqdm(range(delta.days + 1)):
         for source in new_model:
             for dest, value in new_model[source].items():
                 if source in fw_comp_model:
-                    if dest in fw_comp_model[source]:
+                    if dest in fw_comp_model[source] and dest != "p_value":
                         if len(value) == 2 and value[0] != 0:
-                            fw_comp_model[source][dest]["ref"].append(value[0])
-                            fw_comp_model[source][dest]["obs"].append(value[1])
-                        
+                            fw_comp_model[source][dest]["ref"].append(value["comp"][0])
+                            fw_comp_model[source][dest]["obs"].append(value["comp"][1])
+                            fw_comp_model[source][dest]["probes"].append(len(value["probes"]))
                         #fw_comp_model[source][dest]["ref"].append(value[0])
                         #if len(value) == 1:
                         #    fw_comp_model[source][dest]["obs"].append(0)
                         #else:
                         #    fw_comp_model[source][dest]["obs"].append(value[1])
                     else:
-                        if len(value) == 2 and value[0] != 0:
-                            fw_comp_model[source][dest] = {"ref": [value[0]], "obs": [value[1]]}
+                        if len(value) == 2 and value["comp"][0] != 0:
+                            fw_comp_model[source][dest] = {
+                                "ref": [value["comp"][0]], 
+                                "obs": [value["comp"][1]],
+                                "probes": [len(value["probes"])]
+                            }
                         #fw_comp_model[source][dest] = {"ref": [value[0]]}
                         #if len(value) == 1:
                         #    fw_comp_model[source][dest]["obs"] = [0]
@@ -70,7 +74,13 @@ for date in tqdm(range(delta.days + 1)):
                         #    fw_comp_model[source][dest]["obs"] = [value[1]]       
                 else:
                     if len(value) == 2 and value[0] != 0:
-                        fw_comp_model[source] = {dest : {"ref": [value[0]], "obs": [value[1]]}}
+                        fw_comp_model[source] = {
+                            dest : {
+                                "ref": [value["comp"][0]], 
+                                "obs": [value["comp"][1]],
+                                "probes": [len(value["probes"])]
+                            }
+                        }
                     #fw_comp_model[source] = {dest : {"ref": [value[0]]}}
                     #if len(value) == 1:
                     #    fw_comp_model[source][dest]["obs"] = [0]
@@ -96,7 +106,7 @@ for date in tqdm(range(delta.days + 1)):
 
 
 # Creation of the base figure with the size
-plt.figure(figsize=(30,10))
+fig, ax = plt.subplots(2, sharex=True, gridspec_kw={'hspace': 0})
 
 # For every link of the origin near-end facility, check if it appears in every hour of the period observed
 # and create 3 lists that will be plotted corresponding to the expected values, the observed, and the alarms triggered
@@ -104,6 +114,7 @@ if origin in fw_comp_model:
     for dest, values in fw_comp_model[origin].items():
         reference = values["ref"]
         observed = values["obs"]
+        probes = values["probes"]
         alarm_values = []
         if len(observed) == len(date_list):
             if "alarms" in values:
@@ -111,15 +122,16 @@ if origin in fw_comp_model:
                     alarm_values.append(observed[index])
 
                 #plt.scatter(values["alarms"], alarm_values, color = 'red', label=values["r_p_value"])
-                plt.scatter(values["alarms"], alarm_values, color = 'red')
+                ax[0].scatter(values["alarms"], alarm_values, color = 'red')
             if len(values["ref"]) == len(date_list):
-                plt.plot(np.arange(len(date_list)), reference, color = 'blue')
-                plt.plot(np.arange(len(date_list)), observed, label=dest)
-            
+                ax[0].plot(np.arange(len(date_list)), reference, color = 'blue')
+                ax[0].plot(np.arange(len(date_list)), observed, label=dest)
+                ax[1].plot(np.arange(len(date_list)), probes, label=dest)
 
 
 # Set the ticks of the X Axis 
-plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
+#plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
+ax[1].set_xticks(date_list,rotation='vertical')
 
 plt.legend()
 
