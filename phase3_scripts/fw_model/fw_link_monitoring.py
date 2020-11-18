@@ -86,9 +86,10 @@ for source in fw_dict.keys():
         #dests.append(dest)
         #if len(val) == 1:
             #results_list.append(0)
-        if val["comp"][0] != 0 and len(val["comp"]) == 2:        # only compare the links that have a reference value and 
-            ref_list.append(val["comp"][0])              # an observation different than 0
-            results_list.append(val["comp"][1])          # This way we ensure the continuity of the data
+        if "comp" in val:
+            if val["comp"][0] != 0 and len(val["comp"]) == 2:        # only compare the links that have a reference value and 
+                ref_list.append(val["comp"][0])              # an observation different than 0
+                results_list.append(val["comp"][1])          # This way we ensure the continuity of the data
         #else:
             #results_list.append(val[1])
     #print(ref_list, results_list)
