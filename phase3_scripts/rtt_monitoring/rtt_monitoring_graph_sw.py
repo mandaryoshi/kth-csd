@@ -78,6 +78,9 @@ for x,y in zip(np.arange(96), normal_reference_median):
 plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
 plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
+for x,y in zip(np.arange(96), rtt_median):
+    label = y
+    plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
 plt.xlabel("Date")
 plt.ylabel("Differential RTT values")
 plt.savefig('../results/rtt_sw_graph.png')
