@@ -48,7 +48,7 @@ for h in index_interval:
         link0 = str(link[0])
         link1 = str(link[1])
 
-        if len(links[key]["rtts"]) > 5 and len(links[key]["probes"]) >= 4:
+        if len(links[key]["rtts"]) > 5 and len(links[key]["probes"]) > 4:
             if link0 in fw_dict:
                 if link1 in fw_dict[link0]:
                     fw_dict[link0][link1].append(len(links[key]["rtts"]))
