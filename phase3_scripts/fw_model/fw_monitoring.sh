@@ -3,6 +3,7 @@
 read start_date
 read end_date
 
+
 startdate=$(date -I -d "$start_date") || exit -1
 enddate=$(date -I -d "$end_date")     || exit -1
 

@@ -80,7 +80,7 @@ for date in tqdm(range(delta.days + 1)):
 
 
 # Creation of the base figure with the size
-plt.figure(figsize=(30,10))
+plt.figure(figsize=(100,10))
 
 link_list = []
 dev_list = []

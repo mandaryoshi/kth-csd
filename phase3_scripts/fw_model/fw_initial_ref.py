@@ -51,12 +51,16 @@ for h in index_interval:
         if len(links[key]["rtts"]) > 5 and len(links[key]["probes"]) > 4:
             if link0 in fw_dict:
                 if link1 in fw_dict[link0]:
-                    fw_dict[link0][link1].append(len(links[key]["rtts"]))
+                    fw_dict[link0][link1]["comp"].append(len(links[key]["rtts"]))
                 else:
-                    fw_dict[link0][link1] = [len(links[key]["rtts"])]
+                    fw_dict[link0][link1] = {
+                        "comp": [len(links[key]["rtts"])]
+                    }
             else:
                 fw_dict[link0] = {
-                    link1 : [len(links[key]["rtts"])]
+                    link1 :{ 
+                       "comp": [len(links[key]["rtts"])]
+                    }
                 }
 
     file.close()
@@ -68,8 +72,8 @@ for h in index_interval:
 
 for key in list(fw_dict.keys()):
     for dest, value in list(fw_dict[key].items()):
-        if len(fw_dict[key][dest]) == len(index_interval):
-            fw_dict[key][dest] = [np.median(value)]
+        if len(fw_dict[key][dest]["comp"]) == len(index_interval):
+            fw_dict[key][dest]["comp"] = [np.median(value["comp"])]
         else: 
             del fw_dict[key][dest]
 

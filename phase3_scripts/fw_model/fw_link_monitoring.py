@@ -1,4 +1,5 @@
-import ujson 
+import ujson
+import simplejson as json  
 import sys
 from tqdm import tqdm
 import numpy as np
@@ -30,23 +31,26 @@ def r_values(src_fw_dict):
     r_values_dict = {}
     denom = 0
     for key, val in src_fw_dict.items():
-        if key != "p_value" and "comp" in val:
+        if key != "p_value":
+#            print(val)
             if len(val["comp"]) > 1:
                 denom = denom + abs(val["comp"][1] - val["comp"][0])
             else:
                 denom = denom + abs(0 - val["comp"][0])
 
     for dest, value in src_fw_dict.items():
-        if key != "p_value" and "comp" in val:
+        if dest != "p_value":
             if len(value["comp"]) > 1:
                 num = (value["comp"][1] - value["comp"][0])
             else:
                 num = (0 - value["comp"][0])
 
             try:
+               # print(denom, num)
                 r_values_dict[dest] = round(num/denom,2)
             except ZeroDivisionError: 
                 r_values_dict[dest] = round(0,2)
+#    print(r_values_dict)
     return r_values_dict
 
 # Create a new forwarding dictionary for the new values starting off
@@ -66,12 +70,15 @@ for key in links:
 
     if link0 in fw_dict and len(links[key]["rtts"]) > 5 and len(links[key]["probes"]) > 4:
         if link1 in fw_dict[link0]:
-            fw_dict[link0][link1] = { 
-                "comp":  [fw_dict[link0][link1][0], len(links[key]["rtts"])],
-                "probes": links[key]["probes"]
-            }
-            #fw_dict[link0][link1]["comp"].append(len(links[key]["rtts"]))
-            #fw_dict[link0][link1]["probes"].append(links[key]["probes"])
+            #fw_dict[link0][link1] = { 
+            #    "comp":  [fw_dict[link0][link1][0], len(links[key]["rtts"])],
+            #    "probes": links[key]["probes"]
+            #}
+            fw_dict[link0][link1]["comp"].append(len(links[key]["rtts"]))
+            if "probes" in fw_dict[link0][link1]:
+            	fw_dict[link0][link1]["probes"].append(links[key]["probes"])
+            else:
+                fw_dict[link0][link1]["probes"] = links[key]["probes"]
         else:
             fw_dict[link0][link1] = { 
                 "comp":  [0,len(links[key]["rtts"])],
@@ -91,10 +98,10 @@ for source in fw_dict.keys():
         #dests.append(dest)
         #if len(val) == 1:
             #results_list.append(0)
-        if "comp" in val:
-            if val["comp"][0] != 0 and len(val["comp"]) == 2:        # only compare the links that have a reference value and 
-                ref_list.append(val["comp"][0])              # an observation different than 0
-                results_list.append(val["comp"][1])          # This way we ensure the continuity of the data
+        
+        if val["comp"][0] != 0 and len(val["comp"]) == 2:        # only compare the links that have a reference value and 
+            ref_list.append(val["comp"][0])              # an observation different than 0
+            results_list.append(val["comp"][1])          # This way we ensure the continuity of the data
         #else:
             #results_list.append(val[1])
     #print(ref_list, results_list)
@@ -106,7 +113,7 @@ for source in fw_dict.keys():
         if p_value <= 0.01:
             r_val_dict = r_values(fw_dict[source])
             for dest in r_val_dict:
-                if r_val_dict[dest] < -0.5 or r_val_dict[dest] > 0.5:
+                if r_val_dict[dest] < -0.4 or r_val_dict[dest] > 0.4:
                     alarm_dict["alarms"].append((source, dest, r_val_dict[dest], p_value))
     #else:
         #print("empty ref and results list")
@@ -116,10 +123,10 @@ print(len(alarm_dict["alarms"]))
 # Save alarms and references
 output_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_alarms"
 output_file = open(output_path,'w')
-output_file.write(ujson.dumps(alarm_dict))
+output_file.write(json.dumps(alarm_dict, ignore_nan=True))
 output_file.close()
 
 comparison_out_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_model_comparison"
 comparison_out_file = open(comparison_out_path,'w')
-comparison_out_file.write(ujson.dumps(fw_dict))
+comparison_out_file.write(json.dumps(fw_dict, ignore_nan=True))
 comparison_out_file.close()

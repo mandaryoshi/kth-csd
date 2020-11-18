@@ -51,7 +51,7 @@ for date in tqdm(range(delta.days + 1)):
             for dest, value in new_model[source].items():
                 if source in fw_comp_model:
                     if dest in fw_comp_model[source] and dest != "p_value":
-                        if len(value) == 2 and value[0] != 0:
+                        if len(value["comp"]) == 2 and value["comp"][0] != 0:
                             fw_comp_model[source][dest]["ref"].append(value["comp"][0])
                             fw_comp_model[source][dest]["obs"].append(value["comp"][1])
                             fw_comp_model[source][dest]["probes"].append(len(value["probes"]))
@@ -61,7 +61,8 @@ for date in tqdm(range(delta.days + 1)):
                         #else:
                         #    fw_comp_model[source][dest]["obs"].append(value[1])
                     else:
-                        if len(value) == 2 and value["comp"][0] != 0:
+                        print(value)
+                        if len(value["comp"]) == 2 and value["comp"][0] != 0:
                             fw_comp_model[source][dest] = {
                                 "ref": [value["comp"][0]], 
                                 "obs": [value["comp"][1]],
@@ -73,7 +74,8 @@ for date in tqdm(range(delta.days + 1)):
                         #else:
                         #    fw_comp_model[source][dest]["obs"] = [value[1]]       
                 else:
-                    if len(value) == 2 and value[0] != 0:
+                    print(value["comp"][0])
+                    if len(value["comp"]) == 2 and value["comp"][0] != 0:
                         fw_comp_model[source] = {
                             dest : {
                                 "ref": [value["comp"][0]], 
@@ -136,5 +138,5 @@ ax[1].set_xticks(date_list,rotation='vertical')
 plt.legend()
 
 # save the figure in a folder
-save_path = "../results/fw_graph_alarms_" + origin + "_new.png"
+save_path = "../results/fw_graph_alarms_" + origin + "_probes.png"
 plt.savefig(save_path)
