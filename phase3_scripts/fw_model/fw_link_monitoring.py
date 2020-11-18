@@ -67,8 +67,10 @@ for key in links:
             fw_dict[link0][link1]["comp"].append(len(links[key]["rtts"]))
             fw_dict[link0][link1]["probes"].append(links[key]["probes"])
         else:
-            fw_dict[link0][link1]["comp"] = [0,len(links[key]["rtts"])]
-            fw_dict[link0][link1]["probes"] = [(links[key]["probes"])]
+            fw_dict[link0][link1] = { 
+                "comp":  [0,len(links[key]["rtts"])],
+                "probes": [(links[key]["probes"])]
+            }
  
 
 # Creating a dictionary to store the alarms
