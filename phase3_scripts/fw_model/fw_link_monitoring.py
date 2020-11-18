@@ -64,13 +64,14 @@ for key in links:
 
     if link0 in fw_dict and len(links[key]["rtts"]) > 5 and len(links[key]["probes"]) > 4:
         if link1 in fw_dict[link0]:
-            fw_dict[link0][link1]["comp"].append(len(links[key]["rtts"]))
-            fw_dict[link0][link1]["probes"].append(links[key]["probes"])
-        else:
-            fw_dict[link0][link1] = { 
-                "comp":  [0,len(links[key]["rtts"])],
-                "probes": [(links[key]["probes"])]
-            }
+            if "comp" in link1:
+                fw_dict[link0][link1]["comp"].append(len(links[key]["rtts"]))
+                fw_dict[link0][link1]["probes"].append(links[key]["probes"])
+            else:
+                fw_dict[link0][link1] = { 
+                    "comp":  [0,len(links[key]["rtts"])],
+                    "probes": [(links[key]["probes"])]
+                }
  
 
 # Creating a dictionary to store the alarms
