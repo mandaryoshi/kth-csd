@@ -30,14 +30,14 @@ def r_values(src_fw_dict):
     r_values_dict = {}
     denom = 0
     for key, val in src_fw_dict.items():
-        if key != "p_value":
+        if key != "p_value" and "comp" in val:
             if len(val["comp"]) > 1:
                 denom = denom + abs(val["comp"][1] - val["comp"][0])
             else:
                 denom = denom + abs(0 - val["comp"][0])
 
     for dest, value in src_fw_dict.items():
-        if key != "p_value":
+        if key != "p_value" and "comp" in val:
             if len(value["comp"]) > 1:
                 num = (value["comp"][1] - value["comp"][0])
             else:
