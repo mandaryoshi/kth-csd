@@ -57,6 +57,7 @@ for date in tqdm(range(delta.days + 1)):
                 link_ok = True
             
             cnt = collections.Counter(connections[key]["msm_id"])
+#            print(cnt)
             if len(connections[key]["rtts"]) > 5 and len(connections[key]["probes"]) > 5:
 
                 if link0 in fw_dict:
@@ -65,28 +66,33 @@ for date in tqdm(range(delta.days + 1)):
                             if msm_id in fw_dict[link0][link1]:
                                 fw_dict[link0][link1][msm_id].append(count)
                             else:
-                                fw_dict[link0][link1][msm_id] = [0]*date + [count]
+                                fw_dict[link0][link1][msm_id] = [0]*((date+1)*int(hour)) + [count]
                     else:
                         fw_dict[link0][link1] = None
+                        msm_id_dict = {} 
                         for msm_id, count in cnt.items():
-                            fw_dict[link0][link1][msm_id] = [0]*date + [count]
+                            msm_id_dict[msm_id] = [0]*((date+1)*int(hour)) + [count]
+                        fw_dict[link0][link1] = msm_id_dict
                 else:
                     #print(link[0])
                     fw_dict[link0] = {link1 : None}
+                    msm_id_dict = {}
                     for msm_id, count in cnt.items():
-                        fw_dict[link0][link1][msm_id] = [0]*date + [count]
+                        msm_id_dict[msm_id] = [0]*((date+1)*int(hour)) + [count]
+                    fw_dict[link0][link1] = msm_id_dict
         file1.close()
         # If the near-end facility is not present in all the hours of the observation
         # cancel the plot and print an error message
         if link_ok == False:
             print("INVALID SOURCE")
             sys.exit()
-
+        #print(fw_dict)
         for near in fw_dict:
             for far in fw_dict[near]:
                 for msm_id, cnt_list in fw_dict[near][far].items():
+                    
                     if len(cnt_list) != len(date_list):
-                        fw_dict[near][far][msm_id].append[0]
+                        fw_dict[near][far][msm_id].append(0)
 
 fig, ax = plt.subplots(len(fw_dict[source]), sharex=False, figsize=(50,50))
 index = 0
@@ -101,7 +107,7 @@ for farend in fw_dict[source]:
 
 #start graphing
 
-
+#print(fw_dict["58"])
 
 
 #plt.boxplot(rtt_intervallist)
