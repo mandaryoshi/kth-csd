@@ -98,7 +98,7 @@ for date in tqdm(range(delta.days + 1)):
                         fw_dict[near][far][msm_id].append(0)
 
 if dest_arg == None:
-    fig, ax = plt.subplots(len(fw_dict[source]), sharex=False, figsize=(80,50))
+    fig, ax = plt.subplots(len(fw_dict[source]), sharex=False, figsize=(80,80))
     index = 0
     for farend in fw_dict[source]:
         title = source + "--->" + farend
@@ -110,7 +110,7 @@ if dest_arg == None:
         index = index + 1
 else:
     if dest_arg in fw_dict[source]:
-        fig, ax = plt.subplots(len(fw_dict[source][dest_arg]), sharex=False, figsize=(300,50))
+        fig, ax = plt.subplots(len(fw_dict[source][dest_arg]), sharex=False, figsize=(50,200))
         index = 0
         for  msm_id, count in fw_dict[source][dest_arg].items():
             ax[index].set_title(msm_id)
