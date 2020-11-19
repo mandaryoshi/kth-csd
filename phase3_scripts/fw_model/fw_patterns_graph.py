@@ -94,7 +94,7 @@ for date in tqdm(range(delta.days + 1)):
                     if len(cnt_list) != len(date_list):
                         fw_dict[near][far][msm_id].append(0)
 
-fig, ax = plt.subplots(len(fw_dict[source]), sharex=False, figsize=(50,50))
+fig, ax = plt.subplots(len(fw_dict[source]), sharex=False, figsize=(80,50))
 index = 0
 for farend in fw_dict[source]:
     title = source + "--->" + farend
@@ -120,5 +120,5 @@ plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 #plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
 #plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
-
-plt.savefig('../results/fw_graph_58.png')
+save_path = "../results/fw_graph_" + source + "_msm.png"
+plt.savefig(save_path)
