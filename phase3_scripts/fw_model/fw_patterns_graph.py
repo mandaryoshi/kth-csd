@@ -63,29 +63,41 @@ for date in tqdm(range(delta.days + 1)):
                     if link1 in fw_dict[link0]:
                         for msm_id, count in cnt.items():
                             if msm_id in fw_dict[link0][link1]:
-                                fw_dict[link0][link1].append(count)
+                                fw_dict[link0][link1][msm_id].append(count)
+                            else:
+                                fw_dict[link0][link1][msm_id] = [0]*date + [count]
                     else:
                         fw_dict[link0][link1] = None
                         for msm_id, count in cnt.items():
-                            fw_dict[link0][link1][msm_id] = [count]
+                            fw_dict[link0][link1][msm_id] = [0]*date + [count]
                 else:
                     #print(link[0])
                     fw_dict[link0] = {link1 : None}
                     for msm_id, count in cnt.items():
-                        fw_dict[link0][link1][msm_id] = [count]
+                        fw_dict[link0][link1][msm_id] = [0]*date + [count]
         file1.close()
         # If the near-end facility is not present in all the hours of the observation
         # cancel the plot and print an error message
         if link_ok == False:
             print("INVALID SOURCE")
             sys.exit()
-            
-plt.figure(figsize=(25,10))
 
-for key, count in fw_dict[source].items():
+        for near in fw_dict:
+            for far in fw_dict[near]:
+                for msm_id, cnt_list in fw_dict[near][far].items():
+                    if len(cnt_list) != len(date_list):
+                        fw_dict[near][far][msm_id].append[0]
+
+fig, ax = plt.subplots(len(fw_dict[source]), sharex=False, figsize=(50,50))
+index = 0
+for farend in fw_dict[source]:
+    title = source + "--->" + farend
+    ax[index].set_title(title)
+    for msm_id, count in fw_dict[source][farend].items():
     # Only plot the links present in all the hourly time bins
-    if len(count) == len(date_list):
-        plt.plot(np.arange(len(date_list)), count)
+        if len(count) == len(date_list):
+            ax[index].plot(np.arange(len(date_list)), count, label=msm_id)
+    index = index + 1
 
 #start graphing
 
