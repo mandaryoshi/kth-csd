@@ -62,7 +62,7 @@ for date in tqdm(range(delta.days + 1)):
                             #else:
                             #    fw_comp_model[source][dest]["obs"].append(value[1])
                         else:
-                            print(value)
+                            #print(value)
                             if len(value["comp"]) == 2 and value["comp"][0] != 0:
                                 fw_comp_model[source][dest] = {
                                     "ref": [value["comp"][0]], 
@@ -75,7 +75,7 @@ for date in tqdm(range(delta.days + 1)):
                             #else:
                             #    fw_comp_model[source][dest]["obs"] = [value[1]]       
                     else:
-                        print(value["comp"][0])
+                        #print(value["comp"][0])
                         if len(value["comp"]) == 2 and value["comp"][0] != 0:
                             fw_comp_model[source] = {
                                 dest : {
@@ -109,7 +109,7 @@ for date in tqdm(range(delta.days + 1)):
 
 
 # Creation of the base figure with the size
-fig, ax = plt.subplots(2, sharex=True, gridspec_kw={'hspace': 0})
+fig, ax = plt.subplots(2, sharex=True, gridspec_kw={'hspace': 0}, figsize=(50,10))
 
 # For every link of the origin near-end facility, check if it appears in every hour of the period observed
 # and create 3 lists that will be plotted corresponding to the expected values, the observed, and the alarms triggered
@@ -133,8 +133,9 @@ if origin in fw_comp_model:
 
 
 # Set the ticks of the X Axis 
-#plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
-ax[1].set_xticks(date_list,rotation='vertical')
+
+plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
+#ax[1].set_xticks(date_list)
 
 plt.legend()
 
