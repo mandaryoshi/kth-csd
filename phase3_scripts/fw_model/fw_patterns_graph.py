@@ -16,7 +16,10 @@ end_date = sys.argv[2].split('-')
 
 # Near-end facility which links are going to be printed in the graph
 source = sys.argv[3]
-#dest = sys.argv[4]
+if len(sys.argv) == 5:
+    dest_arg = sys.argv[4]
+else:
+    dest_arg = None
 
 sdate = date(int(start_date[0]), int(start_date[1]), int(start_date[2]))   # start date
 edate = date(int(end_date[0]), int(end_date[1]), int(end_date[2]))   # end date
@@ -94,17 +97,29 @@ for date in tqdm(range(delta.days + 1)):
                     if len(cnt_list) != len(date_list):
                         fw_dict[near][far][msm_id].append(0)
 
-fig, ax = plt.subplots(len(fw_dict[source]), sharex=False, figsize=(80,50))
-index = 0
-for farend in fw_dict[source]:
-    title = source + "--->" + farend
-    ax[index].set_title(title)
-    for msm_id, count in fw_dict[source][farend].items():
-    # Only plot the links present in all the hourly time bins
-        if len(count) == len(date_list):
-            ax[index].plot(np.arange(len(date_list)), count, label=msm_id)
-    index = index + 1
-
+if dest_arg == None:
+    fig, ax = plt.subplots(len(fw_dict[source]), sharex=False, figsize=(80,50))
+    index = 0
+    for farend in fw_dict[source]:
+        title = source + "--->" + farend
+        ax[index].set_title(title)
+        for msm_id, count in fw_dict[source][farend].items():
+        # Only plot the links present in all the hourly time bins
+            if len(count) == len(date_list):
+                ax[index].plot(np.arange(len(date_list)), count, label=msm_id)
+        index = index + 1
+else:
+    if dest_arg in fw_dict[source]:
+        fig, ax = plt.subplots(len(fw_dict[source][dest_arg]), sharex=False, figsize=(80,50))
+        index = 0
+        for  msm_id, count in fw_dict[source][dest_arg].items():
+            ax[index].set_title(msm_id)
+            if len(count) == len(date_list):
+                ax[index].plot(np.arange(len(date_list)), count)
+            index = index + 1
+    else:
+        print("INVALID SOURCE")
+        sys.exit()
 #start graphing
 
 #print(fw_dict["58"])
