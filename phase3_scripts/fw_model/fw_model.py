@@ -91,8 +91,8 @@ def forwarding_model(cfs, hop_results, m, date, hour):
         if (hops["previous_hop"] in near_end_map) and (hops["ixp_hop"] in far_end_map):
 
             # Creating a list for the map creation
-            if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in link_list:
-                link_list.append((near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]))
+            if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in link_list:         # MAP
+                link_list.append((near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]))        # MAP
 
             counter = counter + 1
 
@@ -104,11 +104,13 @@ def forwarding_model(cfs, hop_results, m, date, hour):
             if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in fwd_dict:
                 fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])] = {
                     "rtts": [rtt_diff],
-                    "probes": [hops["prb_id"]]
+                    "probes": [hops["prb_id"]],
+                    "msm_id": [hops["msm_id"]]
                 }
             else:
 
                 fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["rtts"].append(rtt_diff)
+                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["msm_id"].append(hops["msm_id"])
                 # Only append a new probe_id if it's not already in the list, this way the list will be of unique values
                 if hops["prb_id"] not in fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["probes"]:
                     fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["probes"].append(hops["prb_id"])

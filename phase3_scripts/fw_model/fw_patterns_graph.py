@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import date, timedelta
 import ast 
+import collections
 
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
@@ -30,7 +31,7 @@ fw_dict = {}
 # Loop through the days considered in the graph
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)
- 
+    print(date)
     # For each hour, add to the fw dictionary the observed values
     for hour in tqdm(hours):
         if hour == "00":
@@ -55,20 +56,23 @@ for date in tqdm(range(delta.days + 1)):
             if source == link0:
                 link_ok = True
             
+            cnt = collections.Counter(connections[key]["msm_id"])
             if len(connections[key]["rtts"]) > 5 and len(connections[key]["probes"]) > 5:
 
                 if link0 in fw_dict:
                     if link1 in fw_dict[link0]:
-                        fw_dict[link0][link1].append(len(connections[key]["rtts"]))
+                        for msm_id, count in cnt.items():
+                            if msm_id in fw_dict[link0][link1]:
+                                fw_dict[link0][link1].append(count)
                     else:
-                        fw_dict[link0][link1] = [len(connections[key]["rtts"])]
+                        fw_dict[link0][link1] = None
+                        for msm_id, count in cnt.items():
+                            fw_dict[link0][link1][msm_id] = [count]
                 else:
                     #print(link[0])
-                    fw_dict[link0] = {
-                        link1 : [len(connections[key]["rtts"])]
-                        
-                    }
-            
+                    fw_dict[link0] = {link1 : None}
+                    for msm_id, count in cnt.items():
+                        fw_dict[link0][link1][msm_id] = [count]
         file1.close()
         # If the near-end facility is not present in all the hours of the observation
         # cancel the plot and print an error message
