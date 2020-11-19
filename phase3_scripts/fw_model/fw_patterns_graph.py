@@ -110,7 +110,7 @@ if dest_arg == None:
         index = index + 1
 else:
     if dest_arg in fw_dict[source]:
-        fig, ax = plt.subplots(len(fw_dict[source][dest_arg]), sharex=False, figsize=(80,50))
+        fig, ax = plt.subplots(len(fw_dict[source][dest_arg]), sharex=False, figsize=(300,50))
         index = 0
         for  msm_id, count in fw_dict[source][dest_arg].items():
             ax[index].set_title(msm_id)
