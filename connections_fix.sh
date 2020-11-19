@@ -11,8 +11,6 @@ enddate=$(date -I -d "$edate")   || exit -1
 date="$startdate"
 while [ "$date" != "$enddate" ]; do
 
-mkdir /home/csd/traceroutes/$date
-
 for hour in {00..23}
 
 do
