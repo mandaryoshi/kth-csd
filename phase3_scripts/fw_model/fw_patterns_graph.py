@@ -69,19 +69,19 @@ for date in tqdm(range(delta.days + 1)):
                             if msm_id in fw_dict[link0][link1]:
                                 fw_dict[link0][link1][msm_id].append(count)
                             else:
-                                fw_dict[link0][link1][msm_id] = [0]*((date+1)*int(hour)) + [count]
+                                fw_dict[link0][link1][msm_id] = [0]*((date)*24) + [0]*int(hour) + [count]
                     else:
                         fw_dict[link0][link1] = None
                         msm_id_dict = {} 
                         for msm_id, count in cnt.items():
-                            msm_id_dict[msm_id] = [0]*((date+1)*int(hour)) + [count]
+                            msm_id_dict[msm_id] = [0]*((date)*24) + [0]*int(hour) + [count]
                         fw_dict[link0][link1] = msm_id_dict
                 else:
                     #print(link[0])
                     fw_dict[link0] = {link1 : None}
                     msm_id_dict = {}
                     for msm_id, count in cnt.items():
-                        msm_id_dict[msm_id] = [0]*((date+1)*int(hour)) + [count]
+                        msm_id_dict[msm_id] = [0]*((date)*24) + [0]*int(hour) + [count]
                     fw_dict[link0][link1] = msm_id_dict
         file1.close()
         # If the near-end facility is not present in all the hours of the observation
@@ -98,7 +98,7 @@ for date in tqdm(range(delta.days + 1)):
                         fw_dict[near][far][msm_id].append(0)
 
 if dest_arg == None:
-    fig, ax = plt.subplots(len(fw_dict[source]), sharex=False, figsize=(80,50))
+    fig, ax = plt.subplots(len(fw_dict[source]), sharex=True, figsize=(80,80))
     index = 0
     for farend in fw_dict[source]:
         title = source + "--->" + farend
@@ -110,7 +110,7 @@ if dest_arg == None:
         index = index + 1
 else:
     if dest_arg in fw_dict[source]:
-        fig, ax = plt.subplots(len(fw_dict[source][dest_arg]), sharex=False, figsize=(80,50))
+        fig, ax = plt.subplots(len(fw_dict[source][dest_arg]), sharex=True, figsize=(50,300))
         index = 0
         for  msm_id, count in fw_dict[source][dest_arg].items():
             ax[index].set_title(msm_id)
@@ -135,5 +135,8 @@ plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 #plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
 #plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
-save_path = "../results/fw_graph_" + source + "_msm.png"
+if dest_arg == None:
+    save_path = "../results/fw_graph_" + source + "_msm.png"
+else: 
+    save_path = "../results/fw_graph_" + source + "_" + dest_arg +  "_msm.png"
 plt.savefig(save_path)
