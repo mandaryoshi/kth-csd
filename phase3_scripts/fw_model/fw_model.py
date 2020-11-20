@@ -88,7 +88,7 @@ def forwarding_model(cfs, hop_results, m, date, hour):
     link_list = []
 
     for key, hops in tqdm(hop_results.items()):
-        if (hops["previous_hop"] in near_end_map) and (hops["ixp_hop"] in far_end_map):
+        if (hops["previous_hop"] in near_end_map) and (hops["ixp_hop"] in far_end_map) and hops["msm_id"] <= 1000000:
 
             # Creating a list for the map creation
             if (near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]]) not in link_list:         # MAP
