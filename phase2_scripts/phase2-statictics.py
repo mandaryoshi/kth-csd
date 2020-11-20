@@ -6,133 +6,51 @@ import collections
 import matplotlib.pyplot as plt
 import numpy as np
 
+#sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
 sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
 
-from phase1_scripts.scriptc import FacilityMapping
-from phase1_scripts.scriptd import non_IxpIP_AS_mapping
-from phase1_scripts.scriptf import IPNeighbors
-from phase1_scripts.scriptb import IxpIP_AS_mapping
-from phase1_scripts.scripta import IxpDetector
+date = sys.argv[1]
 
-values = []
-values2 = []
-percentages = np.arange(0.45, 1, 0.025)
+#hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
+#         "14","15","16","17","18","19","20","21","22","23"]
 
-file = open('json_results/ixp_info_results.json')
-ixp_info = ujson.load(file)
+hours = ["12","13"]
 
-ip_asn = non_IxpIP_AS_mapping()
-ixp_fac = FacilityMapping(ixp_info)
-ip_neighbors = IPNeighbors()
-ix_detector = IxpDetector(ixp_info)
-ixp_to_asn = IxpIP_AS_mapping(ixp_info)
 
-with open('json_results/asn_fac_results.json') as f:
-    asn_fac_info = ujson.load(f)
+#sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
 
-with open("json_results/hop_results") as readfile:
-    hop_results = ujson.load(readfile)
-    for threshold in tqdm(percentages):
-        counter = 0
-        counter1 = 0
-        counter2 = 0
-        counter3 = 0
-        counter4 = 0
-        for key, hops in tqdm(hop_results.items()):
-            ixp_fac_set = ixp_fac.facility_search(hops["ixp_id"])
-            ip_ip, asn = ip_asn.mapping(hops["previous_hop"])
-            ixp_asn = ixp_to_asn.mapping(hops["ixp_hop"], hops["ixp_id"])
-            if asn != None and str(asn) in asn_fac_info:
-                asn_fac_set = asn_fac_info[str(asn)]
-                fac_match = []
-                for facility_id in ixp_fac_set:
-                    if facility_id in asn_fac_set:
-                        fac_match.append(facility_id)
+near_end_average = []
+far_end_average = []
 
-                if len(fac_match) == 1:
-                    counter = counter + 1
-                elif (len(fac_match) > 1): 
-                    counter2 = counter2 + 1
-                
-                    neighbours = ip_neighbors.graphgenerator(hops["previous_hop"])
-                    
-                    other_fac_set = []
-                    other_as_set = []
-                    other_ixp_set = []
+percentages = np.arange(0.45, 1, 0.05)
 
-                    for ip in neighbours:
-                        ip_ip2, asn2 = ip_asn.mapping(ip)
-                        if asn2 != None and (str(asn2) in asn_fac_info) and (asn2 != asn):
-                            other_as_set.append(asn2)
+for thld in tqdm(percentages):
+    daily_list_near = []
+    daily_list_far = []
+    for hour in tqdm(hours):
+        
+        
+        input_path = "../traceroutes/" + date + "/" + hour + "00/hop_results"
+        hop_result_file = open(input_path)
+        hop_results = ujson.load(hop_result_file)
 
-                    for asnumber in other_as_set:
-                        other_fac_set.append(asn_fac_info[str(asnumber)])
+        cfs = CFS(hop_results, date, hour)
 
-                    if len(other_fac_set) > 0:                                  
-                        flat_list = []                                          
-                        for sublist in other_fac_set:                           
-                            for fac_id in fac_match:
-                                if fac_id in sublist:
-                                    flat_list.append(fac_id)
-                        cnt = collections.Counter(flat_list)
-                        val = list(cnt.values())
-                    
-                        if len(val) > 1:
-                            if (val[0]/len(other_fac_set) >= threshold) and (val[0] != val[1]):
-                                counter3 = counter3 + 1
-                        elif len(val) == 1:
-                            if val[0]/len(other_fac_set) >= threshold:
-                                counter3 = counter3 + 1
-            
-            
-            if ixp_asn != None and str(ixp_asn) in asn_fac_info:
-                ixp_asn_fac_set = asn_fac_info[str(ixp_asn)]
+        near_end_map = cfs.NearEnd(thld)
+        far_end_map = cfs.FarEnd(thld)
 
-                fac_result = []
-                for facility in ixp_fac_set:
-                    if facility in ixp_asn_fac_set:
-                        fac_result.append(facility)
-                if len(fac_result) == 1:
-                    counter1 = counter1 + 1
-                elif (len(fac_result) > 1):
-                    counter2 = counter2 + 1
+        daily_list_near.append(cfs.step4_near)
+        daily_list_far.append(cfs.step4_far)
 
-                    neighbours = ip_neighbors.graphgenerator(hops["ixp_hop"])
-                    neighbour_fac_set = []
-                    neighbour_as_set = []
-
-                    for ip in neighbours:
-                        ip_ip2, asn2 = ip_asn.mapping(ip)
-                        if asn2 != None and (str(asn2) in asn_fac_info) and (asn2 != ixp_asn):
-                            neighbour_as_set.append(asn2)
-
-                    for asnumber in neighbour_as_set:
-                        neighbour_fac_set.append(asn_fac_info[str(asnumber)])
-
-                    if len(neighbour_fac_set) > 0:
-                        flat_list = []
-                        for sublist in neighbour_fac_set:
-                            for fac_id in fac_result:
-                                if fac_id in sublist:
-                                    flat_list.append(fac_id)
-                        cnt2 = collections.Counter(flat_list)
-                        val2 = list(cnt2.values())
-                        if len(val2) > 1:
-                            if (val2[0]/len(neighbour_fac_set) >= threshold) and (val2[0] != val2[1]):
-                                counter4 = counter4 + 1
-                        elif len(val2) == 1:
-                            if val2[0]/len(neighbour_fac_set) >= threshold:
-                                counter4 = counter4 + 1   
-            
-        values.append(counter3)
-        values2.append(counter4)
+    near_end_average.append(np.mean(daily_list_near))
+    far_end_average.append(np.mean(daily_list_far))
 
 
 
 #plt.plot(percentages, values)
 fig, ax = plt.subplots()
-ax.plot(percentages, values, label = 'Near-end')
-ax.plot(percentages, values2, label= 'Far-end')
+ax.plot(percentages, near_end_average, label = 'Near-end')
+ax.plot(percentages, far_end_average, label= 'Far-end')
 ax.set_title('Total Facilities Identified for Varying Threshold Values')
 ax.set_xlabel('Threshold Values')
 ax.set_xticks(np.arange(0.45, 1, 0.05))

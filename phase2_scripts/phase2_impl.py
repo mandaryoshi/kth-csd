@@ -35,6 +35,16 @@ class CFS:
         self.ix_detector = IxpDetector(ixp_info)
         self.ixp_to_asn = IxpIP_AS_mapping(ixp_info)
 
+        self.step1_near = 0
+        self.step2_near = 0
+        self.step3_near = 0
+        self.step4_near = 0
+
+        self.step1_far = 0
+        self.step2_far = 0
+        self.step3_far = 0
+        self.step4_far = 0
+
     # Function to map a facility to a previous hop IP
     # Once a facility is identified, it is added to the mapping
     def prev_fac_ip_mapping(self, facs, fac_ips, hops):
@@ -60,12 +70,14 @@ class CFS:
 
     # Function for identifying the near-end facilities
     # Returns a dictionary consisting of facilities as keys and the IPs connected to each facility
-    def NearEnd(self):
+    def NearEnd(self, thld=0.75):
         fac_ips = {}
 
         for key, hops in tqdm(self.hop_results.items()):
+            # Step 1
             ixp_fac_set = self.ixp_fac.facility_search(hops["ixp_id"])
             if len(ixp_fac_set) > 1:
+                # Step 2
                 ip_ip, asn = self.ip_asn.mapping(hops["previous_hop"])
                 if asn != None and str(asn) in self.asn_fac_info:
                     asn_fac_set = self.asn_fac_info[str(asn)]
@@ -74,11 +86,12 @@ class CFS:
                         if facility_id in asn_fac_set:
                             fac_match.append(facility_id)
 
-                    #Step 1
+                    #Step 2 Result
                     if len(fac_match) == 1:
                         self.prev_fac_ip_mapping(fac_match, fac_ips, hops)
+                        self.step2_near = self.step2_near + 1
                     
-                    # Step 2
+                    # Step 3
                     elif (len(fac_match) > 1): 
                     
                         neighbours = self.ip_neighbors.graphgenerator(hops["previous_hop"])
@@ -99,7 +112,7 @@ class CFS:
                                 if ixp_id != None:
                                     other_ixp_set.append(ixp_id)
                         
-                        # Step 3
+                        
                         for ixp in other_ixp_set:
                             facilities = self.ixp_fac.facility_search(ixp)
                             for value in fac_match:
@@ -124,28 +137,40 @@ class CFS:
                                 keys = list(cnt.keys())
 
                                 if len(val) > 1:
-                                    if (val[0]/len(other_fac_set) >= 0.75) and (val[0] != val[1]):
-                                        self.prev_fac_ip_mapping(keys, fac_ips, hops)                  
+                                    if (val[0]/len(other_fac_set) >= thld) and (val[0] != val[1]):
+                                        # Step 4 Result
+                                        self.prev_fac_ip_mapping(keys, fac_ips, hops)      
+                                        self.step4_near = self.step4_near + 1
                                 elif len(val) == 1:
-                                    if val[0]/len(other_fac_set) >= 0.75:
+                                    if val[0]/len(other_fac_set) >= thld:
+                                        # Step 4 Result
                                         self.prev_fac_ip_mapping(keys, fac_ips, hops)
+                                        self.step4_near = self.step4_near + 1
+
+                        # Step 3 Result
                         else:
                             self.prev_fac_ip_mapping(keys2, fac_ips, hops)
-                            
+                            self.step3_near = self.step3_near + 1
+
+
+            # Step 1 Result                
             elif len(ixp_fac_set) == 1:
                 self.prev_fac_ip_mapping(ixp_fac_set, fac_ips, hops)
+                self.step1_near = self.step1_near + 1
 
         return fac_ips  
 
     # Function for identifying the far-end facilities
     # Returns a dictionary consisting of facilities as keys and the IPs connected to each facility                        
-    def FarEnd(self):
+    def FarEnd(self, thld=0.75):
 
         fac_ips = {}
         
         for key, hops in tqdm(self.hop_results.items()):
             ixp_fac_set = self.ixp_fac.facility_search(hops["ixp_id"])
+            # Step 1
             if len(ixp_fac_set) > 1:
+                # Step 2
                 ixp_asn = self.ixp_to_asn.mapping(hops["ixp_hop"], hops["ixp_id"])
                 if ixp_asn != None and str(ixp_asn) in self.asn_fac_info:
                     ixp_asn_fac_set = self.asn_fac_info[str(ixp_asn)]
@@ -155,11 +180,12 @@ class CFS:
                         if facility in ixp_asn_fac_set:
                             fac_result.append(facility)
                     
-                    # Step 1
+                    # Step 2 Result
                     if len(fac_result) == 1:
                         self.ixp_fac_ip_mapping(fac_result, fac_ips, hops)
+                        self.step2_far = self.step2_far + 1
 
-                    # Step 2
+                    # Step 3
                     elif (len(fac_result) > 1):
 
                         neighbours = self.ip_neighbors.graphgenerator(hops["ixp_hop"])
@@ -179,7 +205,6 @@ class CFS:
                                 if ixp_id != None:
                                     other_ixp_set.append(ixp_id)
 
-                        # Step 3
                         for ixp in other_ixp_set:
                             facilities = self.ixp_fac.facility_search(ixp)
                             for val in fac_result:
@@ -204,18 +229,26 @@ class CFS:
                                 keys = list(cnt.keys())
 
                                 if len(val) > 1:
-                                    if (val[0]/len(neighbour_fac_set) >= 0.75) and (val[0] != val[1]):
+                                    if (val[0]/len(neighbour_fac_set) >= thld) and (val[0] != val[1]):
+                                        # Step 4 Result
                                         self.ixp_fac_ip_mapping(keys, fac_ips, hops)
+                                        self.step4_far = self.step4_far + 1
                                         
                                 elif len(val) == 1:
-                                    if val[0]/len(neighbour_fac_set) >= 0.75:
+                                    if val[0]/len(neighbour_fac_set) >= thld:
+                                        # Step 4 Result
                                         self.ixp_fac_ip_mapping(keys, fac_ips, hops)
-                                          
+                                        self.step4_far = self.step4_far + 1
+
+                        # Step 3 Result                  
                         else:
                             self.ixp_fac_ip_mapping(keys2, fac_ips, hops)
-                            
+                            self.step3_far = self.step3_far + 1
+
+            # Step 1 Result                
             elif len(ixp_fac_set) == 1:
                 self.ixp_fac_ip_mapping(ixp_fac_set, fac_ips, hops)
+                self.step1_far = self.step1_far + 1
 
         return fac_ips                 
 
