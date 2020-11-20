@@ -6,8 +6,10 @@ import collections
 import matplotlib.pyplot as plt
 import numpy as np
 
-#sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
-sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
+sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
+#sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
+
+from phase2_scripts.phase2_impl import *
 
 date = sys.argv[1]
 
