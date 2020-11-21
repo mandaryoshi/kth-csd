@@ -23,6 +23,8 @@ hours = ["12","13"]
 
 near_end_average = []
 far_end_average = []
+near_end_scatter = []
+far_end_scatter = []
 
 percentages = np.arange(0.45, 1, 0.05)
 
@@ -46,7 +48,8 @@ for thld in tqdm(percentages):
 
     near_end_average.append(np.mean(daily_list_near))
     far_end_average.append(np.mean(daily_list_far))
-
+    near_end_scatter.append(daily_list_near)
+    far_end_scatter.append(daily_list_far)
 
 
 #plt.plot(percentages, values)
@@ -57,6 +60,12 @@ ax.set_title('Total Facilities Identified for Varying Threshold Values')
 ax.set_xlabel('Threshold Values')
 ax.set_xticks(np.arange(0.45, 1, 0.05))
 ax.set_ylabel('Total Facilities Identified')
+
+for xe, ye in zip(percentages, near_end_scatter):
+    plt.scatter([xe] * len(ye), ye, colour="green")
+for xe, ye in zip(percentages, far_end_scatter):
+    plt.scatter([xe] * len(ye), ye, colour="red")
+
 ax.legend()
 plt.grid()
 plt.show()
