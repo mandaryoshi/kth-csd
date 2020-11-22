@@ -16,7 +16,7 @@ date = sys.argv[1]
 #hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
 #         "14","15","16","17","18","19","20","21","22","23"]
 
-hours = ["12","13"]
+hours = ["1200","1300"]
 
 
 #sys.path.insert(0, 'D:\\Documents\\IK2200HT201-IXP')
@@ -34,7 +34,7 @@ for thld in tqdm(percentages):
     for hour in tqdm(hours):
         
         
-        input_path = "../traceroutes/" + date + "/" + hour + "00/hop_results"
+        input_path = "../traceroutes/" + date + "/" + hour + "/hop_results"
         hop_result_file = open(input_path)
         hop_results = ujson.load(hop_result_file)
 
@@ -62,10 +62,10 @@ ax.set_xticks(np.arange(0.45, 1, 0.05))
 ax.set_ylabel('Total Facilities Identified')
 
 for xe, ye in zip(percentages, near_end_scatter):
-    plt.scatter([xe] * len(ye), ye, colour="green")
+    plt.scatter([xe] * len(ye), ye, c="green")
 for xe, ye in zip(percentages, far_end_scatter):
-    plt.scatter([xe] * len(ye), ye, colour="red")
+    plt.scatter([xe] * len(ye), ye, c="red")
 
 ax.legend()
 plt.grid()
-plt.show()
+plt.save("phase3_scripts/results/threshold_test.png")
