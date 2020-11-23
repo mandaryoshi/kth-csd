@@ -68,4 +68,4 @@ for xe, ye in zip(percentages, far_end_scatter):
 
 ax.legend()
 plt.grid()
-plt.save("phase3_scripts/results/threshold_test.png")
+plt.savefig("phase2_scripts/threshold_test.png")
