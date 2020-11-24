@@ -108,12 +108,6 @@ initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
     lb_array = link_dict[key]["lower_bd"]
     ub_array = link_dict[key]["upper_bd"]
-    '''
-    for j in range(0, (len(ub_array)-1)):
-            diff_array1.append(ub_array[j+1] - lb_array[j])
-            #diff_array2.append(ub_array[j] - lb_array[j+1])
-             #currnt_lb - ref_ub or ref_lb - curr_ub
-    '''
     lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [18])
     median_array_1, median_array_2 = np.split(link_dict[key]["median"], [18])
     ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [18])
@@ -121,7 +115,7 @@ for key, val in link_dict.items():
         "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),
         "median" : round((np.median(median_array_1)*0.1 + np.median(median_array_2)*0.9),5),
         "upper_bd" : round((np.median(ub_array_1)*0.1 + np.median(ub_array_2)*0.9),5),
-        "diff"     : round(np.mean(ub_array) - np.mean(lb_array), 5)
+        "diff"     : round(np.median(ub_array) - np.median(lb_array), 5)
     }
 
 output_file.write(ujson.dumps(initial_ref_values))
