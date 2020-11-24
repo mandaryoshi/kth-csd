@@ -45,7 +45,7 @@ for link in ref.keys():
         #print(ranks, len(sorted_rtts))
         interval = (round(sorted_rtts[ranks[0]],5), round(sorted_rtts[ranks[1]],5))
         ref_interval = (ref[link]["lower_bd"],ref[link]["upper_bd"])
-        if (((interval[0] - ref_interval[1]) > 1) or  ((ref_interval[0] - interval[1]) > 1)):
+        if (((interval[0] - ref_interval[1]) > ref[link]["diff"]) or  ((ref_interval[0] - interval[1]) > ref[link]["diff"])):
             #currnt_lb - ref_ub or ref_lb - curr_ub
             #print("Alarm triggered!!", link, interval, ref_interval)
             alarm_dict["alarms"].append(link)
