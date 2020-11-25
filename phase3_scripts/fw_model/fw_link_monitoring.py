@@ -138,8 +138,8 @@ for source in fw_dict.keys():
                         alarm_dict["alarms"].append((source, dest, eval_dict[dest], round(mse), p_value))
     #else:
         #print("empty ref and results list")
-
-print(len(alarm_dict["alarms"]))
+print(date)
+print(len(alarm_dict["alarms"]), hour)
 
 # Save alarms and references
 output_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_alarms"
