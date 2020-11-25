@@ -64,6 +64,7 @@ with open(results_path, 'w') as fp:
 
 fp.close()
 
+
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_alarms"
 with open(results_path, 'w') as fp:
     ujson.dump(alarm_dict, fp)
