@@ -125,7 +125,7 @@ for source in fw_dict.keys():
             for dest in eval_dict:
                 if eval_dict[dest] < -0.25 or eval_dict[dest] > 0.25:
                     mse = np.square(np.subtract(ref_list,results_list)).mean() 
-                    alarm_dict["alarms"].append((source, dest, eval_dict[dest], mse))
+                    alarm_dict["alarms"].append((source, dest, eval_dict[dest], round(mse)))
         
         else:
             p_value = chisquare(ref_list, results_list)[1]
@@ -135,7 +135,7 @@ for source in fw_dict.keys():
                 for dest in eval_dict:
                     if eval_dict[dest] < -0.25 or eval_dict[dest] > 0.25:
                         mse = np.square(np.subtract(ref_list,results_list)).mean() 
-                        alarm_dict["alarms"].append((source, dest, eval_dict[dest], mse, p_value))
+                        alarm_dict["alarms"].append((source, dest, eval_dict[dest], round(mse), p_value))
     #else:
         #print("empty ref and results list")
 

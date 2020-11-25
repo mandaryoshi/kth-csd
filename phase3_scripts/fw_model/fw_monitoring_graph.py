@@ -99,11 +99,11 @@ for date in tqdm(range(delta.days + 1)):
                 if link1 in fw_comp_model[link0]:
                     if "alarms" in fw_comp_model[link0][link1]:
                         fw_comp_model[link0][link1]["alarms"].append(len(date_list)-1)
-                        fw_comp_model[link0][link1]["r_p_value"].append((key[2], key[3]))
+                        fw_comp_model[link0][link1]["r_p_value"].append(key[3])
 
                     else:
                         fw_comp_model[link0][link1]["alarms"] =  [len(date_list)-1]
-                        fw_comp_model[link0][link1]["r_p_value"] = [(key[2], key[3])]
+                        fw_comp_model[link0][link1]["mse"] = [key[3]]
                     
         file2.close()
 
@@ -128,10 +128,13 @@ if origin in fw_comp_model:
 
                 #plt.scatter(values["alarms"], alarm_values, color = 'red', label=values["r_p_value"])
                 ax[0].scatter(values["alarms"], alarm_values, color = 'red')
+                for i, txt in enumerate(values["mse"]):
+                    ax[0].annotate(txt, (values["alarms"][i], alarm_values[i]))
             #if len(values["ref"]) == len(date_list):
             ax[0].plot(np.arange(len(date_list)), reference, color = 'blue')
             ax[0].plot(np.arange(len(date_list)), observed, label=dest)
             ax[1].plot(np.arange(len(date_list)), probes, label=dest)
+
 
 
 # Set the ticks of the X Axis 
