@@ -53,6 +53,18 @@ def r_values(src_fw_dict):
 #    print(r_values_dict)
     return r_values_dict
 
+def link_eval(src_fw_dict):
+    evals_dict = {}
+
+    for dest, value in src_fw_dict.items():
+        if dest != "p_value":
+            if len(value["comp"]) > 1 and value["comp"][0] != 0:
+                evals_dict[dest] = (value["comp"][1] - value["comp"][0]) / value["comp"][0]
+    return evals_dict
+    
+
+
+
 # Create a new forwarding dictionary for the new values starting off
 # with the fw_reference values from the previous 3 hours
 # Format example of the dictionary:
@@ -108,13 +120,22 @@ for source in fw_dict.keys():
     # First compute the chi squared test
     # Then, if the chi sqaure result detects an anomaly, check the link using the responsibility metric
     if len(ref_list) > 0 and len(results_list) > 0:
-        p_value = chisquare(ref_list, results_list)[1]
-        fw_dict[source]["p_value"] = p_value
-        if p_value <= 0.01:
-            r_val_dict = r_values(fw_dict[source])
-            for dest in r_val_dict:
-                if r_val_dict[dest] < -0.4 or r_val_dict[dest] > 0.4:
-                    alarm_dict["alarms"].append((source, dest, r_val_dict[dest], p_value))
+        if len(ref_list) == 1:
+            eval_dict = link_eval(fw_dict[source])
+            for dest in eval_dict:
+                if eval_dict[dest] < -0.25 or eval_dict[dest] > 0.25:
+                    mse = np.square(np.subtract(ref_list,results_list)).mean() 
+                    alarm_dict["alarms"].append((source, dest, eval_dict[dest], mse))
+        
+        else:
+            p_value = chisquare(ref_list, results_list)[1]
+            fw_dict[source]["p_value"] = p_value
+            if p_value <= 0.01:
+                eval_dict = link_eval(fw_dict[source])
+                for dest in eval_dict:
+                    if eval_dict[dest] < -0.25 or eval_dict[dest] > 0.25:
+                        mse = np.square(np.subtract(ref_list,results_list)).mean() 
+                        alarm_dict["alarms"].append((source, dest, eval_dict[dest], mse, p_value))
     #else:
         #print("empty ref and results list")
 
