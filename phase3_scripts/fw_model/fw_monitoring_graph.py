@@ -99,7 +99,7 @@ for date in tqdm(range(delta.days + 1)):
                 if link1 in fw_comp_model[link0]:
                     if "alarms" in fw_comp_model[link0][link1]:
                         fw_comp_model[link0][link1]["alarms"].append(len(date_list)-1)
-                        fw_comp_model[link0][link1]["r_p_value"].append(key[3])
+                        fw_comp_model[link0][link1]["mse"].append(key[3])
 
                     else:
                         fw_comp_model[link0][link1]["alarms"] =  [len(date_list)-1]
