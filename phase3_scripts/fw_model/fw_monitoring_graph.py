@@ -111,6 +111,8 @@ for date in tqdm(range(delta.days + 1)):
 # Creation of the base figure with the size
 fig, ax = plt.subplots(2, sharex=True, gridspec_kw={'hspace': 0}, figsize=(50,10))
 
+ax[0].set_title('Forwarding Pattern for Facility ' + origin)
+
 # For every link of the origin near-end facility, check if it appears in every hour of the period observed
 # and create 3 lists that will be plotted corresponding to the expected values, the observed, and the alarms triggered
 if origin in fw_comp_model:
@@ -126,10 +128,10 @@ if origin in fw_comp_model:
 
                 #plt.scatter(values["alarms"], alarm_values, color = 'red', label=values["r_p_value"])
                 ax[0].scatter(values["alarms"], alarm_values, color = 'red')
-            if len(values["ref"]) == len(date_list):
-                ax[0].plot(np.arange(len(date_list)), reference, color = 'blue')
-                ax[0].plot(np.arange(len(date_list)), observed, label=dest)
-                ax[1].plot(np.arange(len(date_list)), probes, label=dest)
+            #if len(values["ref"]) == len(date_list):
+            ax[0].plot(np.arange(len(date_list)), reference, color = 'blue')
+            ax[0].plot(np.arange(len(date_list)), observed, label=dest)
+            ax[1].plot(np.arange(len(date_list)), probes, label=dest)
 
 
 # Set the ticks of the X Axis 

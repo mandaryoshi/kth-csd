@@ -75,10 +75,10 @@ for key in links:
             #    "probes": links[key]["probes"]
             #}
             fw_dict[link0][link1]["comp"].append(len(links[key]["rtts"]))
-            if "probes" in fw_dict[link0][link1]:
-            	fw_dict[link0][link1]["probes"].append(links[key]["probes"])
-            else:
-                fw_dict[link0][link1]["probes"] = links[key]["probes"]
+            #if "probes" in fw_dict[link0][link1]:
+            #	fw_dict[link0][link1]["probes"].append(links[key]["probes"])
+            #else:
+            fw_dict[link0][link1]["probes"] = links[key]["probes"]
         else:
             fw_dict[link0][link1] = { 
                 "comp":  [0,len(links[key]["rtts"])],

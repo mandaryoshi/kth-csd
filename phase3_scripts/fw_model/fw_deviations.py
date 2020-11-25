@@ -47,33 +47,34 @@ for date in tqdm(range(delta.days + 1)):
         ### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
         for source in new_model:
             for dest, value in new_model[source].items():
-                if source in fw_comp_model:
-                    if dest in fw_comp_model[source]:
-                        if len(value) == 2 and value[0] != 0:
+                if dest != "p_value":
+                    if source in fw_comp_model:
+                        if dest in fw_comp_model[source]:
+                            if len(value) == 2 and value[0] != 0:
+                                #fw_comp_model[source][dest]["ref"].append(value[0])
+                                fw_comp_model[source][dest].append(value[1])
+                            
                             #fw_comp_model[source][dest]["ref"].append(value[0])
-                            fw_comp_model[source][dest].append(value[1])
-                        
-                        #fw_comp_model[source][dest]["ref"].append(value[0])
-                        #if len(value) == 1:
-                        #    fw_comp_model[source][dest]["obs"].append(0)
-                        #else:
-                        #    fw_comp_model[source][dest]["obs"].append(value[1])
+                            #if len(value) == 1:
+                            #    fw_comp_model[source][dest]["obs"].append(0)
+                            #else:
+                            #    fw_comp_model[source][dest]["obs"].append(value[1])
+                        else:
+                            if len(value) == 2 and value[0] != 0:
+                                fw_comp_model[source][dest] = [value[1]]
+                            #fw_comp_model[source][dest] = {"ref": [value[0]]}
+                            #if len(value) == 1:
+                            #    fw_comp_model[source][dest]["obs"] = [0]
+                            #else:
+                            #    fw_comp_model[source][dest]["obs"] = [value[1]]       
                     else:
                         if len(value) == 2 and value[0] != 0:
-                            fw_comp_model[source][dest] = [value[1]]
-                        #fw_comp_model[source][dest] = {"ref": [value[0]]}
+                            fw_comp_model[source] = {dest : [value[1]]}
+                        #fw_comp_model[source] = {dest : {"ref": [value[0]]}}
                         #if len(value) == 1:
                         #    fw_comp_model[source][dest]["obs"] = [0]
                         #else:
-                        #    fw_comp_model[source][dest]["obs"] = [value[1]]       
-                else:
-                    if len(value) == 2 and value[0] != 0:
-                        fw_comp_model[source] = {dest : [value[1]]}
-                    #fw_comp_model[source] = {dest : {"ref": [value[0]]}}
-                    #if len(value) == 1:
-                    #    fw_comp_model[source][dest]["obs"] = [0]
-                    #else:
-                    #    fw_comp_model[source][dest]["obs"] = [value[1]]
+                        #    fw_comp_model[source][dest]["obs"] = [value[1]]
         file1.close()
         
     
@@ -85,13 +86,22 @@ plt.figure(figsize=(100,10))
 link_list = []
 dev_list = []
 
+near_end = []
+
 for source in fw_comp_model:
     for dest, values in fw_comp_model[source].items():
         if len(values) == len(date_list):
             dev_list.append(np.std(values))
             link_list.append(str([source, dest]))
+            near_end.append(int(source))
 
 plt.scatter(np.arange(len(link_list)), dev_list)
+
+print(len(link_list))
+
+print(link_list)
+
+print(sorted(list(dict.fromkeys(near_end))))
 
 # Set the ticks of the X Axis 
 plt.xticks(np.arange(len(link_list)),link_list,rotation='vertical')

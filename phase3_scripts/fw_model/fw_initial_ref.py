@@ -7,6 +7,8 @@ import time
 import ast
 import datetime as dt
 
+#sys.path.insert(0, '/mnt/d/Documents/IK2200HT201-IXP')
+
 #Input the date and hour we are analysing
 # Date format = 2020-10-20
 # Hour format = 18
@@ -20,14 +22,21 @@ hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
 
 # List of indices that will be taken into account to calculate the forwarding model medians
-index_interval = ((int(hour)-3)%24,(int(hour)-2)%24,(int(hour)-1)%24)         
+index_interval = []
+
+interval_length = 9
+
+for value in np.arange(interval_length):
+    index_interval.append((int(hour) - value - 1) % 24)
+
+index_interval.reverse()     
 
 fw_dict = {}
 
 #Looping through the past 3 hours to calculate the reference values
 for h in index_interval:
 
-    if index_interval[0] >= 21 and h not in [0,1,2]:
+    if index_interval[0] >= (24 - interval_length) and h not in np.arange(interval_length):
         day = sdate + dt.timedelta(days= -1)
         path = "/home/csd/traceroutes/" + str(day) + "/" + hours[h] + "00" + "/connections"
     else:
@@ -73,6 +82,8 @@ for h in index_interval:
 for key in list(fw_dict.keys()):
     for dest, value in list(fw_dict[key].items()):
         if len(fw_dict[key][dest]["comp"]) == len(index_interval):
+            index = len(value["comp"])//2
+            #fw_dict[key][dest]["comp"] = [0.9*np.median(value["comp"][index:]) + 0.1*np.median(value["comp"][:index])]
             fw_dict[key][dest]["comp"] = [np.median(value["comp"])]
         else: 
             del fw_dict[key][dest]

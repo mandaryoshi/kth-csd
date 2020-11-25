@@ -37,18 +37,24 @@ for date in tqdm(range(delta.days + 1)):
             date_list.append(str(day))
         else:
             date_list.append(hour)
+        
         file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_ref_values")
         rtt_ref_values = ujson.load(file1)
+
+        file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_medians")
+        rtt_medians = ujson.load(file2)
+        
         key = str((int(source), int(dest)))
-        if key in rtt_ref_values:
+        
+        if key in rtt_ref_values and key in rtt_medians:
+            
             normal_reference_upper.append(rtt_ref_values[key]["upper_bd"])
             normal_reference_lower.append(rtt_ref_values[key]["lower_bd"])
             normal_reference_median.append(rtt_ref_values[key]["median"])
 
             #ref_intervallist.append([rtt_ref_values[key]["lower_bd"],rtt_ref_values[key]["upper_bd"]])
 
-            file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_medians")
-            rtt_medians = ujson.load(file2)
+            
             
             rtt_upper.append(rtt_medians[key]["upper_bd"] - rtt_medians[key]["median"])
             rtt_lower.append(rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"])
@@ -59,10 +65,7 @@ for date in tqdm(range(delta.days + 1)):
             alarms = ujson.load(file3)
 
             if key in alarms["alarms"]:
-                #alarm_list.append(rtt_ref_values[key]["diff"])
-                alarm_list.append(5)
-            else:
-                alarm_list.append(0)
+                alarm_list.append(len(date_list) -1)
             
             file2.close()
             file3.close()
@@ -72,31 +75,37 @@ for date in tqdm(range(delta.days + 1)):
         
         file1.close()
 
+alarm_values = []
+for index in alarm_list:
+    alarm_values.append(rtt_median[index])
+
 #start graphing
 
 plt.figure(figsize=(30,10))
 
-plt.xticks(np.arange(168),date_list,rotation='vertical')
+plt.title("RTT Pattern for " + source + " - " + dest)
+
+plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 
 err_list = [rtt_lower, rtt_upper]
 
-plt.plot(np.arange(168), normal_reference_median, marker ='s')
-for i in alarm_list:
-    if i != 0:
-        plt.plot(np.arange(168),alarm_list, color = 'red')
+plt.plot(np.arange(len(date_list)), normal_reference_median, marker ='s')
+
+
 #for x,y in zip(np.arange(216), normal_reference_median):
  #   label = y
  #   plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
 
-plt.fill_between(np.arange(168), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
+plt.fill_between(np.arange(len(date_list)), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
-plt.errorbar(np.arange(168), rtt_median, yerr=err_list, fmt='o',capsize=5)
+plt.errorbar(np.arange(len(date_list)), rtt_median, yerr=err_list,fmt='.',capsize=5)
+plt.scatter(alarm_list, alarm_values, marker='D', color='magenta')
 #for x,y in zip(np.arange(216), rtt_median):
 #    label = y
 #    plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
 plt.xlabel("Date")
 plt.ylabel("Differential RTT values")
-plt.grid(True)
+#plt.grid(True)
 plt.savefig('../results/rtt_sw_graph.png')
 
 
