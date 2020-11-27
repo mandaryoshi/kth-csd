@@ -99,7 +99,7 @@ plt.plot(np.arange(len(date_list)), normal_reference_median, marker ='s')
 plt.fill_between(np.arange(len(date_list)), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
 
 plt.errorbar(np.arange(len(date_list)), rtt_median, yerr=err_list,fmt='.',capsize=5)
-plt.plot(np.arange(len(date_list)), rtt_median, marker ='s')
+plt.plot(np.arange(len(date_list)), rtt_median, marker ='s', color ='y') 
 
 
 plt.scatter(alarm_list, alarm_values, marker='D', color='magenta')
