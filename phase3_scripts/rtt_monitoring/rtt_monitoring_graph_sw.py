@@ -49,6 +49,7 @@ for date in tqdm(range(delta.days + 1)):
             file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_medians")
             rtt_medians = ujson.load(file2)
             
+        
             rtt_upper.append(rtt_medians[key]["upper_bd"] - rtt_medians[key]["median"])
             rtt_lower.append(rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"])
             rtt_median.append(rtt_medians[key]["median"])
