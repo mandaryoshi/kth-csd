@@ -110,9 +110,9 @@ initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
     lb_array = link_dict[key]["lower_bd"]
     ub_array = link_dict[key]["upper_bd"]
-    lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], int(ref_split))
-    median_array_1, median_array_2 = np.split(link_dict[key]["median"], int(ref_split))
-    ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], int(ref_split))
+    lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [int(ref_split)])
+    median_array_1, median_array_2 = np.split(link_dict[key]["median"], [int(ref_split)])
+    ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [int(ref_split)])
     initial_ref_values[key] = {
         "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),
         "median" : round((np.median(median_array_1)*0.1 + np.median(median_array_2)*0.9),5),
