@@ -35,6 +35,7 @@ def sliding_window(curr_hour):
 #Retrieve a whole day data as reference computation
 curr_date = sys.argv[1] 
 curr_hour = sys.argv[2] #%hh
+ref_split = sys.argv[3]
 
 curr_date_dateTime = datetime.strptime(curr_date, "%Y-%m-%d")
 previous_date = str((curr_date_dateTime - timedelta(days = 1)).date())
@@ -106,9 +107,9 @@ for i in hours:
 
 initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
-    lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [18])
-    median_array_1, median_array_2 = np.split(link_dict[key]["median"], [18])
-    ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [18])
+    lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [int(ref_split)])
+    median_array_1, median_array_2 = np.split(link_dict[key]["median"], [int(ref_split)])
+    ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [int(ref_split)])
     initial_ref_values[key] = {
         "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),
         "median" : round((np.median(median_array_1)*0.1 + np.median(median_array_2)*0.9),5),

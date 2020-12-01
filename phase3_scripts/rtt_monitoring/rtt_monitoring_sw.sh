@@ -5,17 +5,24 @@
 read start_date 
 read end_date
 read ref_split
+read threshold
 
 startdate=$(date -I -d "$start_date") || exit -1
 enddate=$(date -I -d "$end_date")     || exit -1
+if $threshold = 'First':
+    file1 = rtt_initial_ref_sw.py
+    file2 = rtt_link_monitoring_sw.py
+else if $threshold = 'Second':
+    file1 = rtt_initial_ref_sw_bk.py
+    file2 = rtt_link_monitoring_sw_bk.py
 
 while [ "$startdate" != "$enddate" ]; do 
   
     echo $startdate
     for hour in {00..23}
     do
-       python3 rtt_initial_ref_sw_bk.py $startdate $hour $ref_split
-       python3 rtt_link_monitoring_sw_bk.py $startdate $hour\00
+       python3 $file1 $startdate $hour $ref_split
+       python3 $file2 $startdate $hour\00
     done
 
     startdate=$(date -I -d "$startdate + 1 day")
