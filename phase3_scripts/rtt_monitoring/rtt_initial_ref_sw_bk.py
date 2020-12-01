@@ -6,7 +6,7 @@ from math import sqrt
 import time
 from datetime import timedelta, datetime
 
-#Define wilson function to determine confidence interval
+#Define wilson function to determine confidence interval for differential rtts between two colos in an hour.
 def wilson(p, n, z = 1.96):
     denominator = 1 + z**2/n
     centre_adjusted_probability = p + z*z / (2*n)
@@ -17,12 +17,12 @@ def wilson(p, n, z = 1.96):
 
     return (round(lower_bound*n), round(upper_bound*n))
 
-#Sliding window 
+#Function implementing a sliding window of 24hrs. 
 def sliding_window(curr_hour):
      
     hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
-    #n = no of time the array must be rotated.
+    #n is the number of times "hours" list must be rotated.
     n = hours.index(curr_hour)   
     for i in range(0,n):
         first = hours[0]    
@@ -31,19 +31,19 @@ def sliding_window(curr_hour):
         hours[len(hours)-1] = first    
     return hours            
 
-
-#Retrieve a whole day data as reference computation
 curr_date = sys.argv[1] 
-curr_hour = sys.argv[2] #%hh
-ref_split = sys.argv[3]
+curr_hour = sys.argv[2] #hh
+#ref_split determines how to split 24 hrs into two splits, and has a value equal to size of the first split
+#For example, if 24 hrs is to be split as 18hrs and 6hrs, ref_split needs to be given a value of 18. 
+ref_split = sys.argv[3] 
 
 curr_date_dateTime = datetime.strptime(curr_date, "%Y-%m-%d")
 previous_date = str((curr_date_dateTime - timedelta(days = 1)).date())
 
 hours = sliding_window(curr_hour)
-#find the index of "00" in hours
-first_hour_index = hours.index("00")
-last_hour_index = hours.index("23")
+#To determine if the sliding window has hours from two different days, positions of "00" and "23" in hours is computed
+first_hour_index = hours.index("00") #find the index of "00" in hours
+last_hour_index = hours.index("23") #find the index of "23" in hours
 diff = last_hour_index - first_hour_index
 
 #Check if the hour is in the previous date array or current date array
@@ -74,8 +74,7 @@ for i in hours:
     elif hour in curr_array:
         #path = "/home/csd/traceroutes/" + str(curr_date_dateTime.date()) + "/" + hour + "00" + "/connections"
         path = "/home/csd/traceroutes/" + str(curr_date_dateTime.date()) + "/" + hour + "00" + "/connections"
-        
-    #print(path)
+
     if hour != hours[0]:
         file = open(path)
         links = ujson.load(file)
