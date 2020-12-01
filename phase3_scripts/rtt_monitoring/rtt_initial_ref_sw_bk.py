@@ -75,12 +75,12 @@ for i in hours:
         #path = "/home/csd/traceroutes/" + str(curr_date_dateTime.date()) + "/" + hour + "00" + "/connections"
         path = "/home/csd/traceroutes/" + str(curr_date_dateTime.date()) + "/" + hour + "00" + "/connections"
         
-    print(path)
+    #print(path)
     if hour != hours[0]:
         file = open(path)
         links = ujson.load(file)
     
-    for link in tqdm(link_dict.keys()):
+    for link in link_dict.keys():
         if link in links and len(links[link]["rtts"]) > 5:
             sorted_rtts = sorted(links[link]["rtts"])
             normal_ref = np.median(sorted_rtts)
