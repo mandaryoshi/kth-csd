@@ -28,3 +28,14 @@ echo "FINISHED DATE: " + $date
 date=$(date -I -d "$date + 1 day")
 
 done
+
+# dates=('2020-11-07')
+# for date in "${dates[@]}"
+# do
+#     echo "date is $date"
+#     for hour in {00..23}
+#     do
+#         echo "hour is $hour"
+#         python3 phase3_scripts/fw_model/fw_model.py $date $hour\00
+#     done
+# done

@@ -8,11 +8,15 @@ from scipy.stats import chisquare
 import time
 import ast
 
+#sys.path.insert(0, '/mnt/d/Documents/IK2200HT201-IXP')
+
 # Input the date and hour for forwarding model link monitoring
 # Date format = 2020-10-20
 # Hour format = 18
 date = sys.argv[1]
 hour = sys.argv[2]
+
+print(date, hour)
 
 # Path for the hour you are monitoring
 path = "/home/csd/traceroutes/" + date + "/" + hour + "00/connections"
@@ -32,7 +36,6 @@ def r_values(src_fw_dict):
     denom = 0
     for key, val in src_fw_dict.items():
         if key != "p_value":
-#            print(val)
             if len(val["comp"]) > 1:
                 denom = denom + abs(val["comp"][1] - val["comp"][0])
             else:
@@ -46,11 +49,9 @@ def r_values(src_fw_dict):
                 num = (0 - value["comp"][0])
 
             try:
-               # print(denom, num)
                 r_values_dict[dest] = round(num/denom,2)
             except ZeroDivisionError: 
                 r_values_dict[dest] = round(0,2)
-#    print(r_values_dict)
     return r_values_dict
 
 def link_eval(src_fw_dict):
@@ -60,9 +61,8 @@ def link_eval(src_fw_dict):
         if dest != "p_value":
             if len(value["comp"]) > 1 and value["comp"][0] != 0:
                 evals_dict[dest] = (value["comp"][1] - value["comp"][0]) / value["comp"][0]
-    return evals_dict
-    
 
+    return evals_dict
 
 
 # Create a new forwarding dictionary for the new values starting off
@@ -82,64 +82,53 @@ for key in links:
 
     if link0 in fw_dict and len(links[key]["rtts"]) > 5 and len(links[key]["probes"]) > 4:
         if link1 in fw_dict[link0]:
-            #fw_dict[link0][link1] = { 
-            #    "comp":  [fw_dict[link0][link1][0], len(links[key]["rtts"])],
-            #    "probes": links[key]["probes"]
-            #}
             fw_dict[link0][link1]["comp"].append(len(links[key]["rtts"]))
-            #if "probes" in fw_dict[link0][link1]:
-            #	fw_dict[link0][link1]["probes"].append(links[key]["probes"])
-            #else:
             fw_dict[link0][link1]["probes"] = links[key]["probes"]
         else:
             fw_dict[link0][link1] = { 
                 "comp":  [0,len(links[key]["rtts"])],
                 "probes": links[key]["probes"]
             }
- 
 
 # Creating a dictionary to store the alarms
-alarm_dict = {"alarms" : []}
+alarm_dict = {"red_alarms" : []}
 
 # Two lists to compare with the chisquare test: the reference list and the observed list
 for source in fw_dict.keys():
     ref_list = []
     results_list = []
     for dest, val in fw_dict[source].items():
-        #ref_list.append(val[0])
-        #dests.append(dest)
-        #if len(val) == 1:
-            #results_list.append(0)
-        
         if val["comp"][0] != 0 and len(val["comp"]) == 2:        # only compare the links that have a reference value and 
             ref_list.append(val["comp"][0])              # an observation different than 0
             results_list.append(val["comp"][1])          # This way we ensure the continuity of the data
-        #else:
-            #results_list.append(val[1])
-    #print(ref_list, results_list)
-    # First compute the chi squared test
-    # Then, if the chi sqaure result detects an anomaly, check the link using the responsibility metric
+            link_mse = np.square(np.subtract(fw_dict[source][dest]["comp"][0],fw_dict[source][dest]["comp"][1])).mean() 
+            fw_dict[source][dest]["link_mse"] = link_mse
+        
+    
+    
     if len(ref_list) > 0 and len(results_list) > 0:
         if len(ref_list) == 1:
             eval_dict = link_eval(fw_dict[source])
             for dest in eval_dict:
-                if eval_dict[dest] < -0.25 or eval_dict[dest] > 0.25:
+                if eval_dict[dest] < -0.2 or eval_dict[dest] > 0.2:
                     mse = np.square(np.subtract(ref_list,results_list)).mean() 
-                    alarm_dict["alarms"].append((source, dest, eval_dict[dest], round(mse)))
+                    link_mse = np.square(np.subtract(fw_dict[source][dest]["comp"][0],fw_dict[source][dest]["comp"][1])).mean() 
+                    alarm_dict["red_alarms"].append((source, dest, eval_dict[dest], round(mse), round(link_mse)))
         
         else:
+            # Compute the chi squared test
+            # Then, if the chi sqaure result detects an anomaly, check the link using the link_eval function
             p_value = chisquare(ref_list, results_list)[1]
             fw_dict[source]["p_value"] = p_value
             if p_value <= 0.01:
                 eval_dict = link_eval(fw_dict[source])
                 for dest in eval_dict:
-                    if eval_dict[dest] < -0.25 or eval_dict[dest] > 0.25:
+                    if eval_dict[dest] < -0.2 or eval_dict[dest] > 0.2:
                         mse = np.square(np.subtract(ref_list,results_list)).mean() 
-                        alarm_dict["alarms"].append((source, dest, eval_dict[dest], round(mse), p_value))
-    #else:
-        #print("empty ref and results list")
-print(date)
-print(len(alarm_dict["alarms"]), hour)
+                        link_mse = np.square(np.subtract(fw_dict[source][dest]["comp"][0],fw_dict[source][dest]["comp"][1])).mean() 
+                        alarm_dict["red_alarms"].append((source, dest, eval_dict[dest], round(mse), round(link_mse), p_value))
+
+print(len(alarm_dict["red_alarms"]))
 
 # Save alarms and references
 output_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_alarms"

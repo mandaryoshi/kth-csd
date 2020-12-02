@@ -35,24 +35,21 @@ fw_dict = {}
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)
     print(date)
+
     # For each hour, add to the fw dictionary the observed values
     for hour in tqdm(hours):
         if hour == "00":
             date_list.append(str(day))
         else:
-            date_list.append(hour)
+            date_list.append(None)
+        
         file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/connections")
-        
         connections = ujson.load(file1)
-
-        
 
         ### {1: {2:[40,50]}, {3:[40,50]}, {5:[40,0]}, {10:[0,40]}} ###
         link_ok = False
         for key in connections:
             link = ast.literal_eval(key)
-            #print(val[0])
-            #time.sleep(1)
             link0 = str(link[0])
             link1 = str(link[1])
 
@@ -60,7 +57,6 @@ for date in tqdm(range(delta.days + 1)):
                 link_ok = True
             
             cnt = collections.Counter(connections[key]["msm_id"])
-#            print(cnt)
             if len(connections[key]["rtts"]) > 5 and len(connections[key]["probes"]) > 5:
 
                 if link0 in fw_dict:
@@ -77,7 +73,6 @@ for date in tqdm(range(delta.days + 1)):
                             msm_id_dict[msm_id] = [0]*((date)*24) + [0]*int(hour) + [count]
                         fw_dict[link0][link1] = msm_id_dict
                 else:
-                    #print(link[0])
                     fw_dict[link0] = {link1 : None}
                     msm_id_dict = {}
                     for msm_id, count in cnt.items():
@@ -120,21 +115,10 @@ else:
     else:
         print("INVALID SOURCE")
         sys.exit()
+
 #start graphing
-
-#print(fw_dict["58"])
-
-
-#plt.boxplot(rtt_intervallist)
-#plt.plot(date_list)
 plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
 
-#err_list = [rtt_lower, rtt_upper]
-
-
-#plt.fill_between(np.arange(96), normal_reference_lower, normal_reference_upper, color='b', alpha=.1)
-
-#plt.errorbar(np.arange(96), rtt_median, yerr=err_list, fmt='o',capsize=5)
 if dest_arg == None:
     save_path = "../results/fw_graph_" + source + "_msm.png"
 else: 

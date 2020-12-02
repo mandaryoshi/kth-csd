@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from datetime import date, timedelta
 import ast 
 
+#sys.path.insert(0, '/mnt/d/Documents/IK2200HT201-IXP')
+
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
 
@@ -50,31 +52,17 @@ for date in tqdm(range(delta.days + 1)):
                 if dest != "p_value":
                     if source in fw_comp_model:
                         if dest in fw_comp_model[source]:
-                            if len(value) == 2 and value[0] != 0:
-                                #fw_comp_model[source][dest]["ref"].append(value[0])
-                                fw_comp_model[source][dest].append(value[1])
+                            if len(value["comp"]) == 2 and value["comp"][0] != 0:
+                                fw_comp_model[source][dest].append(value["comp"][1])
                             
-                            #fw_comp_model[source][dest]["ref"].append(value[0])
-                            #if len(value) == 1:
-                            #    fw_comp_model[source][dest]["obs"].append(0)
-                            #else:
-                            #    fw_comp_model[source][dest]["obs"].append(value[1])
                         else:
-                            if len(value) == 2 and value[0] != 0:
-                                fw_comp_model[source][dest] = [value[1]]
-                            #fw_comp_model[source][dest] = {"ref": [value[0]]}
-                            #if len(value) == 1:
-                            #    fw_comp_model[source][dest]["obs"] = [0]
-                            #else:
-                            #    fw_comp_model[source][dest]["obs"] = [value[1]]       
+                            if len(value["comp"]) == 2 and value["comp"][0] != 0:
+                                fw_comp_model[source][dest] = [value["comp"][1]]
+                                  
                     else:
-                        if len(value) == 2 and value[0] != 0:
-                            fw_comp_model[source] = {dest : [value[1]]}
-                        #fw_comp_model[source] = {dest : {"ref": [value[0]]}}
-                        #if len(value) == 1:
-                        #    fw_comp_model[source][dest]["obs"] = [0]
-                        #else:
-                        #    fw_comp_model[source][dest]["obs"] = [value[1]]
+                        if len(value["comp"]) == 2 and value["comp"][0] != 0:
+                            fw_comp_model[source] = {dest : [value["comp"][1]]}
+                        
         file1.close()
         
     
@@ -111,3 +99,4 @@ plt.legend()
 # save the figure in a folder
 save_path = "../results/fw_deviations_" + str(sdate) + "_" + str(edate) + "_.png"
 plt.savefig(save_path)
+#plt.show()

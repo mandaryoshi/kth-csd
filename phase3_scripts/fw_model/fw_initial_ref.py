@@ -83,7 +83,6 @@ for key in list(fw_dict.keys()):
     for dest, value in list(fw_dict[key].items()):
         if len(fw_dict[key][dest]["comp"]) == len(index_interval):
             index = len(value["comp"])//2
-            #fw_dict[key][dest]["comp"] = [0.9*np.median(value["comp"][index:]) + 0.1*np.median(value["comp"][:index])]
             fw_dict[key][dest]["comp"] = [np.median(value["comp"])]
         else: 
             del fw_dict[key][dest]
