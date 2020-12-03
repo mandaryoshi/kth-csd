@@ -21,23 +21,25 @@ hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
 #path for fetching the reference values
 for date in range(delta.days + 1):
     day = sdate + timedelta(days=date)   
-    for hour in hours:
-        rtt_ref_links = []
+    for hour in hours:      
         file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_ref_values")
         rtt_ref_values = ujson.load(file1)
-        if len(rtt_ref_links) == 0:
-            rtt_ref_links = list(rtt_ref_values.keys())
-        else:
-            for i in rtt_ref_values.keys():
-                if i not in rtt_ref_links:
-                    rtt_ref_links.append(i)
-          
+        rtt_ref_links = dict.fromkeys(rtt_ref_values.keys()) 
+   
 print(rtt_ref_links)
 print(len(rtt_ref_links))
-
-        #file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_alarms")
-        #rtt_alarms = ujson.load(file2)
-
+'''
+create a dictionary nd value wil be 0
+print(len(rtt_ref_links))
+for date in range(delta.days + 1):
+    day = sdate + timedelta(days=date)   
+    for hour in hours:
+        rtt_alarms_dict = {}
+        file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_alarms")
+        rtt_ref_alarms = ujson.load(file2)
+        rtt_alarms = rtt_ref_alarms["alarms"] //list of links 
+        rtt_alarms_dict.append(item in rtt_alarms)
+{link1 : 8, link2 : 18}'''
         
 
 
