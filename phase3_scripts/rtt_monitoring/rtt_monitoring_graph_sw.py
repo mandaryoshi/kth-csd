@@ -95,10 +95,10 @@ plt.plot(np.arange(len(date_list)), normal_reference_median, marker ='.', color 
 plt.fill_between(np.arange(len(date_list)), normal_reference_lower, normal_reference_upper, color='forestgreen', alpha=.1)
 
 #Current computation result
-plt.errorbar(np.arange(len(date_list)), rtt_median, yerr=err_list, fmt='.',color='thistle',capsize=5)
-plt.plot(np.arange(len(date_list)), rtt_median, color='gold')
+plt.errorbar(np.arange(len(date_list)), rtt_median, yerr=err_list, fmt='.',color='darkorange',capsize=5)
+plt.plot(np.arange(len(date_list)), rtt_median, color='orange')
 
-plt.scatter(alarm_list, alarm_values, marker='X', color='magenta')
+plt.scatter(alarm_list, alarm_values, marker='X', color='red')
 #for x,y in zip(np.arange(216), rtt_median):
 #    label = y
 #    plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
