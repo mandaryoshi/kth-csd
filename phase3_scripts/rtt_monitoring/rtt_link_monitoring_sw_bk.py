@@ -6,6 +6,7 @@ from math import sqrt
 import time
 from shutil import copyfile
 
+#Define wilson function to determine confidence interval
 def wilson(p, n, z = 1.96):
     denominator = 1 + z**2/n
     centre_adjusted_probability = p + z*z / (2*n)
