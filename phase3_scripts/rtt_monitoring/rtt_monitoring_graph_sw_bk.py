@@ -6,31 +6,34 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import date, timedelta
 
-#24 hour sliding window reference
+#24 hour for a day refers to X axis
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
-         
-start_date = sys.argv[1].split('-') #start date
-end_date = sys.argv[2].split('-') #end date
+ 
+ #start date and end date for the graph as input parameter
+start_date = sys.argv[1].split('-') 
+end_date = sys.argv[2].split('-') 
 
-source = sys.argv[3] #source
-dest = sys.argv[4] #destination
+#Source and destination link that will monitor
+source = sys.argv[3] 
+dest = sys.argv[4] 
 
 sdate = date(int(start_date[0]), int(start_date[1]), int(start_date[2]))   # start date
 edate = date(int(end_date[0]), int(end_date[1]), int(end_date[2]))   # end date
 
 delta = edate - sdate       # as timedelta
 
+#list of errorbar create
 normal_reference_upper = []
 normal_reference_median = []
 normal_reference_lower = []
 
-rtt_upper = []
-rtt_median =  []
-rtt_lower = []
+rtt_upper = [] #current upper_bound
+rtt_median =  [] #current median
+rtt_lower = [] #current lower_bound
 
-alarm_list = []
-date_list = []
+alarm_list = [] #list of alarm
+date_list = [] #list of date
 
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)   
@@ -40,13 +43,14 @@ for date in tqdm(range(delta.days + 1)):
         else:
             date_list.append(hour)
                   
-       #Open a json file contains a dictionary  
+       #Open initial reference computation result 
         file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_ref_values")
         rtt_ref_values = ujson.load(file1)
 
         file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_medians")
         rtt_medians = ujson.load(file2)
-        
+       
+         #Add the value to each variable list
         key = str((int(source), int(dest)))
         
         if key in rtt_ref_values and key in rtt_medians:
@@ -57,7 +61,7 @@ for date in tqdm(range(delta.days + 1)):
 
             #ref_intervallist.append([rtt_ref_values[key]["lower_bd"],rtt_ref_values[key]["upper_bd"]])
 
-            
+            #Add the value to each variable list
             
             rtt_upper.append(rtt_medians[key]["upper_bd"] - rtt_medians[key]["median"])
             rtt_lower.append(rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"])
