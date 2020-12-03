@@ -33,6 +33,7 @@ for date in range(delta.days + 1):
                     rtt_ref_links.append(i)
           
 print(rtt_ref_links)
+print(len(rtt_ref_links))
 
         #file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_alarms")
         #rtt_alarms = ujson.load(file2)
