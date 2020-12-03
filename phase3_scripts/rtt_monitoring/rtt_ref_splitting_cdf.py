@@ -62,18 +62,8 @@ elif (int(split_ratio) == 3):
 
 cdf_x_labels = list(rtt_ref_links.values())
 print(cdf_x_labels)
-hx, hy, _ = plt.hist(cdf_x_labels, bins=50, color="lightblue")
+cdf_x_labels.plot.kde(color = 'r')
 
-plt.ylim(0.0,max(hx)+0.05)
-plt.title('Generate random numbers \n from a standard normal distribution with python')
-plt.grid()
-
-plt.savefig("../results/hist.png", bbox_inches='tight')
-
-dx = hy[1] - hy[0]
-F1 = np.cumsum(hx)*dx
-
-plt.plot(hy[1:], F1)
 '''
 cum_x_labels = np.cumsum(cdf_x_labels)
 y = norm.cdf(cum_x_labels)
