@@ -61,10 +61,16 @@ elif (int(split_ratio) == 3):
 
 
 cdf_x_labels = list(rtt_ref_links.values())
+sortedlabels = np.sort(cdf_x_labels)
+p = 1. * np.arange(len(cdf_x_labels))/(len(cdf_x_labels) - 1)
+plt.plot(sortedlabels, p)
+plt.show()
+'''
 print(cdf_x_labels)
 cdf_x_labels.plot.kde(color = 'r')
 
-'''
+
+
 cum_x_labels = np.cumsum(cdf_x_labels)
 y = norm.cdf(cum_x_labels)
 
