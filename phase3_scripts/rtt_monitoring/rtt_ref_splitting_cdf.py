@@ -22,10 +22,18 @@ hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
 for date in range(delta.days + 1):
     day = sdate + timedelta(days=date)   
     for hour in hours:
+        rtt_ref_links = []
         file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_ref_values")
         rtt_ref_values = ujson.load(file1)
-        rtt_ref_links = list(rtt_ref_values.keys())
-        print(rtt_ref_links)
+        if len(rtt_ref_links) == 0:
+            rtt_ref_links = list(rtt_ref_values.keys())
+        else:
+            for i in rtt_ref_values.keys():
+                if i not in rtt_ref_links:
+                    rtt_ref_links.append(i)
+          
+print(rtt_ref_links)
+
         #file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_alarms")
         #rtt_alarms = ujson.load(file2)
 
