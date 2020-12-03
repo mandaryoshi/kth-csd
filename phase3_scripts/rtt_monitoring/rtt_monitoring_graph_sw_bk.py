@@ -10,11 +10,11 @@ from datetime import date, timedelta
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
          
-start_date = sys.argv[1].split('-')
-end_date = sys.argv[2].split('-')
+start_date = sys.argv[1].split('-') #start date
+end_date = sys.argv[2].split('-') #end date
 
-source = sys.argv[3]
-dest = sys.argv[4]
+source = sys.argv[3] #source
+dest = sys.argv[4] #destination
 
 sdate = date(int(start_date[0]), int(start_date[1]), int(start_date[2]))   # start date
 edate = date(int(end_date[0]), int(end_date[1]), int(end_date[2]))   # end date
@@ -39,7 +39,8 @@ for date in tqdm(range(delta.days + 1)):
             date_list.append(str(day))
         else:
             date_list.append(hour)
-        
+                  
+       #Open a json file contains a dictionary  
         file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_ref_values")
         rtt_ref_values = ujson.load(file1)
 
