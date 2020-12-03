@@ -34,7 +34,7 @@ for item in rtt_ref_links.keys():
 
 print(rtt_ref_links)
 
-count = 0
+
 #create a dictionary nd value wil be 0
 for date in range(delta.days + 1):
     day = sdate + timedelta(days=date)   
@@ -43,49 +43,12 @@ for date in range(delta.days + 1):
         rtt_ref_alarms = ujson.load(file2)
         for item in rtt_ref_alarms["alarms"]:
             print(item)
-            if item in rtt_ref_links.items():
+            if item in rtt_ref_links.keys():
                 print("Hey")
-                rtt_ref_links[item] = count+1 
+                rtt_ref_links[item] = rtt_ref_links[item]+1
     
 
 print(rtt_ref_links)
 print(len(rtt_ref_links))
 
-'''
 
-
-
-for link in ref.keys():
-    if link in links and len(links[link]["rtts"]) > 5:
-        sorted_rtts = sorted(links[link]["rtts"])
-        normal_ref = np.median(sorted_rtts)
-        ranks = wilson(0.5,len(sorted_rtts))
-        #print(ranks, len(sorted_rtts))
-        interval = (round(sorted_rtts[ranks[0]],5), round(sorted_rtts[ranks[1]],5))
-        ref_interval = (ref[link]["lower_bd"],ref[link]["upper_bd"])
-        if (((interval[0] - ref_interval[1]) > ref[link]["diff"]) or  ((ref_interval[0] - interval[1]) > ref[link]["diff"])):
-            #currnt_lb - ref_ub or ref_lb - curr_ub
-            #print("Alarm triggered!!", link, interval, ref_interval)
-            alarm_dict["alarms"].append(link)
-
-        median_dict[link] = {
-            "lower_bd" : interval[0],
-            "median" : normal_ref,
-            "upper_bd" : interval[1]
-        }
-
-
-ref_file.close()
-results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_medians"
-with open(results_path, 'w') as fp:
-    ujson.dump(median_dict, fp)
-
-fp.close()
-
-results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_alarms"
-with open(results_path, 'w') as fp:
-    ujson.dump(alarm_dict, fp)
-
-fp.close()
-
-print(date, hour)'''
