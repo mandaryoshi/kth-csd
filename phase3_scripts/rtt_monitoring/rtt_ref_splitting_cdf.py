@@ -28,22 +28,20 @@ for date in range(delta.days + 1):
    
 print(rtt_ref_links)
 print(len(rtt_ref_links))
-'''
-create a dictionary nd value wil be 0
-print(len(rtt_ref_links))
+count = 0
+#create a dictionary nd value wil be 0
 for date in range(delta.days + 1):
     day = sdate + timedelta(days=date)   
     for hour in hours:
-        rtt_alarms_dict = {}
         file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_alarms")
         rtt_ref_alarms = ujson.load(file2)
-        rtt_alarms = rtt_ref_alarms["alarms"] //list of links 
-        rtt_alarms_dict.append(item in rtt_alarms)
-{link1 : 8, link2 : 18}'''
-        
+        for item in rtt_ref_alarms["alarms"]:
+            if item in rtt_ref_links.items():
+                rtt_ref_links[item] = count+1 
+    
 
-
-
+print(rtt_ref_links)
+print(len(rtt_ref_links))
 
 '''
 
