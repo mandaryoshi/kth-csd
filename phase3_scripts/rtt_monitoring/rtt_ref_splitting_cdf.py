@@ -58,7 +58,9 @@ elif (int(split_ratio) == 3):
     output_file.close()
 
 from scipy.stats import norm
+import matplotlib.pyplot as plt
 cdf_x_labels = list(rtt_ref_links.values())
+print(cdf_x_labels)
 y = norm.cdf(cdf_x_labels)
 
 plt.plot(cdf_x_labels, y)
