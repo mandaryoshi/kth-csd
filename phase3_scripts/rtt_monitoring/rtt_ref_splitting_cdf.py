@@ -5,6 +5,7 @@ import numpy as np
 from math import sqrt
 import time
 from shutil import copyfile
+from datetime import date, timedelta
 
 
 start_date = sys.argv[1].split('-') 
