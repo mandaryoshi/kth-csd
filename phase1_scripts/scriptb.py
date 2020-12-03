@@ -12,6 +12,7 @@ class IxpIP_AS_mapping:
                 return self.ixp_info[str(ix_id)]["net_set"][ixpip]     # Return the ASN value accessed directly from the dictionary using the 2 values introduced
 
 
+            
 #asn = IxpIP_AS_mapping()
 #print(asn.mapping("185.1.179.34", 3169))
 
