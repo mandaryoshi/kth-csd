@@ -1,3 +1,4 @@
+# Initial reference for sliding window method and 1ms threshold
 import ujson 
 import sys
 from tqdm import tqdm
@@ -5,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import date, timedelta
 
+#24 hour sliding window reference
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
          
