@@ -57,3 +57,14 @@ elif (int(split_ratio) == 3):
     output_file.write(ujson.dumps(rtt_ref_links))
     output_file.close()
 
+from scipy.stats import norm
+cdf_x_labels = list(rtt_ref_links.values())
+y = norm.cdf(cdf_x_labels)
+
+plt.plot(cdf_x_labels, y)
+
+plt.title('How to calculate and plot a cumulative distribution function ?')
+
+plt.savefig("../results/cdf.png", bbox_inches='tight')
+
+plt.close()
