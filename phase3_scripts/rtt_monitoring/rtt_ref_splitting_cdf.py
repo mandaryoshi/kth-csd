@@ -31,7 +31,7 @@ print(len(rtt_ref_links))
 for item in rtt_ref_links.keys():
     if rtt_ref_links[item] == None:
         rtt_ref_links[item] = 0
-        
+
 print(rtt_ref_links)
 
 count = 0
@@ -42,7 +42,9 @@ for date in range(delta.days + 1):
         file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_alarms")
         rtt_ref_alarms = ujson.load(file2)
         for item in rtt_ref_alarms["alarms"]:
+            print(item)
             if item in rtt_ref_links.items():
+                print("Hey")
                 rtt_ref_links[item] = count+1 
     
 
