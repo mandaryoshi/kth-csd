@@ -9,7 +9,11 @@ from datetime import date, timedelta
 
 
 start_date = sys.argv[1].split('-') 
-end_date = sys.argv[2].split('-') 
+end_date = sys.argv[2].split('-')
+split_ratio = sys.argv[3] 
+
+file = open(path)
+links = ujson.load(file)
 
 sdate = date(int(start_date[0]), int(start_date[1]), int(start_date[2]))   # start date
 edate = date(int(end_date[0]), int(end_date[1]), int(end_date[2]))   # end date
@@ -26,13 +30,9 @@ for date in range(delta.days + 1):
         rtt_ref_values = ujson.load(file1)
         rtt_ref_links = dict.fromkeys(rtt_ref_values.keys()) 
    
-print(rtt_ref_links)
-print(len(rtt_ref_links))
 for item in rtt_ref_links.keys():
     if rtt_ref_links[item] == None:
         rtt_ref_links[item] = 0
-
-print(rtt_ref_links)
 
 
 #create a dictionary nd value wil be 0
@@ -46,9 +46,17 @@ for date in range(delta.days + 1):
             if item in rtt_ref_links.keys():
                 print("Hey")
                 rtt_ref_links[item] = rtt_ref_links[item]+1
-    
 
-print(rtt_ref_links)
-print(len(rtt_ref_links))
-
+if (int(split_ratio) == 12):
+    output_file = open("../results/rtt_cdf_12",'w')
+    output_file.write(ujson.dumps(rtt_ref_links))
+    output_file.close()
+elif (int(split_ratio) == 6):
+    output_file = open("../results/rtt_cdf_6",'w')
+    output_file.write(ujson.dumps(rtt_ref_links))
+    output_file.close()
+elif (int(split_ratio) == 3):
+    output_file = open("../results/rtt_cdf_3",'w')
+    output_file.write(ujson.dumps(rtt_ref_links))
+    output_file.close()
 
