@@ -6,6 +6,8 @@ from math import sqrt
 import time
 from shutil import copyfile
 from datetime import date, timedelta
+from scipy.stats import norm
+import matplotlib.pyplot as plt
 
 
 start_date = sys.argv[1].split('-') 
@@ -57,8 +59,7 @@ elif (int(split_ratio) == 3):
     output_file.write(ujson.dumps(rtt_ref_links))
     output_file.close()
 
-from scipy.stats import norm
-import matplotlib.pyplot as plt
+
 cdf_x_labels = list(rtt_ref_links.values())
 print(cdf_x_labels)
 hx, hy, _ = plt.hist(cdf_x_labels, bins=50, normed=1,color="lightblue")
@@ -73,7 +74,15 @@ dx = hy[1] - hy[0]
 F1 = np.cumsum(hx)*dx
 
 plt.plot(hy[1:], F1)
+'''
+cum_x_labels = np.cumsum(cdf_x_labels)
+y = norm.cdf(cum_x_labels)
 
+# plot the cdf
+sns.lineplot(x=cdf_x_labels, y=y)
+plt.show()
+#plt.plot(cdf_x_labels, y)
+'''
 plt.title('How to calculate and plot a cumulative distribution function ?')
 
 plt.savefig("../results/cdf.png", bbox_inches='tight')
