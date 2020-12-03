@@ -62,7 +62,7 @@ elif (int(split_ratio) == 3):
 
 cdf_x_labels = list(rtt_ref_links.values())
 print(cdf_x_labels)
-hx, hy, _ = plt.hist(cdf_x_labels, bins=50, normed=1,color="lightblue")
+hx, hy, _ = plt.hist(cdf_x_labels, bins=50, color="lightblue")
 
 plt.ylim(0.0,max(hx)+0.05)
 plt.title('Generate random numbers \n from a standard normal distribution with python')
