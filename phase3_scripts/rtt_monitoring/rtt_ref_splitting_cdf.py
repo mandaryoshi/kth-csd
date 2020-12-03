@@ -28,6 +28,12 @@ for date in range(delta.days + 1):
    
 print(rtt_ref_links)
 print(len(rtt_ref_links))
+for item in rtt_ref_links.keys():
+    if rtt_ref_links[item] == None:
+        rtt_ref_links[item] = 0
+        
+print(rtt_ref_links)
+
 count = 0
 #create a dictionary nd value wil be 0
 for date in range(delta.days + 1):
