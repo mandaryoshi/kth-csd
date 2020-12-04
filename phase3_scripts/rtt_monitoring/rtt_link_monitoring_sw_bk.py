@@ -37,6 +37,7 @@ copyfile(ref_path, save_path)
 
 median_dict = {}
 alarm_dict = {"alarms" : []}
+actual_rtt_dict = {}
 
 for link in ref.keys():
     if link in links and len(links[link]["rtts"]) > 5:
@@ -51,8 +52,8 @@ for link in ref.keys():
             #print("Alarm triggered!!", link, interval, ref_interval)
             actual_rtt_ne = np.median(links[link]["actual_rtts"][0])
             actual_rtt_fe = np.median(links[link]["actual_rtts"][1])
+            alarm_dict["alarms"].append(link)
             actual_rtt_dict[link].append((actual_rtt_ne, actual_rtt_fe))
-            alarm_dict["alarms"].append(actual_rtt_dict)
 
         median_dict[link] = {
             "lower_bd" : interval[0],
@@ -60,7 +61,7 @@ for link in ref.keys():
             "upper_bd" : interval[1]
         }
 
-print("Seba:", alarm_dict)
+print("Seba:", actual_rtt_dict)
 ref_file.close()
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_medians"
 with open(results_path, 'w') as fp:
@@ -71,6 +72,12 @@ fp.close()
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_alarms"
 with open(results_path, 'w') as fp:
     ujson.dump(alarm_dict, fp)
+
+fp.close()
+
+results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/actual_rtt_sw_alarms"
+with open(results_path, 'w') as fp:
+    ujson.dump(actual_rtt_dict, fp)
 
 fp.close()
 
