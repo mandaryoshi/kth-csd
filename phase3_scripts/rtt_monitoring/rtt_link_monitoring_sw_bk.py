@@ -52,11 +52,8 @@ for link in ref.keys():
             #print("Alarm triggered!!", link, interval, ref_interval)
             actual_rtt_ne = np.median(links[link]["actual_rtts"][0])
             actual_rtt_fe = np.median(links[link]["actual_rtts"][1])
-            print(actual_rtt_ne)
-            print(actual_rtt_fe)
-            print(link)
             alarm_dict["alarms"].append(link)
-            actual_rtt_dict[link].append((actual_rtt_ne, actual_rtt_fe))
+            actual_rtt_dict[link] = (actual_rtt_ne, actual_rtt_fe)
             print("Seba:", actual_rtt_dict)
 
         median_dict[link] = {
