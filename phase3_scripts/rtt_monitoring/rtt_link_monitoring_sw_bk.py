@@ -50,10 +50,12 @@ for link in ref.keys():
         if (((interval[0] - ref_interval[1]) > ref[link]["diff"]) or  ((ref_interval[0] - interval[1]) > ref[link]["diff"])):
             #currnt_lb - ref_ub or ref_lb - curr_ub
             #print("Alarm triggered!!", link, interval, ref_interval)
-            actual_rtt_ne = np.median(links[link]["actual_rtts"][0])
-            actual_rtt_fe = np.median(links[link]["actual_rtts"][1])
+            sorted_rtt_ne = sorted(links[link]["actual_rtts"][0])
+            actual_rtt_ne = np.median(sorted_rtt_ne)
+            sorted_rtt_fe = sorted(links[link]["actual_rtts"][1])
+            actual_rtt_fe = np.median(sorted_rtt_fe)
             alarm_dict["alarms"].append(link)
-            actual_rtt_dict[link] = (actual_rtt_ne, actual_rtt_fe)
+            actual_rtt_dict[link] = (round(actual_rtt_ne,5), round(actual_rtt_fe,5))
 
         median_dict[link] = {
             "lower_bd" : interval[0],
