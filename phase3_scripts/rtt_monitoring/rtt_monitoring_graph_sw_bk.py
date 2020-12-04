@@ -81,7 +81,7 @@ for date in tqdm(range(delta.days + 1)):
             if key in actual_rtts.keys():
                 alarm_list.append(len(date_list) -1)
                 actual_rtt = actual_rtts[key]
-                listToStr = ' '.join(map(str, actual_rtt))
+                listToStr = ', '.join(map(str, actual_rtt))
                 actual_rtt_list.append((listToStr))
                 #print(listToStr)
             file2.close()
