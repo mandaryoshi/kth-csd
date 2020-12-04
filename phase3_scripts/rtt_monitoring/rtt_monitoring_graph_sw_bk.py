@@ -93,7 +93,8 @@ for date in tqdm(range(delta.days + 1)):
         
         file1.close()
 #print(alarm_list)
-#print(actual_rtt_list)
+print(actual_rtt_list)
+print(len(actual_rtt_list))
 alarm_values = []
 for index in alarm_list:
     alarm_values.append(rtt_median[index])
@@ -118,10 +119,11 @@ plt.plot(np.arange(len(date_list)), rtt_median, color='orange')
 
 plt.scatter(alarm_list, alarm_values, marker='X', color='red')
 
+index = 0
 for x,y in zip(alarm_list, alarm_values):
-    label = actual_rtt_list
+    label = actual_rtt_list[index]
     plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center')
-
+    index = index+1
 plt.xlabel("Date")
 plt.ylabel("Differential RTT values")
 #plt.grid(True)
