@@ -1,12 +1,5 @@
 import ujson 
-import sys
-from tqdm import tqdm
 import numpy as np
-from math import sqrt
-import time
-from shutil import copyfile
-from datetime import date, timedelta
-from scipy.stats import norm
 import matplotlib.pyplot as plt
 
 def cdf_plot(cdf_x_labels1,cdf_x_labels2,cdf_x_labels3):

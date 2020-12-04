@@ -1,19 +1,11 @@
 import ujson 
 import sys
-from tqdm import tqdm
-import numpy as np
-from math import sqrt
-import time
-from shutil import copyfile
 from datetime import date, timedelta
-from scipy.stats import norm
 import matplotlib.pyplot as plt
-
 
 start_date = sys.argv[1].split('-') 
 end_date = sys.argv[2].split('-')
 split_ratio = sys.argv[3] 
-
 
 sdate = date(int(start_date[0]), int(start_date[1]), int(start_date[2]))   # start date
 edate = date(int(end_date[0]), int(end_date[1]), int(end_date[2]))   # end date
@@ -34,8 +26,6 @@ for item in rtt_ref_links.keys():
     if rtt_ref_links[item] == None:
         rtt_ref_links[item] = 0
 
-
-#create a dictionary nd value wil be 0
 for date in range(delta.days + 1):
     day = sdate + timedelta(days=date)   
     for hour in hours:
@@ -44,6 +34,7 @@ for date in range(delta.days + 1):
         for item in rtt_ref_alarms["alarms"]:
            if item in rtt_ref_links.keys():
                 rtt_ref_links[item] = rtt_ref_links[item]+1
+
 print(len(rtt_ref_links))
 
 if (int(split_ratio) == 12):
@@ -58,6 +49,3 @@ elif (int(split_ratio) == 3):
     output_file = open("../results/rtt_cdf_3",'w')
     output_file.write(ujson.dumps(rtt_ref_links))
     output_file.close()
-
-
-
