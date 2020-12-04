@@ -49,7 +49,10 @@ for link in ref.keys():
         if (((interval[0] - ref_interval[1]) > ref[link]["diff"]) or  ((ref_interval[0] - interval[1]) > ref[link]["diff"])):
             #currnt_lb - ref_ub or ref_lb - curr_ub
             #print("Alarm triggered!!", link, interval, ref_interval)
-            alarm_dict["alarms"].append(link)
+            actual_rtt_ne = np.median(links[link]["actual_rtts"][0])
+            actual_rtt_fe = np.median(links[link]["actual_rtts"][1])
+            actual_rtt_dict[link].append((actual_rtt_ne, actual_rtt_fe))
+            alarm_dict["alarms"].append(actual_rtt_dict)
 
         median_dict[link] = {
             "lower_bd" : interval[0],
@@ -57,7 +60,7 @@ for link in ref.keys():
             "upper_bd" : interval[1]
         }
 
-
+print("Seba:", alarm_dict)
 ref_file.close()
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_medians"
 with open(results_path, 'w') as fp:

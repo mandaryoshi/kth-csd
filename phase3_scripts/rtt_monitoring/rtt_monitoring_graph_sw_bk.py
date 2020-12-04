@@ -68,14 +68,22 @@ for date in tqdm(range(delta.days + 1)):
             rtt_median.append(rtt_medians[key]["median"])
 
             #rtt_intervallist.append([rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"], rtt_medians[key]["upper_bd"] - rtt_medians[key]["median"]])
-            file3 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_alarms")
-            alarms = ujson.load(file3)
+            #file3 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_alarms")
+            #alarms = ujson.load(file3)
 
-            if key in alarms["alarms"]:
+            file4 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/actual_rtt_sw_alarms")
+            actual_rtts = ujson.load(file4)
+
+            #if key in alarms["alarms"]:
+            #    alarm_list.append(len(date_list) -1)
+
+            if key in actual_rtts.keys():
                 alarm_list.append(len(date_list) -1)
             
+            
             file2.close()
-            file3.close()
+            #file3.close()
+            file4.close()
         else:
             print("INVALID LINK")
             sys.exit()
@@ -98,11 +106,6 @@ err_list = [rtt_lower, rtt_upper]
 
 plt.plot(np.arange(len(date_list)), normal_reference_median, marker ='.', color='forestgreen')
 
-
-#for x,y in zip(np.arange(216), normal_reference_median):
- #   label = y
- #   plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
-
 plt.fill_between(np.arange(len(date_list)), normal_reference_lower, normal_reference_upper, color='forestgreen', alpha=.1)
 
 plt.errorbar(np.arange(len(date_list)), rtt_median, yerr=err_list,fmt='.',color='darkorange',capsize=5)
@@ -110,9 +113,11 @@ plt.plot(np.arange(len(date_list)), rtt_median, color='orange')
 
 
 plt.scatter(alarm_list, alarm_values, marker='X', color='red')
-#for x,y in zip(np.arange(216), rtt_median):
-#    label = y
-#    plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center') 
+
+for x,y in zip(alarm_list, actual_rtts[str((int(source), int(dest)))]):
+    label = y
+    plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center')
+
 plt.xlabel("Date")
 plt.ylabel("Differential RTT values")
 #plt.grid(True)
