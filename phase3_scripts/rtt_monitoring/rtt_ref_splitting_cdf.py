@@ -60,27 +60,4 @@ elif (int(split_ratio) == 3):
     output_file.close()
 
 
-cdf_x_labels = list(rtt_ref_links.values())
-sortedlabels = np.sort(cdf_x_labels)
-p = 1. * np.arange(len(cdf_x_labels))/(len(cdf_x_labels) - 1)
-plt.plot(sortedlabels, p)
-plt.show()
-'''
-print(cdf_x_labels)
-cdf_x_labels.plot.kde(color = 'r')
 
-
-
-cum_x_labels = np.cumsum(cdf_x_labels)
-y = norm.cdf(cum_x_labels)
-
-# plot the cdf
-sns.lineplot(x=cdf_x_labels, y=y)
-plt.show()
-#plt.plot(cdf_x_labels, y)
-'''
-plt.title('How to calculate and plot a cumulative distribution function ?')
-
-plt.savefig("../results/cdf.png", bbox_inches='tight')
-
-plt.close()
