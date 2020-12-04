@@ -111,6 +111,7 @@ def forwarding_model(cfs, hop_results, m, date, hour):
             else:
 
                 fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["rtts"].append(rtt_diff)
+                fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["actual_rtts"].append((hops["rtts"][0], hops["rtts"][1]))
                 fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["msm_id"].append(hops["msm_id"])
                 # Only append a new probe_id if it's not already in the list, this way the list will be of unique values
                 if hops["prb_id"] not in fwd_dict[(near_end_map[hops["previous_hop"]], far_end_map[hops["ixp_hop"]])]["probes"]:
