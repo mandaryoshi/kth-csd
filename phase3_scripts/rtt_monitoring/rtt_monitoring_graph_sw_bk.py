@@ -34,6 +34,7 @@ rtt_lower = [] #current lower_bound
 
 alarm_list = [] #list of alarm
 date_list = [] #list of date
+actual_rtt_list = []
 
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)   
@@ -79,8 +80,11 @@ for date in tqdm(range(delta.days + 1)):
 
             if key in actual_rtts.keys():
                 alarm_list.append(len(date_list) -1)
-            
-            
+                actual_rtt_list.append(str(actual_rtts[key]))
+                print(actual_rtt_list)
+                from ast import literal_eval
+                tup = literal_eval(actual_rtt_list)
+                print(tup)
             file2.close()
             #file3.close()
             file4.close()
@@ -93,7 +97,6 @@ for date in tqdm(range(delta.days + 1)):
 alarm_values = []
 for index in alarm_list:
     alarm_values.append(rtt_median[index])
-
 #start graphing
 
 plt.figure(figsize=(30,10))
@@ -113,9 +116,8 @@ plt.plot(np.arange(len(date_list)), rtt_median, color='orange')
 
 
 plt.scatter(alarm_list, alarm_values, marker='X', color='red')
-
-for x,y in zip(alarm_list, actual_rtts[str((int(source), int(dest)))]):
-    label = y
+for x,y in zip(alarm_list, actual_rtt_list):
+    label = f"({y[0]},{y[1]})"
     plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center')
 
 plt.xlabel("Date")
