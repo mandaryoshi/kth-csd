@@ -52,8 +52,12 @@ for link in ref.keys():
             #print("Alarm triggered!!", link, interval, ref_interval)
             actual_rtt_ne = np.median(links[link]["actual_rtts"][0])
             actual_rtt_fe = np.median(links[link]["actual_rtts"][1])
+            print(actual_rtt_ne)
+            print(actual_rtt_fe)
+            print(link)
             alarm_dict["alarms"].append(link)
             actual_rtt_dict[link].append((actual_rtt_ne, actual_rtt_fe))
+            print("Seba:", actual_rtt_dict)
 
         median_dict[link] = {
             "lower_bd" : interval[0],
@@ -61,7 +65,7 @@ for link in ref.keys():
             "upper_bd" : interval[1]
         }
 
-print("Seba:", actual_rtt_dict)
+
 ref_file.close()
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_medians"
 with open(results_path, 'w') as fp:
