@@ -95,8 +95,11 @@ for date in tqdm(range(delta.days + 1)):
         file1.close()
 
 alarm_values = []
+#actual_rtt_values = []
 for index in alarm_list:
     alarm_values.append(rtt_median[index])
+    #actual_rtt_values.append()
+
 #start graphing
 
 plt.figure(figsize=(30,10))
@@ -114,8 +117,8 @@ plt.fill_between(np.arange(len(date_list)), normal_reference_lower, normal_refer
 plt.errorbar(np.arange(len(date_list)), rtt_median, yerr=err_list,fmt='.',color='darkorange',capsize=5)
 plt.plot(np.arange(len(date_list)), rtt_median, color='orange') 
 
-
 plt.scatter(alarm_list, alarm_values, marker='X', color='red')
+
 for x,y in zip(alarm_list, actual_rtt_list):
     label = f"({y[0]},{y[1]})"
     plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center')
