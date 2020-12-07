@@ -37,25 +37,23 @@ copyfile(ref_path, save_path)
 
 median_dict = {}
 alarm_dict = {"alarms" : []}
-#actual_rtt_dict = {}
+actual_rtt_dict = {}
 
 for link in ref.keys():
     if link in links and len(links[link]["rtts"]) > 5:
         sorted_rtts = sorted(links[link]["rtts"])
         normal_ref = np.median(sorted_rtts)
+        index = links[link]["rtts"].index(normal_ref)
+        print(index)
         ranks = wilson(0.5,len(sorted_rtts))
         #print(ranks, len(sorted_rtts))
         interval = (round(sorted_rtts[ranks[0]],5), round(sorted_rtts[ranks[1]],5))
         ref_interval = (ref[link]["lower_bd"],ref[link]["upper_bd"])
         if (((interval[0] - ref_interval[1]) > ref[link]["diff"]) or  ((ref_interval[0] - interval[1]) > ref[link]["diff"])):
-            #currnt_lb - ref_ub or ref_lb - curr_ub
-            #print("Alarm triggered!!", link, interval, ref_interval)
-            #sorted_rtt_ne = sorted(links[link]["actual_rtts"][0])
-            #actual_rtt_ne = np.median(sorted_rtt_ne)
-            #sorted_rtt_fe = sorted(links[link]["actual_rtts"][1])
-            #actual_rtt_fe = np.median(sorted_rtt_fe)
+            actual_rtt_ne = links[link]["actual_rtts"][0][index]
+            actual_rtt_fe = links[link]["actual_rtts"][1][index]
             alarm_dict["alarms"].append(link)
-            #actual_rtt_dict[link] = (round(actual_rtt_ne,5), round(actual_rtt_fe,5))
+            actual_rtt_dict[link] = (round(actual_rtt_ne,5), round(actual_rtt_fe,5))
 
         median_dict[link] = {
             "lower_bd" : interval[0],
@@ -77,11 +75,11 @@ with open(results_path, 'w') as fp:
     ujson.dump(alarm_dict, fp)
 
 fp.close()
-'''
+
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/actual_rtt_sw_alarms"
 with open(results_path, 'w') as fp:
     ujson.dump(actual_rtt_dict, fp)
 
 fp.close()
-'''
+
 print(date, hour)
