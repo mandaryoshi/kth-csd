@@ -49,3 +49,7 @@ elif (int(split_ratio) == 3):
     output_file = open("../results/rtt_cdf_3",'w')
     output_file.write(ujson.dumps(rtt_ref_links))
     output_file.close()
+elif (int(split_ratio) == 0):
+    output_file = open("../results/rtt_cdf_0",'w')
+    output_file.write(ujson.dumps(rtt_ref_links))
+    output_file.close()
