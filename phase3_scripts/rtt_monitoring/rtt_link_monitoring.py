@@ -5,7 +5,6 @@ import numpy as np
 from math import sqrt
 import time
 from shutil import copyfile
-
 #Define wilson function to determine confidence interval
 def wilson(p, n, z = 1.96):
     denominator = 1 + z**2/n
@@ -43,7 +42,7 @@ for link in ref.keys():
     if link in links and len(links[link]["rtts"]) > 5:
         sorted_rtts = sorted(links[link]["rtts"])
         normal_ref = np.median(sorted_rtts)
-        index = links[link]["rtts"].index(normal_ref)
+        index = np.argsort(sorted_rtts)[len(sorted_rtts)//2]
         print(index)
         ranks = wilson(0.5,len(sorted_rtts))
         #print(ranks, len(sorted_rtts))

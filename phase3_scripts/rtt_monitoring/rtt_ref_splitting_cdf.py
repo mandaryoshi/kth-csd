@@ -41,15 +41,15 @@ if (int(split_ratio) == 12):
     output_file = open("../results/rtt_cdf_12",'w')
     output_file.write(ujson.dumps(rtt_ref_links))
     output_file.close()
-elif (int(split_ratio) == 6):
+elif (int(split_ratio) == 18):
     output_file = open("../results/rtt_cdf_6",'w')
     output_file.write(ujson.dumps(rtt_ref_links))
     output_file.close()
-elif (int(split_ratio) == 3):
+elif (int(split_ratio) == 21):
     output_file = open("../results/rtt_cdf_3",'w')
     output_file.write(ujson.dumps(rtt_ref_links))
     output_file.close()
-elif (int(split_ratio) == 0):
+elif (int(split_ratio) == 24):
     output_file = open("../results/rtt_cdf_0",'w')
     output_file.write(ujson.dumps(rtt_ref_links))
     output_file.close()
