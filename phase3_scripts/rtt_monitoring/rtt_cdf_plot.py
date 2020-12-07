@@ -20,7 +20,7 @@ def cdf_plot(cdf_x_labels1,cdf_x_labels2,cdf_x_labels3,cdf_x_labels4):
     plt.legend(('12/12','18/6', '21/3', '24/0'), loc = 'upper right', shadow=False, fancybox=True)
     plt.xlabel("No of alarms")
     plt.ylabel("CDF")
-    plt.xticks(np.arange(0, 100, 2))
+    plt.xticks(np.arange(0, 30, 1))
     plt.yticks(np.arange(0, 1.05, 0.05))
     plt.grid(True)
     plt.savefig("../results/cdf.png", bbox_inches='tight')
@@ -39,17 +39,26 @@ file4 = open("../results/rtt_cdf_0",'r')
 ref_links4 = ujson.load(file4)
 file4.close()  
 
+zero_alarm = []
 for item in ref_links1.keys():
-    if ref_links1[item] == 0  and if ref_links2[item] == 0 and  if ref_links3[item] == 0 and if ref_links4[item] == 0:
-        ref_links1.pop(item)
-        ref_links2.pop(item)
-        ref_links3.pop(item)
-        ref_links4.pop(item)
-             
+    if ref_links1[item] == 0  and ref_links2[item] == 0 and  ref_links3[item] == 0 and ref_links4[item] == 0:
+        zero_alarm.append(item)
+
+print(len(zero_alarm))
+for item in zero_alarm:
+    ref_links1.pop(item)
+    ref_links2.pop(item)
+    ref_links3.pop(item)
+    ref_links4.pop(item)
+
 cdf_x_labels1 = list(ref_links1.values())
+print(len(cdf_x_labels1))
 cdf_x_labels2 = list(ref_links2.values())
+print(len(cdf_x_labels2))
 cdf_x_labels3 = list(ref_links3.values())
+print(len(cdf_x_labels3))
 cdf_x_labels4 = list(ref_links4.values())
+print(len(cdf_x_labels4))
 
 cdf_plot(cdf_x_labels1,cdf_x_labels2,cdf_x_labels3,cdf_x_labels4)
 

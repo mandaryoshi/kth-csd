@@ -109,15 +109,25 @@ initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
     lb_array = link_dict[key]["lower_bd"]
     ub_array = link_dict[key]["upper_bd"]
-    lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [int(ref_split)])
-    median_array_1, median_array_2 = np.split(link_dict[key]["median"], [int(ref_split)])
-    ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [int(ref_split)])
-    initial_ref_values[key] = {
-        "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),
-        "median" : round((np.median(median_array_1)*0.1 + np.median(median_array_2)*0.9),5),
-        "upper_bd" : round((np.median(ub_array_1)*0.1 + np.median(ub_array_2)*0.9),5),
-        "diff"     : round(np.median(ub_array) - np.median(lb_array), 5)
-    }
+    median_array = link_dict[key]["median"]
+    if(int(ref_split) != 0):
+        lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [int(ref_split)])
+        median_array_1, median_array_2 = np.split(link_dict[key]["median"], [int(ref_split)])
+        ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [int(ref_split)])
+        initial_ref_values[key] = {
+                "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),
+                "median" : round((np.median(median_array_1)*0.1 + np.median(median_array_2)*0.9),5),
+                "upper_bd" : round((np.median(ub_array_1)*0.1 + np.median(ub_array_2)*0.9),5),
+                "diff"     : round(np.median(ub_array) - np.median(lb_array), 5)
+        }
+    else:
+        initial_ref_values[key] = {
+                "lower_bd" : round((np.median(lb_array)),5),
+                "median" : round((np.median(median_array)),5),
+                "upper_bd" : round((np.median(ub_array)),5),
+                "diff"     : round(np.median(ub_array) - np.median(lb_array), 5)
+        }
+
 
 output_file.write(ujson.dumps(initial_ref_values))
 output_file.close()
