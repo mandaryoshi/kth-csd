@@ -75,6 +75,15 @@ for date in tqdm(range(delta.days + 1)):
             file4 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/actual_rtt_sw_alarms")
             actual_rtts = ujson.load(file4)
 
+            '''
+            file3 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/actual_rtt_sw_noalarms")
+            actual_rtts_noalarms = ujson.load(file3)
+            actual_rtts_noalarms = list(actual_rtts_noalarms.values())
+
+            print("NORMAL VALUE FOR NEAR END  ACTUAL RTT IS:", np.median(actual_rtts_noalarms[0]))
+            print("NORMAL VALUE FOR FAR END ACTUAL RTT IS:", np.median(actual_rtts_noalarms[1]))
+
+            '''
             #if key in alarms["alarms"]:
             #    alarm_list.append(len(date_list) -1)
 

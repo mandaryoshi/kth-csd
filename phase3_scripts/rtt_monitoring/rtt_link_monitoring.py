@@ -37,6 +37,7 @@ copyfile(ref_path, save_path)
 median_dict = {}
 alarm_dict = {"alarms" : []}
 actual_rtt_dict = {}
+actual_rtt_dict_noalarm = {}
 
 for link in ref.keys():
     if link in links and len(links[link]["rtts"]) > 5:
@@ -50,9 +51,12 @@ for link in ref.keys():
         ref_interval = (ref[link]["lower_bd"],ref[link]["upper_bd"])
         if (((interval[0] - ref_interval[1]) > ref[link]["diff"]) or  ((ref_interval[0] - interval[1]) > ref[link]["diff"])):
             actual_rtt = links[link]["actual_rtts"][index]
-            print(actual_rtt)
+            #print(actual_rtt)
             alarm_dict["alarms"].append(link)
             actual_rtt_dict[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5))
+        else:
+            actual_rtt = links[link]["actual_rtts"][index]
+            actual_rtt_dict_noalarm[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5))
 
         median_dict[link] = {
             "lower_bd" : interval[0],
@@ -78,6 +82,12 @@ fp.close()
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/actual_rtt_sw_alarms"
 with open(results_path, 'w') as fp:
     ujson.dump(actual_rtt_dict, fp)
+
+fp.close()
+
+results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/actual_rtt_sw_noalarms"
+with open(results_path, 'w') as fp:
+    ujson.dump(actual_rtt_dict_noalarm, fp)
 
 fp.close()
 
