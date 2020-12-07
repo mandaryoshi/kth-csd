@@ -92,9 +92,7 @@ for date in tqdm(range(delta.days + 1)):
             sys.exit()
         
         file1.close()
-#print(alarm_list)
-print(actual_rtt_list)
-print(len(actual_rtt_list))
+
 alarm_values = []
 for index in alarm_list:
     alarm_values.append(rtt_median[index])

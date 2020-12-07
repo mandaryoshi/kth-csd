@@ -35,7 +35,6 @@ for date in range(delta.days + 1):
            if item in rtt_ref_links.keys():
                 rtt_ref_links[item] = rtt_ref_links[item]+1
 
-print(len(rtt_ref_links))
 
 if (int(split_ratio) == 12):
     output_file = open("../results/rtt_cdf_12",'w')

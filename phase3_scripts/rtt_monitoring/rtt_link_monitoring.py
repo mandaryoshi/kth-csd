@@ -42,17 +42,17 @@ for link in ref.keys():
     if link in links and len(links[link]["rtts"]) > 5:
         sorted_rtts = sorted(links[link]["rtts"])
         normal_ref = np.median(sorted_rtts)
-        index = np.argsort(sorted_rtts)[len(sorted_rtts)//2]
-        print(index)
+        index = np.argsort(links[link]["rtts"])[len(links[link]["rtts"])//2]
+        #print(index)
         ranks = wilson(0.5,len(sorted_rtts))
         #print(ranks, len(sorted_rtts))
         interval = (round(sorted_rtts[ranks[0]],5), round(sorted_rtts[ranks[1]],5))
         ref_interval = (ref[link]["lower_bd"],ref[link]["upper_bd"])
         if (((interval[0] - ref_interval[1]) > ref[link]["diff"]) or  ((ref_interval[0] - interval[1]) > ref[link]["diff"])):
-            actual_rtt_ne = links[link]["actual_rtts"][0][index]
-            actual_rtt_fe = links[link]["actual_rtts"][1][index]
+            actual_rtt = links[link]["actual_rtts"][index]
+            print(actual_rtt)
             alarm_dict["alarms"].append(link)
-            actual_rtt_dict[link] = (round(actual_rtt_ne,5), round(actual_rtt_fe,5))
+            actual_rtt_dict[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5))
 
         median_dict[link] = {
             "lower_bd" : interval[0],
