@@ -28,20 +28,28 @@ def cdf_plot(cdf_x_labels1,cdf_x_labels2,cdf_x_labels3,cdf_x_labels4):
 
 file1 = open("../results/rtt_cdf_12",'r')
 ref_links1 = ujson.load(file1)
-cdf_x_labels1 = list(ref_links1.values())
 file1.close()
 file2 = open("../results/rtt_cdf_6",'r')
 ref_links2 = ujson.load(file2)
-cdf_x_labels2 = list(ref_links2.values())
 file2.close()
 file3 = open("../results/rtt_cdf_3",'r')
 ref_links3 = ujson.load(file3)
-cdf_x_labels3 = list(ref_links3.values())
 file3.close()    
 file4 = open("../results/rtt_cdf_0",'r')
 ref_links4 = ujson.load(file4)
+file4.close()  
+
+for item in ref_links1.keys():
+    if ref_links1[item] == 0  and if ref_links2[item] == 0 and  if ref_links3[item] == 0 and if ref_links4[item] == 0:
+        ref_links1.pop(item)
+        ref_links2.pop(item)
+        ref_links3.pop(item)
+        ref_links4.pop(item)
+             
+cdf_x_labels1 = list(ref_links1.values())
+cdf_x_labels2 = list(ref_links2.values())
+cdf_x_labels3 = list(ref_links3.values())
 cdf_x_labels4 = list(ref_links4.values())
-file4.close()    
 
 cdf_plot(cdf_x_labels1,cdf_x_labels2,cdf_x_labels3,cdf_x_labels4)
 
