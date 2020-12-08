@@ -84,11 +84,7 @@ for i in hours:  # for each hour
             sorted_rtts = sorted(links[link]["rtts"])
             normal_ref = np.median(sorted_rtts)
             ranks = wilson(0.5,len(sorted_rtts))
-            #print(ranks, len(sorted_rtts))
             interval = (sorted_rtts[ranks[0]], sorted_rtts[ranks[1]])
-            #print("LINK IS:", link)
-            #print("LINKS is", links)
-            #print(link_dict[link])
             if link_dict[link] == None:
                 link_dict[link] = {
                     "lower_bd":[interval[0]],
@@ -104,11 +100,7 @@ for i in hours:  # for each hour
 
     for x in deletions_list:
         del link_dict[x]
-    #print(link_dict[link]["actual_rtts"])    
-    #print(link_dict)
     file.close()
-
-
 
 initial_ref_values = dict.fromkeys(link_dict.keys())
 for key, val in link_dict.items():
@@ -132,7 +124,6 @@ for key, val in link_dict.items():
                 "upper_bd" : round((np.median(ub_array)),5),
                 "diff"     : round(np.median(ub_array) - np.median(lb_array), 5)
         }
-
 
 output_file.write(ujson.dumps(initial_ref_values))
 output_file.close()

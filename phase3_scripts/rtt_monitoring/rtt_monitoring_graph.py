@@ -70,10 +70,6 @@ for date in tqdm(range(delta.days + 1)):
             rtt_lower.append(rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"])
             rtt_median.append(rtt_medians[key]["median"])
 
-            #rtt_intervallist.append([rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"], rtt_medians[key]["upper_bd"] - rtt_medians[key]["median"]])
-            #file3 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_alarms")
-            #alarms = ujson.load(file3)
-
             file4 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/actual_rtt_sw_alarms")
             actual_rtts = ujson.load(file4)
               
