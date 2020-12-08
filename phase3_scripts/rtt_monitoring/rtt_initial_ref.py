@@ -59,14 +59,14 @@ else:
     for i in range(0,len(hours)):
         previous_array.append(hours[i])
 
-hour  = hours[0]
+hour  = hours[0]   #First hour in hour list
 path = "/home/csd/traceroutes/" + previous_date + "/" + hour + "00" + "/connections"
 output_file = open("../results/rtt_sw_ref_values",'w')
 file = open(path)
 links = ujson.load(file)
 link_dict = dict.fromkeys(links.keys()) 
 
-for i in hours:
+for i in hours:  # for each hour 
     deletions_list = []
     hour = i
     if hour in previous_array:
