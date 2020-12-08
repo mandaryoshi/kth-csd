@@ -88,19 +88,18 @@ for i in hours:
             #print(ranks, len(sorted_rtts))
             interval = (sorted_rtts[ranks[0]], sorted_rtts[ranks[1]])
             if link_dict[link] == None:
-                print("New LINK: ", link)
                 link_dict[link] = {
                     "lower_bd":[interval[0]],
                     "median":[normal_ref],
                     "upper_bd":[interval[1]], 
-                    "actual_rtts":[links[link]["actual_rtts"][index]]
+                    "actual_rtts":links[link]["actual_rtts"][index]
                 }
             else:
-                print("APPEND to old link:", link)
                 link_dict[link]["lower_bd"].append(interval[0])
                 link_dict[link]["median"].append(normal_ref)
                 link_dict[link]["upper_bd"].append(interval[1])
                 link_dict[link]["actual_rtts"].append(links[link]["actual_rtts"][index])
+            print(link_dict[link]["actual_rtts"])
         else:
             deletions_list.append(link)
 
