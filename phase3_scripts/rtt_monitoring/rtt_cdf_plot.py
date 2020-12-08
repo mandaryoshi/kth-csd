@@ -20,7 +20,7 @@ def cdf_plot(cdf_x_labels1,cdf_x_labels2,cdf_x_labels3,cdf_x_labels4):
     plt.legend(('12/12','18/6', '21/3', '24/0'), loc = 'upper right', shadow=False, fancybox=True)
     plt.xlabel("No of alarms")
     plt.ylabel("CDF")
-    plt.xticks(np.arange(0, 30, 1))
+    plt.xticks(np.arange(0, len(cdf_x_labels1), 5))
     plt.yticks(np.arange(0, 1.05, 0.05))
     plt.grid(True)
     plt.savefig("../results/cdf.png", bbox_inches='tight')
