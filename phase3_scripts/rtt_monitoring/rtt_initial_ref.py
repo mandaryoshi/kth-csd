@@ -115,7 +115,7 @@ for key, val in link_dict.items():
         median_array_1, median_array_2 = np.split(link_dict[key]["median"], [int(ref_split)])
         ub_array_1, ub_array_2 = np.split(link_dict[key]["upper_bd"], [int(ref_split)])
         initial_ref_values[key] = {
-                "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),                  #giving weightage to the hour
+                "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),                  #giving more weightage to the last hour
                 "median" : round((np.median(median_array_1)*0.1 + np.median(median_array_2)*0.9),5),
                 "upper_bd" : round((np.median(ub_array_1)*0.1 + np.median(ub_array_2)*0.9),5),
                 "diff"     : round(np.median(ub_array) - np.median(lb_array), 5)
