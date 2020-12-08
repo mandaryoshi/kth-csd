@@ -38,7 +38,8 @@ median_dict = {}
 alarm_dict = {"alarms" : []}
 actual_rtt_dict = {}
 actual_rtt_dict_noalarm = {}
-
+actual_rtt_before = []
+actual_rtt_after = []
 for link in ref.keys():
     if link in links and len(links[link]["rtts"]) > 5:
         sorted_rtts = sorted(links[link]["rtts"])
@@ -62,12 +63,14 @@ for link in ref.keys():
                 actual_rtt_after = links[link]["actual_rtts"][index+1]
                 print("Actual RTT after", actual_rtt_after)
                 #actual_rtt_dict_noalarm[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5))
-        #actual_rtt_dict_noalarm[link] = {
-            #"actual_rtt_before" : (round(actual_rtt_before[0],5), round(actual_rtt_before[1],5)),
-            #"actual_rtt_after" : (round(actual_rtt_after[0],5), round(actual_rtt_after[1],5))
-            #"actual_rtt_before" : actual_rtt_before,
-            #"actual_rtt_after" : actual_rtt_after
-        #}   
+            #if((actual_rtt_before != []) and (actual_rtt_after !=[])):
+            actual_rtt_dict_noalarm[link] = {
+                "actual_rtt_before" : (round(actual_rtt_before[0],5), round(actual_rtt_before[1],5)),
+                "actual_rtt_after" : (round(actual_rtt_after[0],5), round(actual_rtt_after[1],5))
+                #"actual_rtt_before" : actual_rtt_before,
+                #"actual_rtt_after" : actual_rtt_after
+            }
+            print(actual_rtt_dict_noalarm)
 
         median_dict[link] = {
             "lower_bd" : interval[0],
