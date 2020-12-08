@@ -56,10 +56,10 @@ for link in ref.keys():
             alarm_dict["alarms"].append(link)
             actual_rtt_dict[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5))
             if((index-1)>= 0):
-                actual_rtt_before = sorted_rtts[index-1]
+                actual_rtt_before = links[link]["actual_rtts"][index-1]
                 print("Actual RTT before", actual_rtt_before)
             if((index+1)<=len(links[link]["actual_rtts"])):
-                actual_rtt_after = sorted_rtts[index+1]
+                actual_rtt_after = links[link]["actual_rtts"][index+1]
                 print("Actual RTT after", actual_rtt_after)
                 #actual_rtt_dict_noalarm[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5))
         #actual_rtt_dict_noalarm[link] = {
