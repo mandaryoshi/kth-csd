@@ -92,7 +92,7 @@ for i in hours:
                     "lower_bd":[interval[0]],
                     "median":[normal_ref],
                     "upper_bd":[interval[1]], 
-                    "actual_rtts":links[link]["actual_rtts"][index]
+                    "actual_rtts":[links[link]["actual_rtts"][index]]
                 }
             else:
                 link_dict[link]["lower_bd"].append(interval[0])
@@ -104,6 +104,7 @@ for i in hours:
 
     for x in deletions_list:
         del link_dict[x]
+    print(link_dict)
     file.close()
 
 
