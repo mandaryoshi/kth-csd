@@ -84,18 +84,21 @@ for i in hours:
             sorted_rtts = sorted(links[link]["rtts"])
             normal_ref = np.median(sorted_rtts)
             ranks = wilson(0.5,len(sorted_rtts))
+            index = np.argsort(links[link]["rtts"])[len(links[link]["rtts"])//2]
             #print(ranks, len(sorted_rtts))
             interval = (sorted_rtts[ranks[0]], sorted_rtts[ranks[1]])
             if link_dict[link] == None:
                 link_dict[link] = {
                     "lower_bd":[interval[0]],
                     "median":[normal_ref],
-                    "upper_bd":[interval[1]] 
+                    "upper_bd":[interval[1]], 
+                    "actual_rtts":links[link]["actual_rtts"][index]
                 }
             else:
                 link_dict[link]["lower_bd"].append(interval[0])
                 link_dict[link]["median"].append(normal_ref)
                 link_dict[link]["upper_bd"].append(interval[1])
+                link_dict[link]["actual_rtts"].append(links[link]["actual_rtts"][index])
         else:
             deletions_list.append(link)
 
@@ -110,6 +113,7 @@ for key, val in link_dict.items():
     lb_array = link_dict[key]["lower_bd"]
     ub_array = link_dict[key]["upper_bd"]
     median_array = link_dict[key]["median"]
+    index = np.argsort(median_array)[len(median_array)//2]
     if(int(ref_split) != 24):
         lb_array_1, lb_array_2 = np.split(link_dict[key]["lower_bd"], [int(ref_split)])
         median_array_1, median_array_2 = np.split(link_dict[key]["median"], [int(ref_split)])
@@ -118,14 +122,16 @@ for key, val in link_dict.items():
                 "lower_bd" : round((np.median(lb_array_1)*0.1 + np.median(lb_array_2)*0.9),5),                  #giving more weightage to the last hour
                 "median" : round((np.median(median_array_1)*0.1 + np.median(median_array_2)*0.9),5),
                 "upper_bd" : round((np.median(ub_array_1)*0.1 + np.median(ub_array_2)*0.9),5),
-                "diff"     : round(np.median(ub_array) - np.median(lb_array), 5)
+                "diff"     : round(np.median(ub_array) - np.median(lb_array), 5),
+                "actual_rtt": link_dict["actual_rtts"][index]
         }
     else:
         initial_ref_values[key] = {
                 "lower_bd" : round((np.median(lb_array)),5),
                 "median" : round((np.median(median_array)),5),
                 "upper_bd" : round((np.median(ub_array)),5),
-                "diff"     : round(np.median(ub_array) - np.median(lb_array), 5)
+                "diff"     : round(np.median(ub_array) - np.median(lb_array), 5),
+                "actual_rtt": link_dict["actual_rtts"][index]
         }
 
 
