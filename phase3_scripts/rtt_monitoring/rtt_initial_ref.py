@@ -99,12 +99,13 @@ for i in hours:  # for each hour
                 link_dict[link]["median"].append(normal_ref)
                 link_dict[link]["upper_bd"].append(interval[1])
                 link_dict[link]["actual_rtts"].append(links[link]["actual_rtts"][index])
-            print(link_dict[link]["actual_rtts"])
+    
         else:
             deletions_list.append(link)
 
     for x in deletions_list:
         del link_dict[x]
+    print(link_dict[link]["actual_rtts"])    
     #print(link_dict)
     file.close()
 
@@ -126,6 +127,7 @@ for key, val in link_dict.items():
                 "upper_bd" : round((np.median(ub_array_1)*0.1 + np.median(ub_array_2)*0.9),5),
                 "diff"     : round(np.median(ub_array) - np.median(lb_array), 5),
                 "actual_rtt": link_dict["actual_rtts"][index]
+                #"actual_rtt": links[key]["actual_rtts"][index]
         }
     else:
         initial_ref_values[key] = {
