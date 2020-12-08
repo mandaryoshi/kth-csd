@@ -87,6 +87,9 @@ for i in hours:  # for each hour
             index = np.argsort(links[link]["rtts"])[len(links[link]["rtts"])//2]
             #print(ranks, len(sorted_rtts))
             interval = (sorted_rtts[ranks[0]], sorted_rtts[ranks[1]])
+            print("LINK IS:", link)
+            print("LINKS is", links)
+            print(link_dict[link])
             if link_dict[link] == None:
                 link_dict[link] = {
                     "lower_bd":[interval[0]],
@@ -105,7 +108,7 @@ for i in hours:  # for each hour
 
     for x in deletions_list:
         del link_dict[x]
-    print(link_dict[link]["actual_rtts"])    
+    #print(link_dict[link]["actual_rtts"])    
     #print(link_dict)
     file.close()
 
