@@ -37,15 +37,13 @@ copyfile(ref_path, save_path)
 median_dict = {}
 alarm_dict = {"alarms" : []}
 actual_rtt_dict = {}
-actual_rtt_dict_noalarm = {}
-actual_rtt_before = []
-actual_rtt_after = []
+
 for link in ref.keys():
     if link in links and len(links[link]["rtts"]) > 5:
         sorted_rtts = sorted(links[link]["rtts"])
         normal_ref = np.median(sorted_rtts)
-        #index = np.argsort(links[link]["rtts"])[len(links[link]["rtts"])//2]
-        index = np.argsort(sorted_rtts)[len(sorted_rtts)//2]
+        index = np.argsort(links[link]["rtts"])[len(links[link]["rtts"])//2]
+        #index = np.argsort(sorted_rtts)[len(sorted_rtts)//2]
         #print("Index", index)
         ranks = wilson(0.5,len(sorted_rtts))
         #print(ranks, len(sorted_rtts))
@@ -56,28 +54,6 @@ for link in ref.keys():
             #print(actual_rtt)
             alarm_dict["alarms"].append(link)
             actual_rtt_dict[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5))
-            if((index-1)>= 0):
-                actual_rtt_before = links[link]["actual_rtts"][index-1]
-                print("Actual RTT before", actual_rtt_before)
-            if((index+1)<=len(links[link]["actual_rtts"])):
-                actual_rtt_after = links[link]["actual_rtts"][index+1]
-                print("Actual RTT after", actual_rtt_after)
-                #actual_rtt_dict_noalarm[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5))
-            #if((actual_rtt_before != []) and (actual_rtt_after !=[])):
-            actual_rtt_dict_noalarm[link] = {
-                "actual_rtt_before" : (round(actual_rtt_before[0],5), round(actual_rtt_before[1],5)),
-                "actual_rtt_after" : (round(actual_rtt_after[0],5), round(actual_rtt_after[1],5))
-                #"actual_rtt_before" : actual_rtt_before,
-                #"actual_rtt_after" : actual_rtt_after
-            }
-            print(actual_rtt_dict_noalarm)
-
-        median_dict[link] = {
-            "lower_bd" : interval[0],
-            "median" : normal_ref,
-            "upper_bd" : interval[1]
-        }
-
 
 #print("Seba:", actual_rtt_dict)
 ref_file.close()
@@ -99,10 +75,5 @@ with open(results_path, 'w') as fp:
 
 fp.close()
 
-results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/actual_rtt_sw_noalarms"
-with open(results_path, 'w') as fp:
-    ujson.dump(actual_rtt_dict_noalarm, fp)
-
-fp.close()
 
 print(date, hour)

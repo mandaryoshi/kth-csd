@@ -52,11 +52,9 @@ for date in tqdm(range(delta.days + 1)):
         rtt_medians = ujson.load(file2)
        
          #Add the value to each variable list
-        key1 = (int(source),int(dest))
-        print(key1)
-        print(str(key1))
+        
         key = str((int(source), int(dest)))
-        print(key)
+        
         
         if key in rtt_ref_values and key in rtt_medians:
             
@@ -83,8 +81,9 @@ for date in tqdm(range(delta.days + 1)):
             file3 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/actual_rtt_sw_noalarms")
             actual_rtts_noalarms = ujson.load(file3)
 
-            print("NORMAL VALUE FOR ACTUAL RTT IS:", actual_rtts_noalarms[str(key1)])
-            #print("NORMAL VALUE FOR FAR END ACTUAL RTT IS:", np.median(actual_rtts_noalarms[1]))
+            if key in actual_rtts_noalarms.keys():
+                print(hour + "00")
+                print("NORMAL VALUE FOR ACTUAL RTT IS:", actual_rtts_noalarms[key])
 
             
             #if key in alarms["alarms"]:
@@ -96,7 +95,7 @@ for date in tqdm(range(delta.days + 1)):
                 listToStr = ', '.join(map(str, actual_rtt))
                 actual_rtt_list.append((listToStr))
                 #print(listToStr)
-            print(actual_rtt_list)
+            #print(actual_rtt_list)
             file2.close()
             file3.close()
             file4.close()
