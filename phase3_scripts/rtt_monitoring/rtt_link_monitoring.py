@@ -54,6 +54,12 @@ for link in ref.keys():
             #print(actual_rtt)
             alarm_dict["alarms"].append(link)
             actual_rtt_dict[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5), ref[link]["diff"])
+        
+        median_dict[link] = {
+		"lower_bd": interval[0], 
+		"median": normal_ref,
+		"upper_bd": interval[1]
+        }
 
 #print("Seba:", actual_rtt_dict)
 ref_file.close()

@@ -86,9 +86,9 @@ for i in hours:  # for each hour
             ranks = wilson(0.5,len(sorted_rtts))
             #print(ranks, len(sorted_rtts))
             interval = (sorted_rtts[ranks[0]], sorted_rtts[ranks[1]])
-            print("LINK IS:", link)
-            print("LINKS is", links)
-            print(link_dict[link])
+            #print("LINK IS:", link)
+            #print("LINKS is", links)
+            #print(link_dict[link])
             if link_dict[link] == None:
                 link_dict[link] = {
                     "lower_bd":[interval[0]],
