@@ -76,16 +76,7 @@ for date in tqdm(range(delta.days + 1)):
 
             file4 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/actual_rtt_sw_alarms")
             actual_rtts = ujson.load(file4)
-
-            
-            file3 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/actual_rtt_sw_noalarms")
-            actual_rtts_noalarms = ujson.load(file3)
-
-            if key in actual_rtts_noalarms.keys():
-                print(hour + "00")
-                print("NORMAL VALUE FOR ACTUAL RTT IS:", actual_rtts_noalarms[key])
-
-            
+              
             #if key in alarms["alarms"]:
             #    alarm_list.append(len(date_list) -1)
 
@@ -97,7 +88,6 @@ for date in tqdm(range(delta.days + 1)):
                 #print(listToStr)
             #print(actual_rtt_list)
             file2.close()
-            file3.close()
             file4.close()
         else:
             print("INVALID LINK")

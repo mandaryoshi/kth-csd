@@ -53,7 +53,7 @@ for link in ref.keys():
             actual_rtt = links[link]["actual_rtts"][index]
             #print(actual_rtt)
             alarm_dict["alarms"].append(link)
-            actual_rtt_dict[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5))
+            actual_rtt_dict[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5), ref[link]["diff"])
 
 #print("Seba:", actual_rtt_dict)
 ref_file.close()
