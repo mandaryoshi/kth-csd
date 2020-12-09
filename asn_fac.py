@@ -9,7 +9,7 @@ response = requests.get("https://peeringdb.com/api/netfac")
 netfac = json.loads(response.text)
 
 # Defining an empty dictionary
-dictionary = {
+dictionary = {}
 
 # Iterating over key-'data' to map the asn and facility ids sequentially and append the facility ids in a list.
 for i in tqdm(netfac["data"]):
