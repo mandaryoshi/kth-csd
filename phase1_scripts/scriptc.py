@@ -10,7 +10,3 @@ class FacilityMapping:
     
     return self.ixp_info[str(ixp_id)]["fac_set"]      # Directly return the list of facilities for that ixp_id
                                                       # No need to check because the ixp_id introduced is also extracted from the same dictionary 
-
-
-#facs = FacilityMapping()
-#print(facs.facility_search(31))

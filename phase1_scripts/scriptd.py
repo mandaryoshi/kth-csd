@@ -19,8 +19,6 @@ class non_IxpIP_AS_mapping:
                         self.pyt.insert(ip, self.nonixp_info[ip])       # Linked to the prefix the ASN is added in this case
                         break
                     except ValueError:
-                            #print(net)
-                            #print("What happened there?")
                             break
 
 
@@ -29,7 +27,3 @@ class non_IxpIP_AS_mapping:
         if asn != None:                                                  # values inserted in the initialization and in case there 
             return (ip, asn)                                             # is a match then the IP and ASN are returned, and if none 
         return (None, None)                                              # match, a "None" value tuple is forced.
-
-#asn = non_IxpIP_AS_mapping()
-#ip_array = '185.111.204.20' #, '185.111.204.20', '213.144.173.173']
-#print(asn.mapping(ip_array))

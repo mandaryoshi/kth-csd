@@ -6,7 +6,7 @@ response = requests.get("https://peeringdb.com/api/netfac")
 
 netfac = json.loads(response.text)
 
-dictionary = {}
+dictionary = {
 
 for i in tqdm(netfac["data"]):
     if i["local_asn"] in dictionary:
