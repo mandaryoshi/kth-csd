@@ -5,6 +5,8 @@ import numpy as np
 from datetime import date, timedelta
 import ast 
 from math import sqrt
+import matplotlib.pyplot as plt
+import matplotlib as mp
 
 
 start_date = sys.argv[1].split('-')
@@ -89,9 +91,9 @@ for date in range(delta.days + 1):
 
         file_id = file_id + 1
 
-output_file = open("phase3_scripts/results/mse_values",'w')
-output_file.write(json.dumps(mse_values))
-output_file.close()
+#output_file = open("phase3_scripts/results/mse_values",'w')
+#output_file.write(json.dumps(mse_values))
+#output_file.close()
 
 mse_values.sort(reverse = True)
 
@@ -104,6 +106,48 @@ print("NUMBER OF TOTAL RED ALARMS", red_alarms)
 #output_file.write(json.dumps(mse_values))
 #output_file.close()
 
-for i in np.arange(10):
+mse_values_list = []
+fac_list = []
+
+for i in np.arange(50):
     text = "TOP " + str(i + 1) + " : " + str(mse_values[i])
     print(text)
+    mse_values_list.append(mse_values[i][0])
+    fac_list.append(str((mse_values[i][1], mse_values[i][2])))
+
+fig, ax = plt.subplots(figsize=(7,5))
+
+plt.title("Top 50 Forwarding Alarms")
+
+plt.xlabel("Ranking")
+plt.ylabel("MSE")
+
+labels_1 = ['1'] + [None]*8
+
+for x in np.arange(10, 50, 10):
+    labels_1 = labels_1 + [str(x)] + [None]*9
+
+labels_1 = labels_1 + ['50']
+
+data_normalizer = mp.colors.Normalize()
+
+color_map = mp.colors.LinearSegmentedColormap(
+    "my_map",
+    {
+        "red": [(0, 1.0, 1.0),
+                (1.0, .5, .5)],
+        "green": [(0, 0.5, 0.5),
+                  (1.0, 0, 0)],
+        "blue": [(0, 0.50, 0.5),
+                 (1.0, 0, 0)]
+    }
+)
+
+
+x_ticks = np.arange(0, 50, 10)
+x = np.arange(0, 50)
+#ax.yaxis.set_major_formatter(formatter)
+plt.bar(x, mse_values_list, color=color_map(data_normalizer(mse_values_list)))
+plt.xticks(x, labels_1)
+#plt.show()
+plt.savefig("phase3_scripts/results/fw_mse_graph.png")
