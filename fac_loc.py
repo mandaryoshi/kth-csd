@@ -17,7 +17,8 @@ for i in tqdm(netfac["data"]):
         dictionary[i["id"]]  =  {
             "latitude" : i["latitude"],
             "longitude" : i["longitude"],
-            "name" : i["name"]
+            "name" : i["name"],
+            "city" : i["city"]
         }
        
 # Opens the file where dictionary will be dumped
