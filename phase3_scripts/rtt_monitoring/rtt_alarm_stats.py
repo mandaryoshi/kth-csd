@@ -7,6 +7,7 @@ import ast
 from math import sqrt
 import matplotlib.pyplot as plt
 import matplotlib as mp
+import collections
 
 
 start_date = sys.argv[1].split('-')
@@ -20,10 +21,12 @@ delta = edate - sdate
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
 
+
+cities = json.load(open("json_results/fac_loc_results.json"))
+
 alarms = {}
+locations = []
 diff_values = []
-red_alarms = 0
-yellow_alarms = 0
 
 file_id = 0
 
@@ -42,6 +45,7 @@ for date in range(delta.days + 1):
             print('fnfe')
 
         alarm_file = json.load(file)
+        
 
         # {"(53, 306)":[12.141,20.33833,6.57349],"(57, 53)":[3.94867,5.48933,1.22499],"(857, 18)":[2.21267,252.068,2.60434],"(18, 18)":[5.617,157.03133,0.55183]}
 
@@ -52,6 +56,20 @@ for date in range(delta.days + 1):
 
             diff_values.append((alarm[1] - alarm[0], link0, link1, str(day), hour, file_id))
 
+            try:
+                near_end = cities[link0]["city"]
+                far_end = cities[link1]["city"]
+
+                if near_end != far_end:
+                    locations.append(near_end)
+                    locations.append(far_end)
+                else:
+                    locations.append(near_end)
+
+
+            except KeyError:
+                locations.append("others")
+            
         file.close()
 
         file_id = file_id + 1
@@ -60,7 +78,13 @@ for date in range(delta.days + 1):
 #output_file.write(json.dumps(mse_values))
 #output_file.close()
 
+locations = collections.Counter(locations)
+
+print(locations)
+
 diff_values.sort(reverse = True)
+
+#print(locations)
 
 #print(mse_values)
 

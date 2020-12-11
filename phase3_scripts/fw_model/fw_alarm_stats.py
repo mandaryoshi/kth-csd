@@ -7,7 +7,7 @@ import ast
 from math import sqrt
 import matplotlib.pyplot as plt
 import matplotlib as mp
-
+import collections
 
 start_date = sys.argv[1].split('-')
 end_date = sys.argv[2].split('-')
@@ -20,10 +20,13 @@ delta = edate - sdate
 hours = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13",
          "14","15","16","17","18","19","20","21","22","23"]
 
+cities = json.load(open("json_results/fac_loc_results.json"))
+
 alarms = {}
 mse_values = []
 red_alarms = 0
 yellow_alarms = 0
+locations = []
 
 file_id = 0
 
@@ -49,7 +52,26 @@ for date in range(delta.days + 1):
         for alarm_type in alarm_file:
             for alarm in alarm_file[alarm_type]:
                 #if alarm[1] != '58' and alarm[1] != '18':
-                mse_values.append((alarm[3], alarm[0], alarm[1], str(day), hour, file_id))
+
+                if not [item for item in mse_values if item[0] == alarm[3]]:
+                    mse_values.append((alarm[3], alarm[0], alarm[1], str(day), hour, file_id))
+
+                #mse_values.append((alarm[3], alarm[0], alarm[1], str(day), hour, file_id))
+
+                try:
+                    near_end = cities[alarm[0]]["city"]
+                    far_end = cities[alarm[1]]["city"]
+
+                    if alarm_type == "red_alarms":
+                        if near_end != far_end:
+                            locations.append(near_end)
+                            locations.append(far_end)
+                        else:
+                            locations.append(near_end)
+
+                except KeyError:
+                    locations.append("others")
+
                 if alarm[0] in alarms:
                     if alarm[1] in alarms[alarm[0]]:
                         if alarm_type in alarms[alarm[0]][alarm[1]]:
@@ -96,6 +118,10 @@ for date in range(delta.days + 1):
 #output_file.close()
 
 mse_values.sort(reverse = True)
+
+locations = collections.Counter(locations)
+
+print(locations)
 
 print("NUMBER OF TOTAL YELLOW ALARMS", yellow_alarms)
 print("NUMBER OF TOTAL RED ALARMS", red_alarms)
