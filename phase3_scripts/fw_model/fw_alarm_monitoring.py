@@ -6,7 +6,7 @@ import datetime as dt
 import ast 
 from math import sqrt
 
-#sys.path.insert(0, '/mnt/d/Documents/IK2200HT201-IXP')
+sys.path.insert(0, '/mnt/d/Documents/IK2200HT201-IXP')
 
 #Define wilson function to determine confidence interval
 def wilson(p, n, z = 1.96):
@@ -28,12 +28,12 @@ hour = sys.argv[2]
 
 print(date, hour)
 
-path1 = "/home/csd/IK2200HT201-IXP/json_results/fw_alarm_ref"
+path1 = "../../json_results/fw_alarm_ref"
 file1 = open(path1)
 ref_alarms = json.load(file1)
 
 # Path for the hour you are monitoring
-path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_alarms"
+path = "../../../traceroutes/" + date + "/" + hour + "00/fw_alarms"
 file = open(path)
 alarms = json.load(file)
 
@@ -62,9 +62,10 @@ if "red_alarms" in alarms:
             if comp < 0.3:
                 if alarm in out_alarms["red_alarms"]:
                     out_alarms["red_alarms"].remove(alarm)
-                out_alarms["yellow_alarms"].append(alarm)
+                if alarm not in out_alarms["yellow_alarms"]:
+                    out_alarms["yellow_alarms"].append(alarm)
 
-path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_filtered_alarms"
+path = "../../../traceroutes/" + date + "/" + hour + "00/fw_filtered_alarms"
 output_file = open(path,'w')
 output_file.write(json.dumps(out_alarms))
 output_file.close()

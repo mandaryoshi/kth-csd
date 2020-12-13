@@ -27,6 +27,9 @@ cities = json.load(open("json_results/fac_loc_results.json"))
 alarms = {}
 locations = []
 diff_values = []
+links_alarmed = []
+
+tot_alarms = 0
 
 file_id = 0
 
@@ -56,6 +59,11 @@ for date in range(delta.days + 1):
 
             diff_values.append((alarm[1] - alarm[0], link0, link1, str(day), hour, file_id))
 
+            tot_alarms = tot_alarms + 1
+
+            if (link0, link1) not in links_alarmed:
+                    links_alarmed.append((link0, link1))
+
             try:
                 near_end = cities[link0]["city"]
                 far_end = cities[link1]["city"]
@@ -69,6 +77,16 @@ for date in range(delta.days + 1):
 
             except KeyError:
                 locations.append("others")
+
+            if link0 in alarms:
+                if link1 in alarms[link0]:
+                    alarms[link0][link1].append(file_id)
+                else: 
+                    alarms[link0][link1] = [file_id]
+            else: 
+                alarms[link0] = {
+                    link1: [file_id]
+                }
             
         file.close()
 
@@ -77,6 +95,58 @@ for date in range(delta.days + 1):
 #output_file = open("phase3_scripts/results/mse_values",'w')
 #output_file.write(json.dumps(mse_values))
 #output_file.close()
+
+alarm_durations = {}
+
+for src in alarms:
+    for dest in alarms[src]:
+        hour_counter = 0
+        for alarm in alarms[src][dest]:
+            if hour_counter == 0:
+                prev_index = alarm
+                hour_counter = hour_counter + 1
+            elif (alarm - prev_index) == 1:
+                hour_counter = hour_counter + 1
+                prev_index = alarm
+            else:
+                if hour_counter in alarm_durations:
+                    alarm_durations[hour_counter] = alarm_durations[hour_counter] + 1
+                else:
+                    alarm_durations[hour_counter] = 1
+                prev_index = alarm
+                hour_counter = 1
+
+            if hour_counter == 11:
+                print(src, dest)
+
+        if hour_counter in alarm_durations:
+            alarm_durations[hour_counter] = alarm_durations[hour_counter] + 1
+        else:
+            alarm_durations[hour_counter] = 1
+    
+
+print(alarm_durations)
+hours_values = sorted(list(alarm_durations.keys()))
+probability = []
+previous = 0
+for times in hours_values:
+    previous = previous + alarm_durations[times]/sum(alarm_durations.values())
+    probability.append(previous)
+
+
+print(hours_values)
+
+plt.figure(figsize=(7,5))
+plt.plot(hours_values,probability)
+plt.title("Duration of RTT Alarms")
+plt.xlabel("Alarm Duration (Hours)")
+plt.ylabel("CDF")
+plt.savefig("phase3_scripts/results/rtt_cdf_graph.png")
+
+
+
+
+
 
 locations = collections.Counter(locations)
 
@@ -101,12 +171,15 @@ for i in np.arange(50):
     diff_values_list.append(diff_values[i][0])
     fac_list.append(str((diff_values[i][1], diff_values[i][2])))
 
+print("LINKS THAT REPORTED AN ALARM ", len(links_alarmed))
+print("Total amount of alarms", tot_alarms)
+
 fig, ax = plt.subplots(figsize=(7,5))
 
 plt.title("Top 50 RTT Alarms")
 
 plt.xlabel("Ranking")
-plt.ylabel("RTT diff")
+plt.ylabel("RTT diff (ms)")
 
 labels_1 = ['1'] + [None]*8
 
