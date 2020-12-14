@@ -51,8 +51,12 @@ if "red_alarms" in alarms:
                     out_alarms["yellow_alarms"].append(alarm)
                 else:
                     out_alarms["red_alarms"].append(alarm)
+            elif abs(alarm[2]) < 0.4:
+                out_alarms["yellow_alarms"].append(alarm)
             else:
                 out_alarms["red_alarms"].append(alarm)
+        elif abs(alarm[2]) < 0.4:
+            out_alarms["yellow_alarms"].append(alarm)
         else:
             out_alarms["red_alarms"].append(alarm)
 
