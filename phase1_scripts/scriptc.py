@@ -2,7 +2,7 @@ import json
 
 class FacilityMapping:
 
-  def __init__(self, file):                           # "file" variable is meant to be the ixp_info file extracted from script ixp_info.py
+ def __init__(self, file):                           # "file" variable is meant to be the ixp_info file extracted from script ixp_info.py
 
     self.ixp_info = file
 
