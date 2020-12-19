@@ -124,7 +124,7 @@ for src in alarms:
         else:
             alarm_durations[hour_counter] = 1
     
-
+alarm_durations[0] = 0
 print(alarm_durations)
 hours_values = sorted(list(alarm_durations.keys()))
 probability = []
@@ -141,6 +141,9 @@ plt.plot(hours_values,probability)
 plt.title("Duration of RTT Alarms")
 plt.xlabel("Alarm Duration (Hours)")
 plt.ylabel("CDF")
+plt.grid()
+plt.ylim(ymin=0)
+plt.xlim(xmin=0)
 plt.savefig("phase3_scripts/results/rtt_cdf_graph.png")
 
 

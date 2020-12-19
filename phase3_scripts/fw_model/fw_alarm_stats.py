@@ -132,7 +132,7 @@ for src in alarms:
             else:
                 alarm_durations[hour_counter] = 1
             
-
+alarm_durations[0] = 0
 print(alarm_durations)
 hours_values = sorted(list(alarm_durations.keys()))
 probability = []
@@ -149,6 +149,9 @@ plt.plot(hours_values,probability)
 plt.title("Duration of Forwarding Alarms")
 plt.xlabel("Alarm Duration (Hours)")
 plt.ylabel("CDF")
+plt.grid()
+plt.ylim(ymin=0)
+plt.xlim(xmin=0)
 plt.savefig("phase3_scripts/results/fw_cdf_graph.png")
 
 
@@ -211,5 +214,5 @@ x = np.arange(0, 50)
 #ax.yaxis.set_major_formatter(formatter)
 plt.bar(x, mse_values_list, color=color_map(data_normalizer(mse_values_list)))
 plt.xticks(x, labels_1)
-#plt.show()
-plt.savefig("phase3_scripts/results/fw_mse_graph.png")
+plt.show()
+#plt.savefig("phase3_scripts/results/fw_mse_graph.png")
