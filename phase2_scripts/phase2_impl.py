@@ -5,6 +5,7 @@ import time
 import collections
 
 sys.path.insert(0, '/home/csd/IK2200HT201-IXP')
+#sys.path.insert(0, '/mnt/d/Documents/IK2200HT201-IXP')
 
 from phase1_scripts.scripta import IxpDetector
 from phase1_scripts.scriptb import IxpIP_AS_mapping
@@ -132,7 +133,7 @@ class CFS:
                                     for fac_id in fac_match:
                                         if fac_id in sublist:
                                             flat_list.append(fac_id)
-                                cnt = collections.Counter(flat_list)
+                                cnt = dict(sorted(collections.Counter(flat_list).items(), key=lambda x: x[1], reverse=True))
                                 val = list(cnt.values())
                                 keys = list(cnt.keys())
 
@@ -224,7 +225,7 @@ class CFS:
                                     for fac_id in fac_result:
                                         if fac_id in sublist:
                                             flat_list.append(fac_id)
-                                cnt = collections.Counter(flat_list)
+                                cnt = dict(sorted(collections.Counter(flat_list).items(), key=lambda x: x[1], reverse=True))
                                 val = list(cnt.values())
                                 keys = list(cnt.keys())
 
