@@ -1,6 +1,19 @@
 #!/bin/bash
 
+for i in {1..3}
+    do
+        echo '**********************************************************'
+    done
+echo '************* FORWARDING MODEL MONITORING ****************'
+
+for i in {1..3}
+    do
+        echo '**********************************************************'
+    done
+
+echo "INSERT START DATE (YYYY-MM-DD):"
 read start_date
+echo "INSERT END DATE (YYYY-MM-DD):"
 read end_date
 
 

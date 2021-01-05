@@ -16,7 +16,7 @@ import ast
 date = sys.argv[1]
 hour = sys.argv[2]
 
-print(date, hour)
+
 
 # Path for the hour you are monitoring
 path = "/home/csd/traceroutes/" + date + "/" + hour + "00/connections"
@@ -128,7 +128,8 @@ for source in fw_dict.keys():
                         link_mse = np.square(np.subtract(fw_dict[source][dest]["comp"][0],fw_dict[source][dest]["comp"][1])).mean() 
                         alarm_dict["red_alarms"].append((source, dest, eval_dict[dest], round(mse), round(link_mse), p_value))
 
-print(len(alarm_dict["red_alarms"]))
+print("********* DATE: " + date + " " + hour + ":00h *********")
+print("ALARMS TRIGGERED: " + str(len(alarm_dict["red_alarms"])))
 
 # Save alarms and references
 output_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_alarms"

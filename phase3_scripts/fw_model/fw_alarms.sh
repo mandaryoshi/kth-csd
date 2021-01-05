@@ -1,6 +1,21 @@
 #!/bin/bash
 
+for i in {1..3}
+    do
+        echo '**********************************************************'
+    done
+
+echo '******************* FORWARDING MODEL *********************'
+echo '***************** ALARM CLASSIFICATION *******************'
+
+for i in {1..3}
+    do
+        echo '**********************************************************'
+    done
+
+echo "INSERT START DATE (YYYY-MM-DD):"
 read start_date
+echo "INSERT END DATE (YYYY-MM-DD):"
 read end_date
 
 startdate=$(date -I -d "$start_date") || exit -1

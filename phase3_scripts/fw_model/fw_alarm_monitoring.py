@@ -26,7 +26,7 @@ def wilson(p, n, z = 1.96):
 date = sys.argv[1]
 hour = sys.argv[2]
 
-print(date, hour)
+
 
 path1 = "../../json_results/fw_alarm_ref"
 file1 = open(path1)
@@ -68,8 +68,14 @@ if "red_alarms" in alarms:
                     out_alarms["red_alarms"].remove(alarm)
                 if alarm not in out_alarms["yellow_alarms"]:
                     out_alarms["yellow_alarms"].append(alarm)
+    
+    print("********* DATE: " + date + " " + hour + ":00h *********")
+    print("TOTAL ALARMS: " + str(len(alarms["red_alarms"])))
+    print("RED ALARMS: " + str(len(out_alarms["red_alarms"])))
+    print("RED ALARMS: " + str(len(out_alarms["yellow_alarms"])))
 
 path = "../../../traceroutes/" + date + "/" + hour + "00/fw_filtered_alarms"
 output_file = open(path,'w')
 output_file.write(json.dumps(out_alarms))
 output_file.close()
+
