@@ -43,15 +43,16 @@ for link in ref.keys():
         sorted_rtts = sorted(links[link]["rtts"])
         normal_ref = np.median(sorted_rtts)
         index = np.argsort(links[link]["rtts"])[len(links[link]["rtts"])//2]
-        #print("Index", index)
         ranks = wilson(0.5,len(sorted_rtts))
         interval = (round(sorted_rtts[ranks[0]],5), round(sorted_rtts[ranks[1]],5))
         ref_interval = (ref[link]["lower_bd"],ref[link]["upper_bd"])
+        # An alarm is raised if the gap between confidence interval measured for the current hour and the reference 
+        # confidence interval hour is more than a threshold value. This threshold value is different for different facility pairs.
         if (((interval[0] - ref_interval[1]) > ref[link]["diff"]) or  ((ref_interval[0] - interval[1]) > ref[link]["diff"])):
             actual_rtt = links[link]["actual_rtts"][index]
             alarm_dict["alarms"].append(link)
             actual_rtt_dict[link] = (round(actual_rtt[0],5), round(actual_rtt[1],5), ref[link]["diff"])
-        
+        # Write the median rtt values and lower and upper bounds of confidence intervals for a link to a dictionary.
         median_dict[link] = {
 		"lower_bd": interval[0], 
 		"median": normal_ref,
@@ -59,16 +60,19 @@ for link in ref.keys():
         }
 
 ref_file.close()
+#Store the rtt values including the median and lower bound and upper bound for the confidence interval for the current measured hour.
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_medians"
 with open(results_path, 'w') as fp:
     ujson.dump(median_dict, fp)
 fp.close()
 
+#Store the alarms raised for the current measured hour.
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_alarms"
 with open(results_path, 'w') as fp:
     ujson.dump(alarm_dict, fp)
 fp.close()
 
+#Store the actual rtt values for alarm cases.
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/actual_rtt_sw_alarms"
 with open(results_path, 'w') as fp:
     ujson.dump(actual_rtt_dict, fp)
