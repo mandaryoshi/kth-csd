@@ -78,4 +78,7 @@ with open(results_path, 'w') as fp:
     ujson.dump(actual_rtt_dict, fp)
 fp.close()
 
-print(date, hour)
+print(hour)
+print('Number of alarms raised:', len(alarm_dict['alarms']))
+if (len(alarm_dict['alarms']) != 0):
+    print('Anomalous RTT pattern observed at links:', alarm_dict['alarms'])
