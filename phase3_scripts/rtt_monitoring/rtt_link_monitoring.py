@@ -5,6 +5,7 @@ import numpy as np
 from math import sqrt
 import time
 from shutil import copyfile
+from colorama import Fore, Back, Style
 #Define wilson function to determine confidence interval
 def wilson(p, n, z = 1.96):
     denominator = 1 + z**2/n
@@ -78,7 +79,10 @@ with open(results_path, 'w') as fp:
     ujson.dump(actual_rtt_dict, fp)
 fp.close()
 
-print(hour)
-print('Number of alarms raised:', len(alarm_dict['alarms']))
+print('Time:', hour)
 if (len(alarm_dict['alarms']) != 0):
-    print('Anomalous RTT pattern observed at links:', alarm_dict['alarms'])
+    print(Fore.RED + '%d alarm(s) raised for link(s): %s'  %(len(alarm_dict['alarms']), alarm_dict['alarms']))
+    print(Style.RESET_ALL)
+else:
+    print(Fore.GREEN + 'No Alarms')
+    print(Style.RESET_ALL)
