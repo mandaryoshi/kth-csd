@@ -60,19 +60,19 @@ for link in ref.keys():
         }
 
 ref_file.close()
-#Store the rtt values including the median and lower bound and upper bound for the confidence interval for the current measured hour.
+# Store the rtt values including the median and lower bound and upper bound for the confidence interval for the current measured hour.
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_medians"
 with open(results_path, 'w') as fp:
     ujson.dump(median_dict, fp)
 fp.close()
 
-#Store the alarms raised for the current measured hour.
+# Store the alarms raised for the current measured hour.
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/rtt_sw_alarms"
 with open(results_path, 'w') as fp:
     ujson.dump(alarm_dict, fp)
 fp.close()
 
-#Store the actual rtt values for alarm cases.
+# Store the actual rtt values for alarm cases.
 results_path = "/home/csd/traceroutes/" + date + "/" + hour + "/actual_rtt_sw_alarms"
 with open(results_path, 'w') as fp:
     ujson.dump(actual_rtt_dict, fp)

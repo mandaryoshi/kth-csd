@@ -44,14 +44,15 @@ for date in tqdm(range(delta.days + 1)):
         else:
             date_list.append(hour)
                   
-       #Open initial reference computation result 
+        #Open initial reference computation result 
         file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_ref_values")
         rtt_ref_values = ujson.load(file1)
-
+        
+        #Open rtt measurements for current measured hour.
         file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_medians")
         rtt_medians = ujson.load(file2)
        
-         #Add the value to each variable list
+        #Add the value to each variable list
         
         key = str((int(source), int(dest)))
         
