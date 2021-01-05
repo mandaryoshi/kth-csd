@@ -16,8 +16,12 @@ while [ "$startdate" != "$enddate" ]; do
     echo $startdate
     for hour in {00..23}
     do
+       echo 'Reference computation started'
        python3 $file1 $startdate $hour $ref_split
+       echo 'Reference computation ended'
+       echo 'Link monitoring started'
        python3 $file2 $startdate $hour\00
+       echo 'Link monitoring ended'
     done
 
     startdate=$(date -I -d "$startdate + 1 day")
