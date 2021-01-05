@@ -5,6 +5,7 @@ import numpy as np
 import datetime as dt
 import ast 
 from math import sqrt
+from colorama import Fore, Back, Style
 
 sys.path.insert(0, '/mnt/d/Documents/IK2200HT201-IXP')
 
@@ -71,9 +72,10 @@ if "red_alarms" in alarms:
     
     print("********* DATE: " + date + " " + hour + ":00h *********")
     print("TOTAL ALARMS: " + str(len(alarms["red_alarms"])))
-    print("RED ALARMS: " + str(len(out_alarms["red_alarms"])))
-    print("RED ALARMS: " + str(len(out_alarms["yellow_alarms"])))
-
+    print(Fore.RED + "RED ALARMS: " + str(len(out_alarms["red_alarms"])))
+    print(Fore.YELLOW + "YELLOW ALARMS: " + str(len(out_alarms["yellow_alarms"])))
+    print(Style.RESET_ALL)
+    
 path = "../../../traceroutes/" + date + "/" + hour + "00/fw_filtered_alarms"
 output_file = open(path,'w')
 output_file.write(json.dumps(out_alarms))

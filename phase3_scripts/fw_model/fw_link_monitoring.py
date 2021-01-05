@@ -7,6 +7,7 @@ from math import sqrt
 from scipy.stats import chisquare
 import time
 import ast
+from colorama import Fore, Back, Style
 
 #sys.path.insert(0, '/mnt/d/Documents/IK2200HT201-IXP')
 
@@ -129,8 +130,8 @@ for source in fw_dict.keys():
                         alarm_dict["red_alarms"].append((source, dest, eval_dict[dest], round(mse), round(link_mse), p_value))
 
 print("********* DATE: " + date + " " + hour + ":00h *********")
-print("ALARMS TRIGGERED: " + str(len(alarm_dict["red_alarms"])))
-
+print(Fore.RED + "ALARMS TRIGGERED: " + str(len(alarm_dict["red_alarms"])))
+print(Style.RESET_ALL)
 # Save alarms and references
 output_path = "/home/csd/traceroutes/" + date + "/" + hour + "00/fw_alarms"
 output_file = open(output_path,'w')
