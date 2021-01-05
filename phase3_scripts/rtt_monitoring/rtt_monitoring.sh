@@ -1,12 +1,15 @@
 #!/bin/bash
 #This script computes initial references for rtts(based on 24hrs prior to current hr) for all hrs between start date and end date. 
 #It also compares current hr rtt measurements to initial reference and raises alarm for any anomaly found.
-echo '*****************************************************************************
-*****************************************************************************
-********************** RTT DELAY MONITORING  ********************************
-*****************************************************************************
-*****************************************************************************'
-
+for i in {1..3}
+    do
+        echo '**********************************************************'
+    done
+echo '************* RTT DELAY MONITORING ***********************'
+for i in {1..3}
+    do
+        echo '**********************************************************'
+    done
 echo ''
 read -p "Enter Start Date (yyyy-mm-dd):" start_date 
 echo ''
