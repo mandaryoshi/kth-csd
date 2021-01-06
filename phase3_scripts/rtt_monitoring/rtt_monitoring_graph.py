@@ -23,6 +23,8 @@ edate = date(int(end_date[0]), int(end_date[1]), int(end_date[2]))   # end date
 
 delta = edate - sdate       # as timedelta
 
+cities = ujson.load(open("json_results/fac_loc_results.json"))
+
 #list of errorbar create
 normal_reference_upper = []
 normal_reference_median = []
@@ -36,20 +38,32 @@ alarm_list = [] #list of alarm
 date_list = [] #list of date
 actual_rtt_list = []
 
+graph_list = []
+counter_list = []
+
+counter = 0
+
 for date in tqdm(range(delta.days + 1)):
     day = sdate + timedelta(days=date)   
     for hour in tqdm(hours):
         if hour == "00":
-            date_list.append(str(day))
+            if counter % 168 == 0:
+                date_list.append(str(day))
+                graph_list.append(str(day))
+                counter_list.append(counter)
+            else:
+                date_list.append(None)
         else:
-            date_list.append(hour)
+            date_list.append(None)
+
+        counter = counter + 1
                   
-        #Open initial reference computation result 
-        file1 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_ref_values")
+        # Open initial reference computation result 
+        file1 = open("../traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_ref_values")
         rtt_ref_values = ujson.load(file1)
-        
-        #Open rtt measurements for current measured hour.
-        file2 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_medians")
+
+        # Open rtt measurements for current measured hour.
+        file2 = open("../traceroutes/" + str(day) + "/" + hour + "00/rtt_sw_medians")
         rtt_medians = ujson.load(file2)
        
         #Add the value to each variable list
@@ -71,7 +85,7 @@ for date in tqdm(range(delta.days + 1)):
             rtt_lower.append(rtt_medians[key]["median"] - rtt_medians[key]["lower_bd"])
             rtt_median.append(rtt_medians[key]["median"])
 
-            file4 = open("/home/csd/traceroutes/" + str(day) + "/" + hour + "00/actual_rtt_sw_alarms")
+            file4 = open("../traceroutes/" + str(day) + "/" + hour + "00/actual_rtt_sw_alarms")
             actual_rtts = ujson.load(file4)
               
             #if key in alarms["alarms"]:
@@ -87,8 +101,14 @@ for date in tqdm(range(delta.days + 1)):
             file2.close()
             file4.close()
         else:
-            print("INVALID LINK")
-            sys.exit()
+            #print("INVALID LINK")
+            #sys.exit()
+            rtt_upper.append(0)
+            rtt_lower.append(0)
+            rtt_median.append(0)
+            normal_reference_upper.append(0)
+            normal_reference_lower.append(0)
+            normal_reference_median.append(0)
         
         file1.close()
 
@@ -100,31 +120,40 @@ for index in alarm_list:
 
 #start graphing
 
-plt.figure(figsize=(30,10))
+fig, ax = plt.subplots(1, gridspec_kw={'hspace': 0}, figsize=(9,3))
 
-plt.title("RTT Pattern for " + source + " - " + dest)
+try:
+    ax.set_title("RTT Pattern for " + cities[source]["name"] + " - " + cities[dest]["name"])
+except Exception as e:
+    print(e)
+    ax.set_title("RTT Pattern for " + source + " - " + dest)
 
-plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
+
+#plt.xticks(np.arange(len(date_list)),date_list,rotation='vertical')
+
+ax.xaxis.set_major_locator(plt.FixedLocator(counter_list))
+ax.set_xticklabels(graph_list, rotation='30', rotation_mode='anchor', horizontalalignment='right')
 
 err_list = [rtt_lower, rtt_upper]
 
-plt.plot(np.arange(len(date_list)), normal_reference_median, marker ='.', color='forestgreen')
+#ax.plot(np.arange(len(date_list)), normal_reference_median, marker ='.', color='forestgreen')
 
-plt.fill_between(np.arange(len(date_list)), normal_reference_lower, normal_reference_upper, color='forestgreen', alpha=.1)
+ax.fill_between(np.arange(len(date_list)), normal_reference_lower, normal_reference_upper, color='forestgreen', alpha=.1)
 
-plt.errorbar(np.arange(len(date_list)), rtt_median, yerr=err_list,fmt='.',color='darkorange',capsize=5)
-plt.plot(np.arange(len(date_list)), rtt_median, color='orange') 
+#plt.errorbar(np.arange(len(date_list)), rtt_median, yerr=err_list,fmt='.',color='darkorange',capsize=5)
+ax.plot(np.arange(len(date_list)), rtt_median, color='forestgreen') 
 
-plt.scatter(alarm_list, alarm_values, marker='X', color='red')
+ax.scatter(alarm_list, alarm_values, marker='X', color='red')
 
-index = 0
-for x,y in zip(alarm_list, alarm_values):
-    label = actual_rtt_list[index]
-    plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center')
-    index = index+1
-plt.xlabel("Date")
-plt.ylabel("Differential RTT values")
+#index = 0
+# for x,y in zip(alarm_list, alarm_values):
+#     label = actual_rtt_list[index]
+#     plt.annotate(label, (x,y), textcoords="offset points", xytext=(0,10), ha='center')
+#     index = index+1
+#plt.xlabel("Date")
+ax.set_ylabel("Differential RTT (ms)")
+plt.tight_layout()
 #plt.grid(True)
-plt.savefig('../results/rtt_sw_graph.png')
-
+plt.savefig('phase3_scripts/results/rtt/rtt_graph_' + source + '_' + dest + '.png')
+plt.show()
 
