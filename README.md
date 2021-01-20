@@ -4,12 +4,18 @@ We use the RIPE Atlas platform to monitor peering interconnections established o
 
 ## Authors
 
-Enric Carrera I Aguiar <enriccia@kth.se> 
-Lingfeng Cheng <lincheng@kth.se> 
-Mandar Joshi <mandarj@kth.se> 
-Shubham Bhargava <shbh@kth.se> 
-Seba Varghese <vargh@kth.se> 
-Sri Yulianti <yulianti@kth.se> 
+Enric Carrera I Aguiar <enriccia@kth.se>
+
+Lingfeng Cheng <lincheng@kth.se>
+
+Mandar Joshi <mandarj@kth.se>
+
+Shubham Bhargava <shbh@kth.se>
+
+Seba Varghese <vargh@kth.se>
+
+Sri Yulianti <yulianti@kth.se>
+
 Anika Bintey Mansur <abmansur@kth.se>
 
 ## Installation
