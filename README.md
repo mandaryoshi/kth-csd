@@ -2,6 +2,16 @@
 
 We use the RIPE Atlas platform to monitor peering interconnections established over IXP links that assist the traffic exchange of networks in colocation data centers.  We analyze traceroute measurements performed on an Internet wide scale, build an anomaly detection tool that monitors the public peering links we identify, and report cases where the signal we extracted deviates from normal.
 
+## Authors
+
+Enric Carrera I Aguiar <enriccia@kth.se> 
+Lingfeng Cheng <lincheng@kth.se> 
+Mandar Joshi <mandarj@kth.se> 
+Shubham Bhargava <shbh@kth.se> 
+Seba Varghese <vargh@kth.se> 
+Sri Yulianti <yulianti@kth.se> 
+Anika Bintey Mansur <abmansur@kth.se>
+
 ## Installation
 
 Use the following 
@@ -66,3 +76,27 @@ Once complete, the results can be seen by running rtt_monitoring_graph.py.
 * Statistics
 
 Regarding statistics about both the forwarding model and rtt monitoring, scripts rtt_alarm_stats.py and fw_alarm_stats.py can be run. 
+
+## License
+
+MIT License
+
+Copyright (c) [2021] [Enric Carrera I Aguiar, Lingfeng Cheng, Mandar Joshi, Shubham Bhargava, Seba Varghese, Sri Yulianti, Anika Bintey Mansur]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
